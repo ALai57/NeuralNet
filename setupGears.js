@@ -18,8 +18,8 @@ var g_inv = d3.scaleLinear().domain([0, 100])
 						.range([0,rHeight/3]);
 
 function revolveGears(ang) {
-	
-	svg.selectAll('image').transition().duration(100)
+
+	svg.selectAll('image').transition().duration(50)
 	.attr('transform',function (d) {
 			return translateRotate(x(d.x)-calcWidth(d.r)/2,
 								   y(d.y)-calcHeight(d.r)/2,
@@ -28,19 +28,23 @@ function revolveGears(ang) {
 								   calcHeight(d.r)/2);
 		})
 	.on('end', function (d){
-				if (ang<360){
-					revolveGears(ang+10)
-				}else{
-				}
-					return;
+					
+					if(ang>=360){
+						return;
+					};
+					
+					revolveGears(ang+10);					
+					
 				});
+	
+	if(ang>=360){updateTable(c);};	
+	return;
 }	
 
 var c = -1;
 function spinGears (){
 	c=c+1;
 	revolveGears(0);
-	updateTable(c);
 }
 
 function calcWidth(w){
