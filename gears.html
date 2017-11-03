@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="./bootstrap.min.css"/>
+		<link rel="stylesheet" href="d3.slider.css" />
+	</head>
+	
+	<body>	
+		<script src="./jquery-3.2.1.min.js"> </script>
+		<script src="./bootstrap.min.js"> </script>
+		<script src="./d3.min.js"> </script>
+		<script src="./d3.slider.js"></script>
+		<script src="./d3.rebind.js"></script>
+		
+		
+		
+		
+		<div class="container"> 
+		<div class = "row"> <div class="col-md-6 col-md-offset-3">
+			<h2>Hello! This is an neural network test</h2>
+			
+			<p>Separate explanations for: </p>
+			<p>We know the answer - let's train our network!</p>
+			<p>How the network calculates outputs - simple video</p>
+			<p>Imagine we have a magic box. When you feed the box some numbers, it spits out another number.</p>			
+		
+		</div></div>
+		<div id="NetworkGraph"></div>
+		<div id="ErrorLines"></div>
+		<script>
+			
+			var myData = [
+			{"x1": 2.781083600, "x2":  2.550537003, "y":  0},
+			{"x1": 1.465489372, "x2":  2.362125076, "y":  0},
+			{"x1": 3.396561688, "x2":  4.400293529, "y":  0},
+			{"x1": 1.388070190, "x2":  1.850220317, "y":  0},
+			{"x1": 3.064072320, "x2":  3.005305973, "y":  0},
+			{"x1": 7.627531214, "x2":  2.759262235, "y":  1},
+			{"x1": 5.332441248, "x2":  2.088626775, "y":  1},
+			{"x1": 6.922596716, "x2":  1.771063670, "y":  1},
+			{"x1": 8.675418651, "x2": -0.242068655, "y":  1},
+			{"x1": 7.673756466, "x2":  3.508563011, "y":  1},			
+			];
+			
+			var myNeurons = [
+			  { "x":  0, "y": +1, "r": 50, "b":    0, "c" : "black"},
+			  { "x":  0, "y": -1, "r": 50, "b":    0, "c" : "black"},
+			  { "x":  1, "y": +1, "r": 50, "b": 1.56, "c" : "black"},
+			  { "x":  1, "y": -1, "r": 50, "b": 0.76, "c" : "black"},
+			  { "x":  2, "y":  0, "r": 50, "b": 3.66, "c" : "black"},
+			  ];
+			  
+			var myWeights = [
+			  { "fromNeuron":  0, "toNeuron": 2, "t": -2.1, "c" : "black"},
+			  { "fromNeuron":  0, "toNeuron": 3, "t": -1.8, "c" : "black"},
+			  { "fromNeuron":  1, "toNeuron": 2, "t": +2.7, "c" : "black"},
+			  { "fromNeuron":  1, "toNeuron": 3, "t": +2.6, "c" : "black"},
+			  { "fromNeuron":  2, "toNeuron": 4, "t": -6.8, "c" : "black"},
+			  { "fromNeuron":  3, "toNeuron": 4, "t": -1.0, "c" : "black"},
+			  ];
+			
+			function forwardPropagate(d,wts){
+				var networkOutput = [];
+				//
+				for (n=0;n<d.length;n++) {
+				
+					//Hidden Layer
+					var in3 = d[n].x1*wts[0].t + d[n].x2*wts[2].t + myNeurons[2].b;
+					var in4 = d[n].x1*wts[1].t + d[n].x2*wts[3].t + myNeurons[3].b;
+					var out3 = activate(in3);
+					var out4 = activate(in4);
+					
+					//Output Layer
+					var in5 = out3*wts[4].t+out4*wts[5].t + myNeurons[4].b;
+					var out5 = activate(in5);
+					
+					<!-- console.log(in5); -->
+					<!-- console.log(out5); -->
+					
+					obj = {"predicted" : out5, "target": d[n].y};
+					networkOutput.push(obj);
+					
+				}
+				
+				return networkOutput;
+			}
+			
+			function activate(x){
+				return 1/(1+Math.exp(-x));
+			}
+			
+			var wd = 600;
+			var ht = 600;
+			
+			var svg = d3.select('#NetworkGraph').append("svg")
+												.style("width",wd)
+												.style("height",ht);
+															
+															
+															
+			var x = d3.scaleLinear().domain([-8, 8])
+									.range([0, wd]);
+			var y = d3.scaleLinear().domain([8,-8])
+									.range([0, ht]);
+			var z = d3.scaleLinear().domain([0,2])
+									.range([0, 100]);
+									
+			var x_inv = d3.scaleLinear().domain([0, wd])
+									.range([-10,10]);
+			var y_inv = d3.scaleLinear().domain([0, ht])
+									.range([10,-10]);
+			var z_inv = d3.scaleLinear().domain([0, 100])
+									.range([0,2]);
+			
+			function translate(xIn,yIn){
+				return "translate(" + xIn + "," + yIn + ")";
+			}
+			
+			function translateRotate(xIn,yIn,rIn,wdth,hgt){
+				return "translate(" + xIn + "," + yIn + ")" + "rotate(" + rIn + "," + wdth + "," + hgt + ")";;
+			}
+			
+			var rWidth = 6;
+			var rHeight = 6;
+			
+			svg.selectAll('rect').data([0])
+				.enter()
+				.append('rect')
+				.attr('x',0)
+				.attr('y',0)
+				.attr('width',x(rWidth)-x(0))
+				.attr('height',y(0) - y(rHeight))
+				.attr('fill','black')
+				.attr('transform',translate(x(-rWidth/2),y(rHeight/2)) );
+				
+			
+			
+			var myGears = [
+			{"x": -1.5,  "y":  +2,  "r":  +1},
+			{"x": -1.5,  "y":   0,  "r":  +2},
+			{"x": -1.5,  "y":  -2,  "r":  +1},
+			{"x": +1.5,  "y":  +2,  "r":  +1.5},
+			{"x": +1.5,  "y":   0,  "r":  +1.2},
+			{"x": +1.5,  "y":  -2,  "r":  +0.5},
+			];
+
+			function revolveGears(ang) {
+				
+				svg.selectAll('image').transition().duration(100)
+				.attr('transform',function (d) {
+						return translateRotate(x(d.x)-calcWidth(d.r)/2,
+											   y(d.y)+calcHeight(d.r)/2,
+											   ang,
+											   calcWidth(d.r)/2,
+											   -calcHeight(d.r)/2);
+					})
+				.on('end', function (d){
+							if (ang<360){
+								revolveGears(ang+10)
+							}else{
+							}
+								return;
+							});
+			}	
+			
+			function spinGears (){
+				revolveGears(0);	
+			}
+			
+			function calcWidth(w){
+				return x(w)-x(0);
+			}
+			function calcHeight(h){
+				return y(h)-y(0);
+			}
+			
+			var gears = svg.selectAll('image').data(myGears)
+				.enter()
+				.append('svg:image')
+				.attr('id', function (d,i) {return 'gear'+i;})
+				.attr('href','./gear.svg')
+				.attr('x', 0)
+				.attr('y', 0)
+				.attr('fill','black')
+				.on('click', function(d) {return spinGears();} );
+			
+			function positionGears(g){
+				g.attr('transform',
+						function (d) {return translate(x(d.x)-calcWidth(d.r)/2,
+													   y(d.y)+calcHeight(d.r)/2); 
+						})
+					.attr('width', function (d) {return x(d.r)-x(0);})
+					.attr('height',function (d) {return y(0)-y(d.r);});
+			}
+				
+			positionGears(gears);
+			
+			// Make Axis if wanted
+			<!-- var xAxis = d3.axisBottom(x); -->
+			<!-- var yAxis = d3.axisLeft(y); -->
+			<!-- svg.append("g")		 -->
+				<!-- .attr("class","axis") -->
+				<!-- .attr("transform","translate(0, " + y(0) + ")") -->
+				<!-- .call(xAxis); -->
+				
+			<!-- svg.append("g") -->
+				<!-- .attr("class","axis") -->
+				<!-- .attr("transform","translate(" + x(0) + ",0)") -->
+				<!-- .call(yAxis); -->
+									
+			
+		</script>
+		
+		
+		
+		
+		
+		<div id="slider1" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider2" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider3" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider4" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider5" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider6" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<script>
+			
+			function updateGearSize(){
+			
+			}
+				
+			function setupSlider(n) {
+				var newSlider = d3.slider()
+						.value(z(myGears[n].r))
+						.orientation("vertical")
+						.on("slide",
+							function (val){
+								myGears[n].r = z_inv(val);	
+								
+								positionGears(svg.selectAll('image').data(myGears));							
+												
+							});
+							
+				return newSlider;
+			}
+			
+			d3.select('#slider1').call( setupSlider(0) );
+			d3.select('#slider2').call( setupSlider(1) );
+			d3.select('#slider3').call( setupSlider(2) );
+			d3.select('#slider4').call( setupSlider(3) );
+			d3.select('#slider5').call( setupSlider(4) );
+			d3.select('#slider6').call( setupSlider(5) );
+			
+			
+		</script>
+		</div>
+		
+
+	</body>
+	
+</html>

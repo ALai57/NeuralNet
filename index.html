@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="./bootstrap.min.css"/>
+		<link rel="stylesheet" href="d3.slider.css" />
+	</head>
+	
+	<body>	
+		<script src="./jquery-3.2.1.min.js"> </script>
+		<script src="./bootstrap.min.js"> </script>
+		<script src="./d3.min.js"> </script>
+		<script src="./d3.slider.js"></script>
+		<script src="./d3.rebind.js"></script>
+		
+		
+		
+		
+		<div class="container"> 
+		<div class = "row"> <div class="col-md-6 col-md-offset-3">
+			<h2>Hello! This is an neural network test</h2>
+			
+			<!-- <p>Need to add axes properly</p> -->
+			<!-- <p>Need to add circles to axes</p> -->
+			<!-- <p>Need to add lines to connect neurons</p> -->
+			<!-- <p>Sliders need to change connection thicknesses</p> -->
+			<!-- <p>Update weight matrix on slide</p> -->
+			<!-- <p>Choose a dataset</p> -->
+			<!-- <p>Forward propagate a data set</p> -->
+			<p>Separate explanations for: </p>
+			<p>How the network calculates outputs - simple video</p>
+			<p>Minimizing error</p>
+			<p>How each neuron works and activation fcns</p>
+			
+			
+		
+		</div></div>
+		<div id="NetworkGraph"></div>
+		<div id="ErrorLines"></div>
+		<script>
+			
+			var myData = [
+			{"x1": 2.781083600, "x2":  2.550537003, "y":  0},
+			{"x1": 1.465489372, "x2":  2.362125076, "y":  0},
+			{"x1": 3.396561688, "x2":  4.400293529, "y":  0},
+			{"x1": 1.388070190, "x2":  1.850220317, "y":  0},
+			{"x1": 3.064072320, "x2":  3.005305973, "y":  0},
+			{"x1": 7.627531214, "x2":  2.759262235, "y":  1},
+			{"x1": 5.332441248, "x2":  2.088626775, "y":  1},
+			{"x1": 6.922596716, "x2":  1.771063670, "y":  1},
+			{"x1": 8.675418651, "x2": -0.242068655, "y":  1},
+			{"x1": 7.673756466, "x2":  3.508563011, "y":  1},			
+			];
+			
+			var myNeurons = [
+			  { "x":  0, "y": +0.5, "r": 20, "b":    0, "c" : "black"},
+			  { "x":  0, "y": -0.5, "r": 20, "b":    0, "c" : "black"},
+			  { "x":  1, "y": +0.5, "r": 20, "b": 1.56, "c" : "black"},
+			  { "x":  1, "y": -0.5, "r": 20, "b": 0.76, "c" : "black"},
+			  { "x":  2, "y":    0, "r": 20, "b": 3.66, "c" : "black"},
+			  ];
+			  
+			var myWeights = [
+			  { "fromNeuron":  0, "toNeuron": 2, "t": -2.1, "c" : "black"},
+			  { "fromNeuron":  0, "toNeuron": 3, "t": -1.8, "c" : "black"},
+			  { "fromNeuron":  1, "toNeuron": 2, "t": +2.7, "c" : "black"},
+			  { "fromNeuron":  1, "toNeuron": 3, "t": +2.6, "c" : "black"},
+			  { "fromNeuron":  2, "toNeuron": 4, "t": -6.8, "c" : "black"},
+			  { "fromNeuron":  3, "toNeuron": 4, "t": -1.0, "c" : "black"},
+			  ];
+			
+			function forwardPropagate(d,wts){
+				var networkOutput = [];
+				//
+				for (n=0;n<d.length;n++) {
+				
+					//Hidden Layer
+					var in3 = d[n].x1*wts[0].t + d[n].x2*wts[2].t + myNeurons[2].b;
+					var in4 = d[n].x1*wts[1].t + d[n].x2*wts[3].t + myNeurons[3].b;
+					var out3 = activate(in3);
+					var out4 = activate(in4);
+					
+					//Output Layer
+					var in5 = out3*wts[4].t+out4*wts[5].t + myNeurons[4].b;
+					var out5 = activate(in5);
+					
+					<!-- console.log(in5); -->
+					<!-- console.log(out5); -->
+					
+					obj = {"predicted" : out5, "target": d[n].y};
+					networkOutput.push(obj);
+					
+				}
+				
+				return networkOutput;
+			}
+			
+			function activate(x){
+				return 1/(1+Math.exp(-x));
+			}
+			
+			var wd = 600;
+			var ht = 400;
+			
+			var svg = d3.select('#NetworkGraph').append("svg")
+												.style("width",wd)
+												.style("height",ht);
+															
+															
+															
+			var x = d3.scaleLinear().domain([-0.5, 2.5])
+									.range([0, wd]);
+			var y = d3.scaleLinear().domain([1,-1])
+									.range([0, ht]);
+			var z = d3.scaleLinear().domain([-7,7])
+									.range([0, 100]);
+			var z_inv = d3.scaleLinear().domain([0, 100])
+									.range([-5,5]);
+			
+			// Make test line
+			<!-- svg.append("line") -->
+			<!-- .attr("x1",x(0)) -->
+			<!-- .attr("y1",y(0)) -->
+			<!-- .attr("x2",x(1)) -->
+			<!-- .attr("y2",y(1)) -->
+			<!-- .attr("stroke", "blue") -->
+            <!-- .attr("stroke-width", 2); -->
+			
+			// Make Axis if wanted
+			<!-- var xAxis = d3.axisBottom(x); -->
+			<!-- var yAxis = d3.axisLeft(y); -->
+			<!-- svg.append("g")		 -->
+				<!-- .attr("class","axis") -->
+				<!-- .attr("transform","translate(0, " + y(0) + ")") -->
+				<!-- .call(xAxis); -->
+			<!-- svg.append("g") -->
+				<!-- .attr("class","axis") -->
+				<!-- .attr("transform","translate(" + x(0) + ",0)") -->
+				<!-- .call(yAxis); -->
+									
+			var weightLine = d3.select("#NetworkGraph").select("svg")
+							.selectAll("line").data(myWeights);
+								
+			weightLine.enter().append("line")
+				.attr(      	"id", function(d,i) {return   'weight' + i  			 ;})
+				.attr(          "x1", function(d)   {return x(myNeurons[d.fromNeuron].x) ;})
+				.attr(          "y1", function(d)   {return y(myNeurons[d.fromNeuron].y) ;})
+				.attr(          "x2", function(d)   {return x(myNeurons[d.toNeuron].x) 	 ;})
+				.attr(          "y2", function(d)   {return y(myNeurons[d.toNeuron].y) 	 ;})
+				.attr(      "stroke", function(d)   {return   d.c           		 	 ;})
+				.attr("stroke-width", function(d)   {return   d.t           			 ;});
+				
+				
+			var circ = d3.select("#NetworkGraph").select("svg")
+							.selectAll("circle").data(myNeurons);
+		
+			circ.enter().append("circle")
+				.attr(    "r", function(d) {return   d.r  ;})
+				.attr(   "cx", function(d) {return x(d.x) ;})
+				.attr(   "cy", function(d) {return y(d.y) ;})
+				.style("fill", function(d) {return   d.c  ;});
+				
+				
+				
+			// Error plots	
+			var wdE = 600;
+			var htE = 100;
+			var xE = d3.scaleLinear().domain([-5, 5])
+									.range([0, wdE]);
+			var yE = d3.scaleLinear().domain([11,-1])
+									.range([0, htE]);
+			
+			var svg = d3.select('#ErrorLines').append("svg")
+												.style("width",wdE)
+												.style("height",htE);
+								
+			var eInitial = forwardPropagate(myData,myWeights);
+			
+			var errorLine = d3.select("#ErrorLines").select("svg")
+							.selectAll("line").data(eInitial);
+								
+			errorLine.enter().append("line")
+				.attr(      	"id", function(d,i) {return   'error' + i  	 ;})
+				.attr(          "x1", function(d,i) {return  xE(0) 			 ;})
+				.attr(          "y1", function(d,i) {return  yE(i) 			 ;})
+				.attr(          "x2", function(d,i) {return  xE(d.predicted) ;})
+				.attr(          "y2", function(d,i) {return  yE(i)			 ;})
+				.attr(      "stroke", function(d)   {return   "black"	 	 ;})
+				.attr("stroke-width", function(d)   {return   3    			 ;});
+			
+			
+			function updateError(){
+				var eUpdate = forwardPropagate(myData,myWeights);
+				
+				var errorLine = d3.select("#ErrorLines").select("svg")
+							.selectAll("line").data(eUpdate);
+				
+				errorLine.transition(0,500)
+				.attr(          "x2", function(d,i) {return  xE(d.predicted) ;});
+				
+			}
+			
+			
+		</script>
+		
+		
+		
+		<div id="slider1" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider2" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider3" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider4" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider5" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<div id="slider6" style="float:left;margin-left:10px;margin-right:10px;"></div>
+		<script>
+						
+			function setupSlider(n) {
+				var newSlider = d3.slider().value(z(myWeights[n].t)).orientation("vertical").on("slide",
+					function (val){
+						myWeights[n].t = z_inv(val);
+						if (z_inv(val) > 0){var c = "black";} 
+						else {var c = "red";} 
+						
+						d3.select('#weight'+n)
+							.attr("stroke-width", Math.abs(z_inv(val)*5) )
+							.attr("stroke", c);	
+						
+						updateError();
+					}
+					);
+					
+				if (myWeights[n].t > 0){var c = "black";} 
+				else {var c = "red";} 
+				
+				d3.select('#weight'+n)
+					.attr("stroke-width", Math.abs(myWeights[n].t*3) )
+					.attr("stroke", c);			
+				return newSlider;
+			}
+			
+			d3.select('#slider1').call( setupSlider(0) );
+			d3.select('#slider2').call( setupSlider(1) );
+			d3.select('#slider3').call( setupSlider(2) );
+			d3.select('#slider4').call( setupSlider(3) );
+			d3.select('#slider5').call( setupSlider(4) );
+			d3.select('#slider6').call( setupSlider(5) );
+			
+			
+		</script>
+		</div>
+		
+
+	</body>
+	
+</html>
