@@ -3,7 +3,6 @@
 	<head>
 		<link rel="stylesheet" href="./bootstrap.min.css"/>
 		<link rel="stylesheet" href="d3.slider.css" />
-		<script src="https://www.w3schools.com/lib/w3.js"></script>
 	</head>
 	
 	<body>	
@@ -43,11 +42,48 @@
 		<div id="ErrorLines"></div>
 		
 		</div>
-		
+		<script>
+			//Inputs and configuration
+			
+			//Data for Neural network
+			var myData = [
+			{"x1": 2.781083600, "x2":  2.550537003, "y_true":  0, "y_pred":  0},
+			{"x1": 1.465489372, "x2":  2.362125076, "y_true":  0, "y_pred":  0},
+			{"x1": 3.396561688, "x2":  4.400293529, "y_true":  0, "y_pred":  0},
+			{"x1": 1.388070190, "x2":  1.850220317, "y_true":  0, "y_pred":  0},
+			{"x1": 3.064072320, "x2":  3.005305973, "y_true":  0, "y_pred":  0},
+			{"x1": 7.627531214, "x2":  2.759262235, "y_true":  1, "y_pred":  0},
+			{"x1": 5.332441248, "x2":  2.088626775, "y_true":  1, "y_pred":  0},
+			{"x1": 6.922596716, "x2":  1.771063670, "y_true":  1, "y_pred":  0},
+			{"x1": 8.675418651, "x2": -0.242068655, "y_true":  1, "y_pred":  0},
+			{"x1": 7.673756466, "x2":  3.508563011, "y_true":  1, "y_pred":  0},			
+			];
+			
+			//SVG drawing size
+			var wd = 400;
+			var ht = 400;
+			
+			//Size of black box
+			var rWidth = 4;
+			var rHeight = 4;
+
+			//Position of gears within box & Gear size
+			var myGears = [
+			{"x": -rWidth/4,  "y":  +rHeight/3,  "r":  +1.0},
+			{"x": -rWidth/4,  "y":   0,  	     "r":  +0.2},
+			{"x": -rWidth/4,  "y":  -rHeight/3,  "r":  +0.7},
+			{"x": +rWidth/4,  "y":  +rHeight/3,  "r":  +0.4},
+			{"x": +rWidth/4,  "y":   0,  	     "r":  +1.0},
+			{"x": +rWidth/4,  "y":  -rHeight/3,  "r":  +0.6},
+			];
+			
+			//Size of inputs blocks
+			var blockSize = 1;
+		</script>
 		<script src="./setupAxes.js"></script>
 		<script src="./setupNeuralNetwork.js"></script>
-		<script src="./setupGears.js"></script>
 		<script src="./setupInputBlocks.js"></script>
+		<script src="./setupGears.js"></script>
 		<script src="./setupTable.js"></script>
 		<script src="./setupSliders.js"></script>
 	</body>

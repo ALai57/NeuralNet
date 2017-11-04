@@ -1,16 +1,16 @@
 
 // Gears
-var rWidth = 4;
-var rHeight = 4;
+// var rWidth = 4;
+// var rHeight = 4;
 
-var myGears = [
-{"x": -rWidth/4,  "y":  +rHeight/3,  "r":  +1.0},
-{"x": -rWidth/4,  "y":   0,  	     "r":  +0.2},
-{"x": -rWidth/4,  "y":  -rHeight/3,  "r":  +0.7},
-{"x": +rWidth/4,  "y":  +rHeight/3,  "r":  +0.4},
-{"x": +rWidth/4,  "y":   0,  	     "r":  +1.0},
-{"x": +rWidth/4,  "y":  -rHeight/3,  "r":  +0.6},
-];
+// var myGears = [
+// {"x": -rWidth/4,  "y":  +rHeight/3,  "r":  +1.0},
+// {"x": -rWidth/4,  "y":   0,  	     "r":  +0.2},
+// {"x": -rWidth/4,  "y":  -rHeight/3,  "r":  +0.7},
+// {"x": +rWidth/4,  "y":  +rHeight/3,  "r":  +0.4},
+// {"x": +rWidth/4,  "y":   0,  	     "r":  +1.0},
+// {"x": +rWidth/4,  "y":  -rHeight/3,  "r":  +0.6},
+// ];
 
 var g = d3.scaleLinear().domain([0,rHeight/3])
 						.range([0, 100]);
@@ -45,13 +45,7 @@ var c = -1;
 function spinGears (){
 	c=c+1;
 	revolveGears(0);
-}
-
-function calcWidth(w){
-	return Math.abs(x(w)-x(0));
-}
-function calcHeight(h){
-	return Math.abs(y(h)-y(0));
+	advanceInputs();
 }
 
 function positionGears(g){
@@ -63,9 +57,10 @@ function positionGears(g){
 		.attr('height',function (d) {return y(0)-y(d.r);});
 }
 
-svg.selectAll('rect').data([0])
+svg.selectAll('.BlackBox').data([0])
 	.enter()
 	.append('rect')
+	.attr('class','BlackBox')
 	.attr('x',0)
 	.attr('y',0)
 	.attr('width',x(rWidth)-x(0))
