@@ -41,12 +41,18 @@ function revolveGears(ang) {
 	return;
 }	
 
-var c = -1;
+var c = -1;  // REPLACE WITH CTR
 function spinGears (){
 	c=c+1;
 	revolveGears(0);
 	advanceInputs();
+	// spitOutPrediction();
+}
+
+function spitOutPrediction(){
 	
+	d3.select('')
+	ctr
 }
 
 function positionGears(g){

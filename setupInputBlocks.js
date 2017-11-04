@@ -1,6 +1,8 @@
 
-// var blockSize = 1;
-		
+
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+// Create all blocks for inputs and outputs		
 svg.selectAll('.dataIn1').data(myData).enter()
 	.append('rect')
 	.attr('class','dataIn1')
@@ -30,8 +32,20 @@ svg.selectAll('.dataOutput_True').data(myData).enter()
 	.attr( 'width',  calcWidth(blockSize))
 	.attr('height', calcHeight(blockSize))
 	.attr('fill','blue');	
+
+svg.selectAll('.dataOutput_Pred').data(myData).enter()
+	.append('rect')
+	.attr('class','dataOutput_Pred')
+	.attr('id',function (d,i) {return 'blockOutputPred_'+i;})
+	.attr('x',x(-blockSize/2))
+	.attr('y',y(blockSize/2))
+	.attr( 'width',  calcWidth(blockSize))
+	.attr('height', calcHeight(blockSize))
+	.attr('fill','blue');		
 	
-	
+///////////////////////////////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////////////////////////////
+// Create all text for inputs and outputs	
 svg.selectAll('.dataIn1_txt').data(myData).enter()
 	.append('text')
 	.attr('class','dataIn1_txt')
@@ -71,7 +85,22 @@ svg.selectAll('.dataOutputTrue_txt').data(myData).enter()
 	.style("text-anchor", "middle")
 	.style("alignment-baseline", "middle");
 
+svg.selectAll('.dataOutputPred_txt').data(myData).enter()
+	.append('text')
+	.attr('class','dataOutputPred_txt')
+	.attr('id',function (d,i){return 'txtOutPred_'+i;})
+	.attr('x',x(0))
+	.attr('y',y(0))
+	.text(function(d){return d.y_pred.toFixed(2);})	
+	.attr('font-family','sans-serif')
+	.attr('font-size','18px')
+	.attr('fill','black')
+	.style("text-anchor", "middle")
+	.style("alignment-baseline", "middle");	
 
+///////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////	
+// FUNCTIONS FOR MOVING THE BLOCKS AND TEXT AROUND	
 var ctr = 0;	
 	
 function advanceInputs(){
@@ -91,7 +120,9 @@ function advanceInputs(){
 	advanceThroughMachine(svg.select('#blockOutputTrue_'+ctr));
 	advanceThroughMachine(svg.select('#txt1_'+ctr));
 	advanceThroughMachine(svg.select('#txt2_'+ctr));
-	advanceThroughMachine(svg.select('#txtOutTrue_'+ctr));	
+	var temp = advanceThroughMachine(svg.select('#txtOutTrue_'+ctr));	
+	
+	temp.on('end',function(d){return advanceOutputPrediction(ctr);})
 	
 	ctr++;
 	
@@ -105,13 +136,35 @@ function advanceQueue(el){
 			);
 }
 
-
 function advanceThroughMachine(el){
-	el.transition().duration(1000)
+	return el.transition().duration(1000)
 		.attr('y',function (d,i) {	
 				var currenty = 1*d3.select(this).attr("y");
 				return currenty-y(rHeight*1.5)+y(0);}
 			);
+}
+
+function advanceOutputPrediction(n){
+	d3.select('#blockOutputPred_'+n).transition().duration(250)
+	.attr('x',x(rWidth*5/4)-calcWidth(blockSize)/2)
+	.on('end', function (d) {
+			d3.select('#blockOutputPred_'+n).transition().duration(250)
+			.attr('y',function (d,i) {	
+						var currenty = 1*d3.select('#blockOutputTrue_'+n).attr("y");
+						return currenty-y(rHeight*1.5)+y(0); } );
+				
+				} );
+					
+					
+	d3.select('#txtOutPred__'+n).transition().duration(250)
+		.attr('x',x(rWidth*5/4))
+		.on('end',function (d) {
+				d3.select('#txtOutPred_'+n).transition().duration(250)
+				.attr('y',function (d,i) {	
+						var currenty = 1*d3.select('#txtOutTrue_'+n).attr("y");
+						return currenty-y(rHeight*1.5)+y(0); })
+				} );
+					
 }
 
 
