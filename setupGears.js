@@ -46,6 +46,7 @@ function spinGears (){
 	c=c+1;
 	revolveGears(0);
 	advanceInputs();
+	
 }
 
 function positionGears(g){
