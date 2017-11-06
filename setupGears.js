@@ -37,22 +37,15 @@ function revolveGears(ang) {
 					
 				});
 	
-	if(ang>=360){updateTable(c);};	
+	if(ang>=360){updateBlocks(ctr);}; //updateTable(c);	
 	return;
 }	
 
-var c = -1;  // REPLACE WITH CTR
+// var c = -1;  // REPLACE WITH CTR
 function spinGears (){
-	c=c+1;
+	// c=c+1;
 	revolveGears(0);
 	advanceInputs();
-	// spitOutPrediction();
-}
-
-function spitOutPrediction(){
-	
-	d3.select('')
-	ctr
 }
 
 function positionGears(g){

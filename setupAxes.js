@@ -21,14 +21,14 @@
 										.style("height",ht)
 										.style("float","left");									
 													
-	var x = d3.scaleLinear().domain([-5, 5])
+	var x = d3.scaleLinear().domain([-2, 10])
 							.range([0, wd]);
 	var y = d3.scaleLinear().domain([5,-5])
 							.range([0, ht]);
 	
 							
 	var x_inv = d3.scaleLinear().domain([0, wd])
-							.range([-5,5]);
+							.range([-2,10]);
 	var y_inv = d3.scaleLinear().domain([0, ht])
 							.range([5,-5]);
 	

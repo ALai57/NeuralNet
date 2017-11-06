@@ -15,7 +15,8 @@ function setupSlider(n) {
 					
 					positionGears(svg.selectAll('image').data(myGears));
 					forwardPropagate(myData,myWeights);
-					updateTable(c);
+					// updateTable(c);
+					updateBlocks(ctr);
 									
 				});
 				

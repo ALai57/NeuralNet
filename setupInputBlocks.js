@@ -31,7 +31,7 @@ svg.selectAll('.dataOutput_True').data(myData).enter()
 	.attr('y',function (d,i) {return y(rHeight/2+blockSize*1.5*(i+1));})
 	.attr( 'width',  calcWidth(blockSize))
 	.attr('height', calcHeight(blockSize))
-	.attr('fill','blue');	
+	.attr('fill','black');	
 
 svg.selectAll('.dataOutput_Pred').data(myData).enter()
 	.append('rect')
@@ -55,7 +55,7 @@ svg.selectAll('.dataIn1_txt').data(myData).enter()
 	.text(function(d){return d.x1.toFixed(2);})	
 	.attr('font-family','sans-serif')
 	.attr('font-size','18px')
-	.attr('fill','red')
+	.attr('fill','white')
 	.style("text-anchor", "middle")
 	.style("alignment-baseline", "middle");
 	
@@ -68,7 +68,7 @@ svg.selectAll('.dataIn2_txt').data(myData).enter()
 	.text(function(d){return d.x2.toFixed(2);})	
 	.attr('font-family','sans-serif')
 	.attr('font-size','18px')
-	.attr('fill','red')
+	.attr('fill','white')
 	.style("text-anchor", "middle")
 	.style("alignment-baseline", "middle");
 	
@@ -81,7 +81,7 @@ svg.selectAll('.dataOutputTrue_txt').data(myData).enter()
 	.text(function(d){return d.y_true.toFixed(2);})	
 	.attr('font-family','sans-serif')
 	.attr('font-size','18px')
-	.attr('fill','black')
+	.attr('fill','white')
 	.style("text-anchor", "middle")
 	.style("alignment-baseline", "middle");
 
@@ -94,7 +94,7 @@ svg.selectAll('.dataOutputPred_txt').data(myData).enter()
 	.text(function(d){return d.y_pred.toFixed(2);})	
 	.attr('font-family','sans-serif')
 	.attr('font-size','18px')
-	.attr('fill','black')
+	.attr('fill','white')
 	.style("text-anchor", "middle")
 	.style("alignment-baseline", "middle");	
 
@@ -114,6 +114,7 @@ function advanceInputs(){
 		advanceQueue(svg.select('#txtOutTrue_'+n));
 	}
 	
+	if (ctr>0){advanceToTable(ctr-1);}
 	
 	advanceThroughMachine(svg.select('#blockInput1_'+ctr));
 	advanceThroughMachine(svg.select('#blockInput2_'+ctr));
@@ -122,9 +123,11 @@ function advanceInputs(){
 	advanceThroughMachine(svg.select('#txt2_'+ctr));
 	var temp = advanceThroughMachine(svg.select('#txtOutTrue_'+ctr));	
 	
-	temp.on('end',function(d){return advanceOutputPrediction(ctr);})
+	temp.on('end',function(d){advanceOutputPrediction(ctr);
+						      ctr++;
+							  return; })
 	
-	ctr++;
+	
 	
 }
 
@@ -151,21 +154,57 @@ function advanceOutputPrediction(n){
 			d3.select('#blockOutputPred_'+n).transition().duration(250)
 			.attr('y',function (d,i) {	
 						var currenty = 1*d3.select('#blockOutputTrue_'+n).attr("y");
-						return currenty-y(rHeight*1.5)+y(0); } );
+						return currenty; } );
 				
 				} );
 					
 					
-	d3.select('#txtOutPred__'+n).transition().duration(250)
+	d3.select('#txtOutPred_'+n).transition().duration(250)
 		.attr('x',x(rWidth*5/4))
 		.on('end',function (d) {
 				d3.select('#txtOutPred_'+n).transition().duration(250)
 				.attr('y',function (d,i) {	
 						var currenty = 1*d3.select('#txtOutTrue_'+n).attr("y");
-						return currenty-y(rHeight*1.5)+y(0); })
+						return currenty;});
 				} );
 					
 }
 
-
+function advanceToTable(n){
 	
+	moveToRow( moveToColumn(d3.select('#blockInput1_'+n),0.0) , ctr);
+	moveToRow( moveToColumn(d3.select('#txt1_'+n)       ,0.5) , ctr+0.5);
+	
+	moveToRow( moveToColumn(d3.select('#blockInput2_'+n),1.0) , ctr);
+	moveToRow( moveToColumn(d3.select('#txt2_'+n)       ,1.5) , ctr+0.5);
+	
+	moveToRow( moveToColumn(d3.select('#blockOutputTrue_'+n),2.0) , ctr);
+	moveToRow( moveToColumn(d3.select('#txtOutTrue_'+n)     ,2.5) , ctr+0.5);
+	
+	moveToRow( moveToColumn(d3.select('#blockOutputPred_'+n),3.0) , ctr);
+	moveToRow( moveToColumn(d3.select('#txtOutPred_'+n)     ,3.5) , ctr+0.5);
+		
+}
+	
+function moveToColumn(el,n){
+	return el.transition().duration(250)
+				.attr('x',x(6+blockSize*n));
+}	
+	
+function moveToRow(el,n){
+	return el.on('end', function (d) {
+						el.transition().duration(250)
+							.attr('y',y(6-n) );
+						} 
+				);
+}	
+	
+function updateBlocks(c){
+	
+	for (i=0;i<=c&&i<9;i++){
+		d3.select("#txtOutPred_"+i%9)
+			.data([myData[i%9].y_pred])
+			.html(function(d) { return d.toFixed(2); });
+	}
+
+}	
