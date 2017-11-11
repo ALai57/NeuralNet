@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="./bootstrap.min.css"/>
+		<link rel="stylesheet" href="d3.slider.css" />
+	</head>
+	
+	<body>	
+		<script src="./jquery-3.2.1.min.js"> </script>
+		<script src="./bootstrap.min.js"> </script>
+		<script src="./d3.min.js"> </script>
+		<script src="./d3.slider.js"></script>
+		<script src="./d3.rebind.js"></script>
+		
+		
+		
+		
+		<div class="container"> 
+		<div class = "row"> <div class="col-md-6 col-md-offset-3">
+			<h2>Hello! This is an neural network test</h2>
+			
+			<p>Separate explanations for: </p>
+			<p>We know the answer - let's train our network!</p>
+			<p>How the network calculates outputs - simple video</p>
+			<p>Imagine we have a magic box. When you feed the box some numbers, it spits out another number.</p>
+			<!-- <p>Add number to table on each click.</p> -->
+			<!-- <p>Add numbers to each box</p> -->
+			<!-- <p>Move each box when gears are clicked</p> -->
+			<!-- <p>Add output box when gears stop rotating</p> -->
+		
+		</div></div>
+		<div id="NetworkGraph"></div>
+		<div id="TableOut"></div>
+				
+		</div>
+		<script>
+			//Inputs and configuration
+			
+			//Data for Neural network
+			var myData = [
+			{"x1": 2.781083600, "x2":  2.550537003, "y_true":  0, "y_pred":  0},
+			{"x1": 1.465489372, "x2":  2.362125076, "y_true":  0, "y_pred":  0},
+			{"x1": 3.396561688, "x2":  4.400293529, "y_true":  0, "y_pred":  0},
+			{"x1": 1.388070190, "x2":  1.850220317, "y_true":  0, "y_pred":  0},
+			{"x1": 3.064072320, "x2":  3.005305973, "y_true":  0, "y_pred":  0},
+			{"x1": 7.627531214, "x2":  2.759262235, "y_true":  1, "y_pred":  0},
+			{"x1": 5.332441248, "x2":  2.088626775, "y_true":  1, "y_pred":  0},
+			{"x1": 6.922596716, "x2":  1.771063670, "y_true":  1, "y_pred":  0},
+			{"x1": 8.675418651, "x2": -0.242068655, "y_true":  1, "y_pred":  0},
+			{"x1": 7.673756466, "x2":  3.508563011, "y_true":  1, "y_pred":  0},			
+			];
+			
+			//SVG drawing size
+			var wd = 500;
+			var ht = 400;
+			
+			//Size of black box
+			var rWidth = 4;
+			var rHeight = 4;
+
+			//Position of gears within box & Gear size
+			var myGears = [
+			{"x": -rWidth/4,  "y":  +rHeight/3,  "r":  +1.0},
+			{"x": -rWidth/4,  "y":   0,  	     "r":  +0.2},
+			{"x": -rWidth/4,  "y":  -rHeight/3,  "r":  +0.7},
+			{"x": +rWidth/4,  "y":  +rHeight/3,  "r":  +0.4},
+			{"x": +rWidth/4,  "y":   0,  	     "r":  +1.0},
+			{"x": +rWidth/4,  "y":  -rHeight/3,  "r":  +0.6},
+			];
+			
+			//Size of inputs blocks
+			var blockSize = 1;
+		</script>
+		<script src="./setupAxes.js"></script>
+		
+		<!-- <script src="./setupGears.js"></script> -->
+		<script> 
+			
+			<!-- var gears = d3.select('svg').selectAll('image').data(myGears) -->
+				<!-- .enter() -->
+				<!-- .append('svg:image') -->
+				<!-- .attr('id', function (d,i) {return 'gear'+i;}) -->
+				<!-- .attr('href','./gear.svg') -->
+				<!-- .attr('x', 0) -->
+				<!-- .attr('y', 0) -->
+				<!-- .attr('fill','black'); -->
+				
+			var patient = d3.select('svg').selectAll('image').data([0])
+				.enter()
+				.append('svg:image')
+				.attr('id', function (d,i) {return 'patient'+i;})
+				.attr('href','./Person_Sick.svg')
+				.attr('x', 0)
+				.attr('y', 0)
+				.attr('height',Math.abs(y(5)-y(0)));
+			
+			var patient = d3.select('svg').selectAll('#patient1').data([0])
+				.enter()
+				.append('svg:image')
+				.attr('id', function (d,i) {return 'patient'+i;})
+				.attr('href','./Person_Healthy.svg')
+				.attr('x', x(1))
+				.attr('y', 0)
+				.attr('height',Math.abs(y(5)-y(0)));
+			
+			var doctor = d3.select('svg').selectAll('#doctor').data([0])
+				.enter()
+				.append('svg:image')
+				.attr('id', 'doctor')
+				.attr('href','./Person_Doctor.svg')
+				.attr('x', x(5))
+				.attr('y', 0)
+				.attr('height',Math.abs(y(5)-y(0)));
+			
+			var eyeL = d3.select('svg').selectAll('#eyeL').data([0])
+							.enter()
+							.append('circle')
+							.attr('cx',x(5.7))
+							.attr('cy',y(4.3))
+							.attr('r',x(0.1)-x(0))
+							.attr("fill", "black");	
+							
+			var eyeR = d3.select('svg').selectAll('#eyeR').data([0])
+							.enter()
+							.append('circle')
+							.attr('cx',x(6.25))
+							.attr('cy',y(4.3))
+							.attr('r',x(0.1)-x(0))
+							.attr("fill", "black");	
+				
+			
+			var scanDuration = 1500;
+			var resetDuration = 500;			
+			function scanPatient () {
+				var scanL = d3.select('svg').selectAll('#scanL').data([0])
+							.enter()
+							.append('line')
+							.attr('x1',x(5.7))
+							.attr('y1',y(4.3))
+							.attr('x2',x(3))
+							.attr('y2',y(4.3))
+							.attr("stroke-width", 2)
+							.attr("stroke", "black");
+							
+				var scanR = d3.select('svg').selectAll('#scanR').data([0])
+							.enter()
+							.append('line')
+							.attr('x1',x(6.25))
+							.attr('y1',y(4.3))
+							.attr('x2',x(3))
+							.attr('y2',y(4.3))
+							.attr("stroke-width", 2)
+							.attr("stroke", "black");
+			
+			
+				eyeL.transition().duration(scanDuration)
+					.attr('cy',y(4.1))
+					.on('end', function(){
+					  return eyeL.transition().duration(resetDuration).attr('cy',y(4.3));} 
+					);
+				eyeR.transition().duration(scanDuration)
+					.attr('cy',y(4.1))
+					.on('end', function(){
+					  return eyeR.transition().duration(resetDuration).attr('cy',y(4.3));} 
+					);
+				
+				scanL.transition().duration(scanDuration)
+					.attr('y1',y(4.1))
+					.attr('y2',y(0))
+					.on('end', function(){
+					  return scanL.remove();} 
+					);
+				scanR.transition().duration(scanDuration)
+					.attr('y1',y(4.1))
+					.attr('y2',y(0))
+					.on('end', function(){
+					  return scanR.remove();} 
+					);
+			}
+			
+			scanPatient();
+		</script>
+	</body>
+	
+</html>
