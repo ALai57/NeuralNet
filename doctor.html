@@ -115,6 +115,7 @@
 			var eyeL = d3.select('svg').selectAll('#eyeL').data([0])
 							.enter()
 							.append('circle')
+							.attr('id','eyeL')
 							.attr('cx',x(5.7))
 							.attr('cy',y(4.3))
 							.attr('r',x(0.1)-x(0))
@@ -123,6 +124,7 @@
 			var eyeR = d3.select('svg').selectAll('#eyeR').data([0])
 							.enter()
 							.append('circle')
+							.attr('id','eyeR')
 							.attr('cx',x(6.25))
 							.attr('cy',y(4.3))
 							.attr('r',x(0.1)-x(0))
@@ -132,9 +134,14 @@
 			var scanDuration = 1500;
 			var resetDuration = 500;			
 			function scanPatient () {
+				d3.selectAll('#scanL').remove();
+				d3.selectAll('#scanR').remove();
+				d3.selectAll('#eyeL').transition().duration(0).attr('cy',y(4.3));
+				d3.selectAll('#eyeR').transition().duration(0).attr('cy',y(4.3));
 				var scanL = d3.select('svg').selectAll('#scanL').data([0])
 							.enter()
 							.append('line')
+							.attr('id','scanL')
 							.attr('x1',x(5.7))
 							.attr('y1',y(4.3))
 							.attr('x2',x(3))
@@ -145,6 +152,7 @@
 				var scanR = d3.select('svg').selectAll('#scanR').data([0])
 							.enter()
 							.append('line')
+							.attr('id','scanR')
 							.attr('x1',x(6.25))
 							.attr('y1',y(4.3))
 							.attr('x2',x(3))
