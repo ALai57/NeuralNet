@@ -2,7 +2,10 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="./bootstrap.min.css"/>
-		<link rel="stylesheet" href="d3.slider.css" />
+		 <script type="text/javascript"
+		   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">
+		</script>
+		
 	</head>
 	
 	<body>	
@@ -211,8 +214,26 @@
 				
 			}
 			
+			<!-- var theEqn = d3.select('svg').append("foreignObject") -->
+			  <!-- .attr("width", 480) -->
+			  <!-- .attr("height", 500) -->
+			  <!-- .append("xhtml:body"); -->
+			
+			<!-- var testing = theEqn.append("p") -->
+				<!-- .attr("style", "margin-left: 250px") -->
+				<!-- .attr('id','MathExample') -->
+				<!-- .text(' \[ \Huge{ S_{pred} = \frac{1}{1+e^{ \frac{\color{red} w_{\color{red} 5} }{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 1}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 2}}} +\frac{\color{red} w_{\color{red} 6}}{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 3}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 4}}}  } }  }  \] '); -->
+			
+			<!-- MathJax.Hub.Queue(["Typeset",MathJax.Hub,"MathExample"]); -->
+			
 			scanPatient();
+			
+			
 		</script>
+		<p> 
+			\[ \Huge{ S_{pred} = \frac{1}{1+e^{ \frac{\color{red} w_{\color{red} 5} }{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 1}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 2}}} +\frac{\color{red} w_{\color{red} 6}}{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 3}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 4}}}  } }  }  \]
+		</p>
+	
 	</body>
 	
 </html>
