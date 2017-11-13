@@ -133,7 +133,7 @@
 				.attr('id', 'doctor')
 				.attr('href','./Robot_Doctor.svg')
 				.attr('x', x(3))
-				.attr('y', y(1))
+				.attr('y', y(1+3.5))
 				.attr('height',Math.abs(y(5)-y(0)));
 			
 			var eyeL = d3.select('svg').selectAll('#eyeL').data([0])
@@ -141,7 +141,7 @@
 							.append('circle')
 							.attr('id','eyeL')
 							.attr('cx',x(5.1))
-							.attr('cy',y(-0.2))
+							.attr('cy',y(-0.2+3.5))
 							.attr('r',x(0.1)-x(0))
 							.attr("fill", "black");	
 							
@@ -150,30 +150,99 @@
 							.append('circle')
 							.attr('id','eyeR')
 							.attr('cx',x(6))
-							.attr('cy',y(-0.2))
+							.attr('cy',y(-0.2+3.5))
 							.attr('r',x(0.1)-x(0))
 							.attr("fill", "black");	
 				
+			var theEqn = d3.select('svg').append("foreignObject")
+			  .attr("width", 480)
+			  .attr("height", 500)
+    		  .attr('y',y(-1))
+			  .append("xhtml:body");	
+			
+			theEqn.append('div')
+				.style('font-size','50%')
+				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{red} w_{\\color{red} 5} }{1+e^{\\color{blue} T\\cdot \\color{red} w_{\\color{red} 1}+ \\color{green} H \\color{green} R\\cdot \\color{red} w_{\\color{red} 2}}} +\\frac{\\color{red} w_{\\color{red} 6}}{1+e^{\\color{blue} T\\cdot \\color{red} w_{\\color{red} 3}+ \\color{green} H \\color{green} R\\cdot \\color{red} w_{\\color{red} 4}}}  } }  }  \\] ');
+			
+			var S_up
+			var S_down;
+			// W Variables
+			var w1_up;
+			var w1_down;
+			var w2_up;
+			var w2_down;
+			var w3_up;
+			var w3_down;
+			var w4_up;
+			var w4_down;
+			var w5_up;
+			var w5_down;
+			var w6_up;
+			var w6_down;
+			// T and HR variables
+			var T_1;
+			var T_2;
+			var HR_1;
+			var HR_2;
+			
+			function mathInit(){
+				// S variable
+				S_up = d3.select('#MJXc-Node-8').selectAll('.mjx-char');
+				S_down = d3.select('#MJXc-Node-11').selectAll('.mjx-char').text('pred');
+				// W Variables
+				w1_up = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
+				w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char');
+				w2_up = d3.select('#MJXc-Node-66').selectAll('.mjx-char');
+				w2_down = d3.select('#MJXc-Node-71').selectAll('.mjx-char');
+				w3_up = d3.select('#MJXc-Node-97').selectAll('.mjx-char');
+				w3_down = d3.select('#MJXc-Node-102').selectAll('.mjx-char');
+				w4_up = d3.select('#MJXc-Node-114').selectAll('.mjx-char');
+				w4_down = d3.select('#MJXc-Node-119').selectAll('.mjx-char');
+				w5_up = d3.select('#MJXc-Node-29').selectAll('.mjx-char');
+				w5_down = d3.select('#MJXc-Node-34').selectAll('.mjx-char');
+				w6_up = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
+				w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char');
+				// T and HR variables
+				T_1 = d3.select('#MJXc-Node-44').selectAll('.mjx-char');
+				T_2 = d3.select('#MJXc-Node-92').selectAll('.mjx-char');
+				HR_1 = d3.select('#MJXc-Node-58').selectAll('.mjx-char').text('HR');
+				HR_2 = d3.select('#MJXc-Node-106').selectAll('.mjx-char').text('HR');
+				
+				console.log(T_1);
+				
+				// Remove 'r','e','d' from 'pred'
+				d3.select('#MJXc-Node-12').selectAll('.mjx-char').remove();
+				d3.select('#MJXc-Node-13').selectAll('.mjx-char').remove();
+				d3.select('#MJXc-Node-14').selectAll('.mjx-char').remove();
+				// Remove 'R' from 'HR'
+				d3.select('#MJXc-Node-59').selectAll('.mjx-char').remove();
+				d3.select('#MJXc-Node-107').selectAll('.mjx-char').remove();
+			}
 			
 			var scanDuration = 1200;
 			var resetDuration = 500;	
 			var advanceTime = 500;
 			var trainNumber = 0;
+			var T_x = [2,6.8];
+			var T_y = [-3,-3];
+			
+			var HR_x = [4,8.8];
+			var HR_y = [-3,-3];
 			function scanPatient () {
 				d3.selectAll('#scanL').remove();
 				d3.selectAll('#scanR').remove();
 				d3.selectAll('#eyeL').transition().duration(0)
 						.attr('cx',x(5.1))
-						.attr('cy',y(-0.2-0.02*(trainNumber%10)));
+						.attr('cy',y(-0.2+3.5-0.02*(trainNumber%10)));
 				d3.selectAll('#eyeR').transition().duration(0)
 						.attr('cx',x(6))
-						.attr('cy',y(-0.2-0.02*(trainNumber%10)));
+						.attr('cy',y(-0.2+3.5-0.02*(trainNumber%10)));
 				var scanL = d3.select('svg').selectAll('#scanL').data([0])
 							.enter()
 							.append('line')
 							.attr('id','scanL')
 							.attr('x1',x(5.1))
-							.attr('y1',y(-0.2-0.02*(trainNumber%10)))
+							.attr('y1',y(-0.2+3.5-0.02*(trainNumber%10)))
 							.attr('x2',x(-2))
 							.attr('y2',function (d,i){return y(4.3-0.51*(trainNumber%10));})
 							.attr("stroke-width", 2)
@@ -184,7 +253,7 @@
 							.append('line')
 							.attr('id','scanR')
 							.attr('x1',x(6))
-							.attr('y1',y(-0.2-0.02*(trainNumber%10)))
+							.attr('y1',y(-0.2+3.5-0.02*(trainNumber%10)))
 							.attr('x2',x(-2))
 							.attr('y2',function (d,i){return y(4.3-0.51*(trainNumber%10));})
 							.attr("stroke-width", 2)
@@ -197,7 +266,7 @@
 					.on('end', function(){
 					  return eyeL.transition().duration(resetDuration)
 								.attr('cx',x(5.1))
-								.attr('cy',y(-0.2-0.02*((trainNumber+1)%10)));} 
+								.attr('cy',y(-0.2+3.5-0.02*((trainNumber+1)%10)));} 
 					);
 				eyeR.transition().duration(scanDuration)
 					<!-- .attr('cy',y(-0.4)) -->
@@ -205,7 +274,7 @@
 					.on('end', function(){
 					  return eyeR.transition().duration(resetDuration)
 								.attr('cx',x(6))
-								.attr('cy',y(-0.2-0.02*((trainNumber+1)%10)));} 
+								.attr('cy',y(-0.2+3.5-0.02*((trainNumber+1)%10)));} 
 					);
 				
 				scanL.transition().duration(scanDuration)
@@ -218,9 +287,8 @@
 					.attr('x1',x(6))
 					.attr('x2',x(0))
 					.on('end', function(){
-						console.log(trainNumber);
-						updateTable(trainNumber);
-						trainNumber++;												
+						moveNumbers();
+						trainNumber++;
 					  return scanR.remove();} 
 					);
 						
@@ -229,25 +297,52 @@
 				
 			}
 			
-			<!-- var theEqn = d3.select('svg').append("foreignObject") -->
-			  <!-- .attr("width", 480) -->
-			  <!-- .attr("height", 500) -->
-			  <!-- .append("xhtml:body"); -->
+			function moveNumbers(){
+				
+				theTemp = myData[trainNumber%10].T.toFixed(2);
+				theHR   = myData[trainNumber%10].HR.toFixed(2);
 			
-			<!-- var testing = theEqn.append("p") -->
-				<!-- .attr("style", "margin-left: 250px") -->
-				<!-- .attr('id','MathExample') -->
-				<!-- .text(' \[ \Huge{ S_{pred} = \frac{1}{1+e^{ \frac{\color{red} w_{\color{red} 5} }{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 1}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 2}}} +\frac{\color{red} w_{\color{red} 6}}{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 3}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 4}}}  } }  }  \] '); -->
 			
-			<!-- MathJax.Hub.Queue(["Typeset",MathJax.Hub,"MathExample"]); -->
+				var flyT = d3.select('svg').selectAll('.flyDataT').data(T_x)
+					.enter().append('text')
+					.attr('x',function (d,i) {return x(-2);})
+					.attr('y',function (d,i){return y( 4.3-0.51*(trainNumber%10) );});
+				
+				var flyHR = d3.select('svg').selectAll('.flyDataHR').data(HR_x)
+					.enter().append('text')
+					.attr('x',function (d,i) {return x(-1);})
+					.attr('y',function (d,i){return y( 4.3-0.51*(trainNumber%10) );});
+				
+				flyT.text(theTemp)
+					.transition().duration(500)
+					.attr('x', function (d,i) {return x(T_x[i]);})
+					.attr('y', function (d,i) {return y(T_y[i]);})
+					.on('end', function (d,i) {
+							mathInit();
+							T_1.text(theTemp);
+							T_2.text(theTemp);
+							return flyT.remove();
+						});
+				
+				flyHR.text(theHR)
+					.transition().duration(500)
+					.attr('x', function (d,i) {return x(HR_x[i]);})
+					.attr('y', function (d,i) {return y(HR_y[i]);})
+					.on('end', function (d,i) {
+							HR_1.text(theHR);
+							HR_2.text(theHR);
+							return flyHR.remove();
+						});
+			}
+
 			
-			scanPatient();
+			<!-- scanPatient(); -->
 			
 			
 		</script>
-		<p> 
-			\[ \Huge{ S_{pred} = \frac{1}{1+e^{ \frac{\color{red} w_{\color{red} 5} }{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 1}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 2}}} +\frac{\color{red} w_{\color{red} 6}}{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 3}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 4}}}  } }  }  \]
-		</p>
+		<!-- <p>  -->
+			<!-- \[ \Huge{ S_{pred} = \frac{1}{1+e^{ \frac{\color{red} w_{\color{red} 5} }{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 1}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 2}}} +\frac{\color{red} w_{\color{red} 6}}{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 3}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 4}}}  } }  }  \] -->
+		<!-- </p> -->
 	
 	</body>
 	
