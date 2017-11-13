@@ -14,7 +14,7 @@
 		<script src="./d3.min.js"> </script>
 		<script src="./d3.slider.js"></script>
 		<script src="./d3.rebind.js"></script>
-		
+		<!-- <script src="./d3-tip.js"> </script> -->
 		
 		
 		
@@ -23,6 +23,9 @@
 			<h2>Hello!</h2>
 
 			<p>This code shows how we collect our training data set.</p>
+			<p>TO DO: Add mathjax to SVG.</p>
+			<p>Move input scan to MathJax.</p>
+			<p>Replace mathjax with numbers after move</p>
 			<p></p>
 		</div></div>
 		<div id="NetworkGraph"></div>
@@ -34,16 +37,16 @@
 			
 			//Data for Neural network
 			var myData = [
-			{"id": 0, "x1": 2.781083600, "x2":  2.550537003, "y_true":  0, "y_pred":  0},
-			{"id": 1, "x1": 1.465489372, "x2":  2.362125076, "y_true":  0, "y_pred":  0},
-			{"id": 2, "x1": 3.396561688, "x2":  4.400293529, "y_true":  0, "y_pred":  0},
-			{"id": 3, "x1": 1.388070190, "x2":  1.850220317, "y_true":  0, "y_pred":  0},
-			{"id": 4, "x1": 3.064072320, "x2":  3.005305973, "y_true":  0, "y_pred":  0},
-			{"id": 5, "x1": 7.627531214, "x2":  2.759262235, "y_true":  1, "y_pred":  0},
-			{"id": 6, "x1": 5.332441248, "x2":  2.088626775, "y_true":  1, "y_pred":  0},
-			{"id": 7, "x1": 6.922596716, "x2":  1.771063670, "y_true":  1, "y_pred":  0},
-			{"id": 8, "x1": 8.675418651, "x2": -0.242068655, "y_true":  1, "y_pred":  0},
-			{"id": 9, "x1": 7.673756466, "x2":  3.508563011, "y_true":  1, "y_pred":  0},			
+			{"id": 0, "T": 2.781083600, "HR":  2.550537003, "S_true":  0, "y_pred":  0},
+			{"id": 1, "T": 1.465489372, "HR":  2.362125076, "S_true":  0, "y_pred":  0},
+			{"id": 2, "T": 3.396561688, "HR":  4.400293529, "S_true":  0, "y_pred":  0},
+			{"id": 3, "T": 1.388070190, "HR":  1.850220317, "S_true":  0, "y_pred":  0},
+			{"id": 4, "T": 3.064072320, "HR":  3.005305973, "S_true":  0, "y_pred":  0},
+			{"id": 5, "T": 7.627531214, "HR":  2.759262235, "S_true":  1, "y_pred":  0},
+			{"id": 6, "T": 5.332441248, "HR":  2.088626775, "S_true":  1, "y_pred":  0},
+			{"id": 7, "T": 6.922596716, "HR":  1.771063670, "S_true":  1, "y_pred":  0},
+			{"id": 8, "T": 8.675418651, "HR": -0.242068655, "S_true":  1, "y_pred":  0},
+			{"id": 9, "T": 7.673756466, "HR":  3.508563011, "S_true":  1, "y_pred":  0},			
 			];
 			
 			
@@ -73,7 +76,7 @@
 		<!-- <script src="./setupGears.js"></script> -->
 		<script> 
 			
-			var columns = ["x1", "x2", "y_true"];
+			var columns = ["T", "HR", "S_true"];
 			
 			var table = d3.select('svg').append("foreignObject")
 			  .attr("width", 480)
@@ -116,9 +119,9 @@
 			
 			for (i=0;i<=9;i++){
 				d3.select("#data"+i%10).selectAll("td")
-					.data([myData[i%10].x1,
-				    myData[i%10].x2,
-				    myData[i%10].y_true])
+					.data([myData[i%10].T,
+				    myData[i%10].HR,
+				    myData[i%10].S_true])
 				.html(function(d) { return d.toFixed(2); });
 			}
 			
@@ -159,16 +162,20 @@
 			function scanPatient () {
 				d3.selectAll('#scanL').remove();
 				d3.selectAll('#scanR').remove();
-				d3.selectAll('#eyeL').transition().duration(0).attr('cy',y(-0.2));
-				d3.selectAll('#eyeR').transition().duration(0).attr('cy',y(-0.2));
+				d3.selectAll('#eyeL').transition().duration(0)
+						.attr('cx',x(5.1))
+						.attr('cy',y(-0.2-0.02*(trainNumber%10)));
+				d3.selectAll('#eyeR').transition().duration(0)
+						.attr('cx',x(6))
+						.attr('cy',y(-0.2-0.02*(trainNumber%10)));
 				var scanL = d3.select('svg').selectAll('#scanL').data([0])
 							.enter()
 							.append('line')
 							.attr('id','scanL')
 							.attr('x1',x(5.1))
-							.attr('y1',y(-0.2))
+							.attr('y1',y(-0.2-0.02*(trainNumber%10)))
 							.attr('x2',x(-2))
-							.attr('y2',y(4.3))
+							.attr('y2',function (d,i){return y(4.3-0.51*(trainNumber%10));})
 							.attr("stroke-width", 2)
 							.attr("stroke", "black");
 							
@@ -177,22 +184,28 @@
 							.append('line')
 							.attr('id','scanR')
 							.attr('x1',x(6))
-							.attr('y1',y(-0.2))
+							.attr('y1',y(-0.2-0.02*(trainNumber%10)))
 							.attr('x2',x(-2))
-							.attr('y2',y(4.3))
+							.attr('y2',function (d,i){return y(4.3-0.51*(trainNumber%10));})
 							.attr("stroke-width", 2)
 							.attr("stroke", "black");
 			
 			
 				eyeL.transition().duration(scanDuration)
-					.attr('cy',y(-0.4))
+					<!-- .attr('cy',y(-0.4)) -->
+					.attr('cx',x(5.15))
 					.on('end', function(){
-					  return eyeL.transition().duration(resetDuration).attr('cy',y(-0.2));} 
+					  return eyeL.transition().duration(resetDuration)
+								.attr('cx',x(5.1))
+								.attr('cy',y(-0.2-0.02*((trainNumber+1)%10)));} 
 					);
 				eyeR.transition().duration(scanDuration)
-					.attr('cy',y(-0.4))
+					<!-- .attr('cy',y(-0.4)) -->
+					.attr('cx',x(6.05))
 					.on('end', function(){
-					  return eyeR.transition().duration(resetDuration).attr('cy',y(-0.2));} 
+					  return eyeR.transition().duration(resetDuration)
+								.attr('cx',x(6))
+								.attr('cy',y(-0.2-0.02*((trainNumber+1)%10)));} 
 					);
 				
 				scanL.transition().duration(scanDuration)
@@ -210,7 +223,9 @@
 						trainNumber++;												
 					  return scanR.remove();} 
 					);
-										
+						
+
+					<!-- d3.select('#MJXc-Node-8').selectAll('.mjx-char').html('S')	 -->
 				
 			}
 			

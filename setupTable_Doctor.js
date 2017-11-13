@@ -45,12 +45,18 @@ function updateTable(c){
 			// .html(function(d) { return d.toFixed(2); });
 	// }
 	
-		d3.select("#data"+c%10).selectAll("td")
-			.data([myData[c%10].x1,
-				   myData[c%10].x2,
-				   myData[c%10].y_true])
-			.html(function(d) { return d.toFixed(2); });
+		// d3.select("#data"+c%10).selectAll("td")
+			// .data([myData[c%10].x1,
+				   // myData[c%10].x2,
+				   // myData[c%10].y_true])
+			// .html(function(d) { return d.toFixed(2); });
 
+		d3.select("#data"+c%10).selectAll("td")
+			.data([myData[c%10].T,
+				   myData[c%10].HR,
+				   myData[c%10].S_true])
+			.html(function(d) { return d.toFixed(2); });	
+			
 }
 
-var dataTable = tabulate(myData, ["x1", "x2", "y_true"]);
+// var dataTable = tabulate(myData, ["x1", "x2", "y_true"]);

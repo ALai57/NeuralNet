@@ -31,16 +31,16 @@
 			
 			//Data for Neural network
 			var myData = [
-			{"id": 0, "x1": 2.781083600, "x2":  2.550537003, "y_true":  0, "y_pred":  0},
-			{"id": 1, "x1": 1.465489372, "x2":  2.362125076, "y_true":  0, "y_pred":  0},
-			{"id": 2, "x1": 3.396561688, "x2":  4.400293529, "y_true":  0, "y_pred":  0},
-			{"id": 3, "x1": 1.388070190, "x2":  1.850220317, "y_true":  0, "y_pred":  0},
-			{"id": 4, "x1": 3.064072320, "x2":  3.005305973, "y_true":  0, "y_pred":  0},
-			{"id": 5, "x1": 7.627531214, "x2":  2.759262235, "y_true":  1, "y_pred":  0},
-			{"id": 6, "x1": 5.332441248, "x2":  2.088626775, "y_true":  1, "y_pred":  0},
-			{"id": 7, "x1": 6.922596716, "x2":  1.771063670, "y_true":  1, "y_pred":  0},
-			{"id": 8, "x1": 8.675418651, "x2": -0.242068655, "y_true":  1, "y_pred":  0},
-			{"id": 9, "x1": 7.673756466, "x2":  3.508563011, "y_true":  1, "y_pred":  0},			
+			{"id": 0, "T": 2.781083600, "HR":  2.550537003, "S_true":  0, "y_pred":  0},
+			{"id": 1, "T": 1.465489372, "HR":  2.362125076, "S_true":  0, "y_pred":  0},
+			{"id": 2, "T": 3.396561688, "HR":  4.400293529, "S_true":  0, "y_pred":  0},
+			{"id": 3, "T": 1.388070190, "HR":  1.850220317, "S_true":  0, "y_pred":  0},
+			{"id": 4, "T": 3.064072320, "HR":  3.005305973, "S_true":  0, "y_pred":  0},
+			{"id": 5, "T": 7.627531214, "HR":  2.759262235, "S_true":  1, "y_pred":  0},
+			{"id": 6, "T": 5.332441248, "HR":  2.088626775, "S_true":  1, "y_pred":  0},
+			{"id": 7, "T": 6.922596716, "HR":  1.771063670, "S_true":  1, "y_pred":  0},
+			{"id": 8, "T": 8.675418651, "HR": -0.242068655, "S_true":  1, "y_pred":  0},
+			{"id": 9, "T": 7.673756466, "HR":  3.508563011, "S_true":  1, "y_pred":  0},			
 			];
 			
 			
@@ -70,13 +70,14 @@
 		<!-- <script src="./setupGears.js"></script> -->
 		<script> 
 			
-				
+			var dataTable = tabulate(myData, ["T", "HR", "S_true"]);
+			
 			var patient = d3.select('svg').selectAll('.patientImg').data(myData,function(d){return d.id;})
 				.enter()
 				.append('svg:image')
 				.attr('id', function (d,i) {return 'patient'+i;})
 				.attr('class','patientImg')
-				.attr('href',function (d) {if(d.y_true){return  './Person_Sick.svg';}
+				.attr('href',function (d) {if(d.S_true){return  './Person_Sick.svg';}
 												  else {return  './Person_Healthy.svg';} })
 				.attr('x', function (d,i){return x(-2.8*i+1.5);})
 				.attr('y', 0)
