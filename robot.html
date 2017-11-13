@@ -22,10 +22,10 @@
 		<div class = "row"> <div class="col-md-6 col-md-offset-3">
 			<h2>Hello!</h2>
 
-			<p>This code shows how we collect our training data set.</p>
-			<p>TO DO: Add mathjax to SVG.</p>
-			<p>Move input scan to MathJax.</p>
-			<p>Replace mathjax with numbers after move</p>
+			<p>This code shows how we make predictions with the neural net.</p>
+			<!-- <p>TO DO: Add mathjax to SVG.</p> -->
+			<!-- <p>Move input scan to MathJax.</p> -->
+			<!-- <p>Replace mathjax with numbers after move</p> -->
 			<p></p>
 		</div></div>
 		<div id="NetworkGraph"></div>
@@ -76,7 +76,7 @@
 		<!-- <script src="./setupGears.js"></script> -->
 		<script> 
 			
-			var columns = ["T", "HR", "S_true"];
+			var columns = ["T", "HR", "S_true","y_pred"];
 			
 			var table = d3.select('svg').append("foreignObject")
 			  .attr("width", 480)
@@ -222,6 +222,7 @@
 			var scanDuration = 1200;
 			var resetDuration = 500;	
 			var advanceTime = 500;
+			var flyToEquationDuration = 1000;
 			var trainNumber = 0;
 			var T_x = [2,6.8];
 			var T_y = [-3,-3];
@@ -287,6 +288,8 @@
 					.attr('x1',x(6))
 					.attr('x2',x(0))
 					.on('end', function(){
+						d3.select('#data'+trainNumber%10).style('background','lightgray');
+						d3.select('#data'+(trainNumber-1)%10).style('background','none');
 						moveNumbers();
 						trainNumber++;
 					  return scanR.remove();} 
@@ -314,7 +317,7 @@
 					.attr('y',function (d,i){return y( 4.3-0.51*(trainNumber%10) );});
 				
 				flyT.text(theTemp)
-					.transition().duration(500)
+					.transition().duration(flyToEquationDuration)
 					.attr('x', function (d,i) {return x(T_x[i]);})
 					.attr('y', function (d,i) {return y(T_y[i]);})
 					.on('end', function (d,i) {
@@ -325,12 +328,21 @@
 						});
 				
 				flyHR.text(theHR)
-					.transition().duration(500)
+					.transition().duration(flyToEquationDuration)
 					.attr('x', function (d,i) {return x(HR_x[i]);})
 					.attr('y', function (d,i) {return y(HR_y[i]);})
 					.on('end', function (d,i) {
 							HR_1.text(theHR);
 							HR_2.text(theHR);
+							
+							var tN = trainNumber-1;
+							d3.select("#data"+tN%10).selectAll("td")
+								.data([myData[tN%10].T,
+								myData[tN%10].HR,
+								myData[tN%10].S_true,
+								myData[tN%10].y_pred] )
+							.html(function(d) { return d.toFixed(2); });
+							
 							return flyHR.remove();
 						});
 			}
