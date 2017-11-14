@@ -23,6 +23,9 @@
 			<h2>Hello!</h2>
 
 			<p>This code shows how we make predictions with the neural net.</p>
+			<p>TO DO: Add rotating gears for calculating.</p>
+			<p>Click on gears and advance screen</p>
+			<p>Add in forward propagation with w=1</p>
 			<!-- <p>TO DO: Add mathjax to SVG.</p> -->
 			<!-- <p>Move input scan to MathJax.</p> -->
 			<!-- <p>Replace mathjax with numbers after move</p> -->
@@ -54,26 +57,13 @@
 			var wd = 500;
 			var ht = 400;
 			
-			//Size of black box
-			var rWidth = 4;
-			var rHeight = 4;
-
-			//Position of gears within box & Gear size
-			var myGears = [
-			{"x": -rWidth/4,  "y":  +rHeight/3,  "r":  +1.0},
-			{"x": -rWidth/4,  "y":   0,  	     "r":  +0.2},
-			{"x": -rWidth/4,  "y":  -rHeight/3,  "r":  +0.7},
-			{"x": +rWidth/4,  "y":  +rHeight/3,  "r":  +0.4},
-			{"x": +rWidth/4,  "y":   0,  	     "r":  +1.0},
-			{"x": +rWidth/4,  "y":  -rHeight/3,  "r":  +0.6},
-			];
 			
-			//Size of inputs blocks
-			var blockSize = 1;
 		</script>
 		<script src="./setupAxes.js"></script>
 		<script src='./setupTable_Doctor.js'></script>
 		<!-- <script src="./setupGears.js"></script> -->
+		
+		
 		<script> 
 			
 			var columns = ["T", "HR", "S_true","y_pred"];
@@ -164,7 +154,7 @@
 				.style('font-size','50%')
 				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{red} w_{\\color{red} 5} }{1+e^{\\color{blue} T\\cdot \\color{red} w_{\\color{red} 1}+ \\color{green} H \\color{green} R\\cdot \\color{red} w_{\\color{red} 2}}} +\\frac{\\color{red} w_{\\color{red} 6}}{1+e^{\\color{blue} T\\cdot \\color{red} w_{\\color{red} 3}+ \\color{green} H \\color{green} R\\cdot \\color{red} w_{\\color{red} 4}}}  } }  }  \\] ');
 			
-			var S_up
+			var S_up;
 			var S_down;
 			// W Variables
 			var w1_up;
@@ -187,24 +177,24 @@
 			
 			function mathInit(){
 				// S variable
-				S_up = d3.select('#MJXc-Node-8').selectAll('.mjx-char');
+				S_up   = d3.select('#MJXc-Node-8').selectAll('.mjx-char');
 				S_down = d3.select('#MJXc-Node-11').selectAll('.mjx-char').text('pred');
 				// W Variables
-				w1_up = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
+				w1_up   = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
 				w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char');
-				w2_up = d3.select('#MJXc-Node-66').selectAll('.mjx-char');
+				w2_up   = d3.select('#MJXc-Node-66').selectAll('.mjx-char');
 				w2_down = d3.select('#MJXc-Node-71').selectAll('.mjx-char');
-				w3_up = d3.select('#MJXc-Node-97').selectAll('.mjx-char');
+				w3_up   = d3.select('#MJXc-Node-97').selectAll('.mjx-char');
 				w3_down = d3.select('#MJXc-Node-102').selectAll('.mjx-char');
-				w4_up = d3.select('#MJXc-Node-114').selectAll('.mjx-char');
+				w4_up   = d3.select('#MJXc-Node-114').selectAll('.mjx-char');
 				w4_down = d3.select('#MJXc-Node-119').selectAll('.mjx-char');
-				w5_up = d3.select('#MJXc-Node-29').selectAll('.mjx-char');
+				w5_up   = d3.select('#MJXc-Node-29').selectAll('.mjx-char');
 				w5_down = d3.select('#MJXc-Node-34').selectAll('.mjx-char');
-				w6_up = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
+				w6_up   = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
 				w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char');
 				// T and HR variables
-				T_1 = d3.select('#MJXc-Node-44').selectAll('.mjx-char');
-				T_2 = d3.select('#MJXc-Node-92').selectAll('.mjx-char');
+				T_1  = d3.select('#MJXc-Node-44').selectAll('.mjx-char');
+				T_2  = d3.select('#MJXc-Node-92').selectAll('.mjx-char');
 				HR_1 = d3.select('#MJXc-Node-58').selectAll('.mjx-char').text('HR');
 				HR_2 = d3.select('#MJXc-Node-106').selectAll('.mjx-char').text('HR');
 				
@@ -219,6 +209,7 @@
 				d3.select('#MJXc-Node-107').selectAll('.mjx-char').remove();
 			}
 			
+			// Settings for scanning the patient 
 			var scanDuration = 1200;
 			var resetDuration = 500;	
 			var advanceTime = 500;
@@ -226,9 +217,9 @@
 			var trainNumber = 0;
 			var T_x = [2,6.8];
 			var T_y = [-3,-3];
-			
 			var HR_x = [4,8.8];
 			var HR_y = [-3,-3];
+			
 			function scanPatient () {
 				d3.selectAll('#scanL').remove();
 				d3.selectAll('#scanR').remove();
@@ -294,9 +285,6 @@
 						trainNumber++;
 					  return scanR.remove();} 
 					);
-						
-
-					<!-- d3.select('#MJXc-Node-8').selectAll('.mjx-char').html('S')	 -->
 				
 			}
 			
@@ -332,18 +320,38 @@
 					.attr('x', function (d,i) {return x(HR_x[i]);})
 					.attr('y', function (d,i) {return y(HR_y[i]);})
 					.on('end', function (d,i) {
+					
+							flyHR.remove();
+							
 							HR_1.text(theHR);
 							HR_2.text(theHR);
 							
 							var tN = trainNumber-1;
-							d3.select("#data"+tN%10).selectAll("td")
-								.data([myData[tN%10].T,
-								myData[tN%10].HR,
-								myData[tN%10].S_true,
-								myData[tN%10].y_pred] )
-							.html(function(d) { return d.toFixed(2); });
-							
-							return flyHR.remove();
+							S_up.text('');
+							S_down.text('');
+							var theOutput = d3.select('svg').selectAll('#movingOutput').data([0])
+								.enter().append('text');
+								
+							theOutput.transition().delay(1000)
+								.attr('x',x(-2))
+								.attr('y',y(-2))
+								.text(myData[tN%10].y_pred)
+								.on('end',function(){
+								
+							theOutput.transition().delay(1000).duration(1000)
+								.attr('x',x(1.55))
+								.attr('y',y(4.15-0.51*(tN%10)))
+								.on('end',function(){
+								
+								d3.select("#data"+tN%10).selectAll("td")
+									.data([myData[tN%10].T,
+									myData[tN%10].HR,
+									myData[tN%10].S_true,
+									myData[tN%10].y_pred] )
+								.html(function(d) { return d.toFixed(2); });
+								return theOutput.remove();});
+								});
+							return; 
 						});
 			}
 
@@ -352,6 +360,87 @@
 			
 			
 		</script>
+		<script>
+			//Size of black box
+			var rWidth = 3;
+			var rHeight = 3;
+
+			//Position of gears within box & Gear size
+			var myGears = [
+			{"x": -rWidth/4+5.75,  "y":  +2*rHeight/3,  "r":  +0.6},
+			{"x": -rWidth/4+5.75,  "y":  +1*rHeight/3,  "r":  +0.6},
+			{"x": -rWidth/4+5.75,  "y":  +0*rHeight/3,  "r":  +0.6},
+			{"x": +rWidth/4+5.75,  "y":  +2*rHeight/3,  "r":  +0.6},
+			{"x": +rWidth/4+5.75,  "y":  +1*rHeight/3,  "r":  +0.6},
+			{"x": +rWidth/4+5.75,  "y":  +0*rHeight/3,  "r":  +0.6},
+			];
+
+		
+			//Size of inputs blocks
+			var blockSize = 1;
+			
+						
+			var g = d3.scaleLinear().domain([0,rHeight/3])
+									.range([0, 100]);
+			var g_inv = d3.scaleLinear().domain([0, 100])
+									.range([0,rHeight/3]);
+
+			function revolveGears(ang) {
+
+				svg.selectAll('.gearRotate').transition().duration(50)
+				.attr('transform',function (d) {
+						return translateRotate(x(d.x)-calcWidth(d.r)/2,
+											   y(d.y)-calcHeight(d.r)/2,
+											   ang,
+											   calcWidth(d.r)/2,
+											   calcHeight(d.r)/2);
+					})
+				.on('end', function (d){
+								
+								if(ang>=360){
+									return;
+								};
+								
+								revolveGears(ang+10);					
+								
+							});
+				
+				return;
+			}	
+
+			function spinGears (){
+				revolveGears(0);
+				if (trainNumber===0){
+					scanPatient();
+				} else {
+					scanPatient();
+				}
+			}
+
+			function positionGears(g){
+				g.attr('transform',
+						function (d) {return translate(x(d.x)-calcWidth(d.r)/2,
+													   y(d.y)-calcHeight(d.r)/2); 
+						})
+					.attr('width', function (d) {return x(d.r)-x(0);})
+					.attr('height',function (d) {return y(0)-y(d.r);});
+			}
+
+
+			var gears = d3.select('svg').selectAll('.gearRotate').data(myGears)
+				.enter()
+				.append('svg:image')
+				.attr('id', function (d,i) {return 'gear'+i;})
+				.attr('class','gearRotate')
+				.attr('href','./gear.svg')
+				.attr('x', 0)
+				.attr('y', 0)
+				.attr('fill','black')
+				.on('click', function(d) {return spinGears();} );
+
+			positionGears(gears);
+		</script>
+		
 		<!-- <p>  -->
 			<!-- \[ \Huge{ S_{pred} = \frac{1}{1+e^{ \frac{\color{red} w_{\color{red} 5} }{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 1}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 2}}} +\frac{\color{red} w_{\color{red} 6}}{1+e^{\color{blue} T\cdot \color{red} w_{\color{red} 3}+ \color{green} H \color{green} R\cdot \color{red} w_{\color{red} 4}}}  } }  }  \] -->
 		<!-- </p> -->
