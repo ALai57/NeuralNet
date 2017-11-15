@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="./bootstrap.min.css"/>
+		 <script type="text/javascript"
+		   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_SVG">
+		</script>
+		
+	</head>
+	
+	<body>	
+		<script src="./jquery-3.2.1.min.js"> </script>
+		<script src="./bootstrap.min.js"> </script>
+		<script src="./d3.min.js"> </script>
+		<script src="./d3.slider.js"></script>
+		<script src="./d3.rebind.js"></script>
+		
+		
+		
+		<div class="container"> 
+		<div class = "row"> <div class="col-md-6 col-md-offset-3">
+			<h2>Hello!</h2>
+
+			<p>This code explodes the equation.</p>
+			<p></p>
+		</div></div>
+		<div id="NetworkGraph"></div>
+		<div id="TableOut"></div>
+				
+		</div>
+		<script>
+		
+			//SVG drawing size
+			var wd = 500;
+			var ht = 400;
+			
+		</script>
+		<script src="./setupAxes.js"></script>		
+		
+		<script> 
+							
+			var theEqn = d3.select('svg').append("foreignObject")
+			  .attr("width", 480)
+			  .attr("height", 500)
+    		  .attr('y',y(5))
+			  .append("xhtml:body");
+			
+			theEqn.append('div')
+				.style('font-size','50%')
+				.attr('id','explodedEqn')
+				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{black} w_{\\color{black} 5} }{1+e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 1}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 2}}} +\\frac{\\color{black} w_{\\color{black} 6}}{1+e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 3}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 4}}}  } }  }  \\] ');
+			
+			var eqnG;
+			var eqnX;
+			var eqnY;
+			var eqnZ;
+			var eqnBar1;
+			var eqn1;
+			var eqnBar23;
+			var eqnW56;
+			
+			MathJax.Hub.Queue(function () {
+				mathInit();
+				d3.select('#explodedEqn').selectAll('svg')
+				.attr('width',480)
+				.attr('height',480);
+				
+				eqnG = d3.select('#explodedEqn').selectAll('svg').selectAll(function(){
+						return this.childNodes;});
+				
+				eqnG.attr('transform', "matrix(1, 0, 0, -1, 0, -20000)" );
+				
+				eqnX = d3.selectAll('g[transform = "translate(1161,2927)"]');
+				eqnY = d3.selectAll('g[transform = "translate(1101,1017)"]');
+				eqnZ = d3.selectAll('g[transform = "translate(1101,1067)"]');
+				eqnBar1 = d3.selectAll('rect[width="48190"]');
+				eqn1 = d3.selectAll('use[y="676"]');
+				eqnBar23 = d3.selectAll('g[transform="translate(298,0)"]').selectAll('rect');
+				eqnW56 = d3.selectAll('g[transform="translate(8234,1777)"]');		
+			});
+
+			function explodeEqn(){
+				eqnX.transition().duration(1000)
+						.attr('transform', 'translate(1161,-10000)')
+						.on('end',function(){
+						
+				d3.selectAll('svg').selectAll('#xvar').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.transition().delay(500)
+					.attr('x', x(0))
+					.attr('y', y(-0.2))
+					.style('opacity',1)
+					.text('x =')
+					.style('font-size','18pt')
+					.style('font-family','Times');
+					
+				d3.selectAll('svg').selectAll('#xvar2').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.transition().delay(500)
+					.attr('x', x(1.4))
+					.attr('y', y(2.3))
+					.style('opacity',1)
+					.text('x')
+					.style('font-family','Times');	
+						
+					});
+				
+				eqnBar1.transition().duration(1000)
+					.attr('width',10000);
+				eqn1.transition().duration(1000)
+					.attr('x',1700);
+			}
+			
+			function explodeEqn2(){
+				eqnY.transition().duration(1000)
+						.attr('transform', 'translate(-2500,-7500)')
+						.on('end',function(){
+						
+					d3.selectAll('svg').selectAll('#yvar').data([0])
+						.enter().append('text')
+						.style('opacity',0)
+						.transition().delay(500)
+						.attr('x', x(0))
+						.attr('y', y(-2.1))
+						.style('opacity',1)
+						.text('y =')
+						.style('font-size','18pt')
+						.style('font-family','Times');
+						
+					d3.selectAll('svg').selectAll('#yvar2').data([0])
+						.enter().append('text')
+						.style('opacity',0)
+						.transition().delay(500)
+						.attr('x', x(2.25))
+						.attr('y', y(-0.2))
+						.style('opacity',1)
+						.text('y')
+						.style('font-family','Times');
+						});
+				
+				eqnBar23.transition().duration(1000)
+					.attr('width',8000);
+				eqnW56.transition().duration(1000)
+					.attr('transform','translate(+2200,+1700)');
+						
+				eqnZ.transition().duration(1000)
+						.attr('transform', 'translate(-24500,-15000)')
+						.on('end',function(){
+						
+				d3.selectAll('svg').selectAll('#zvar').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.transition().delay(500)
+					.attr('x', x(0))
+					.attr('y', y(-3.6))
+					.style('opacity',1)
+					.text('z =')
+					.style('font-size','18pt')
+					.style('font-family','Times');
+					
+				d3.selectAll('svg').selectAll('#zvar2').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.transition().delay(500)
+					.attr('x', x(6.45))
+					.attr('y', y(-0.2))
+					.style('opacity',1)
+					.text('z')
+					.style('font-family','Times');	
+					});	
+			}
+			
+			
+			var S_up;
+			var S_down;
+			// W Variables
+			var w1_up;
+			var w1_down;
+			var w2_up;
+			var w2_down;
+			var w3_up;
+			var w3_down;
+			var w4_up;
+			var w4_down;
+			var w5_up;
+			var w5_down;
+			var w6_up;
+			var w6_down;
+			// T and HR variables
+			var T_1;
+			var T_2;
+			var HR_1;
+			var HR_2;
+			
+			function mathInit(){
+				// S variable
+				S_up   = d3.select('#MJXc-Node-8').selectAll('.mjx-char');
+				S_down = d3.select('#MJXc-Node-11').selectAll('.mjx-char').text('pblack');
+				// W Variables
+				w1_up   = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
+				w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char');
+				w2_up   = d3.select('#MJXc-Node-66').selectAll('.mjx-char');
+				w2_down = d3.select('#MJXc-Node-71').selectAll('.mjx-char');
+				w3_up   = d3.select('#MJXc-Node-97').selectAll('.mjx-char');
+				w3_down = d3.select('#MJXc-Node-102').selectAll('.mjx-char');
+				w4_up   = d3.select('#MJXc-Node-114').selectAll('.mjx-char');
+				w4_down = d3.select('#MJXc-Node-119').selectAll('.mjx-char');
+				w5_up   = d3.select('#MJXc-Node-29').selectAll('.mjx-char');
+				w5_down = d3.select('#MJXc-Node-34').selectAll('.mjx-char');
+				w6_up   = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
+				w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char');
+				// T and HR variables
+				T_1  = d3.select('#MJXc-Node-44').selectAll('.mjx-char');
+				T_2  = d3.select('#MJXc-Node-92').selectAll('.mjx-char');
+				HR_1 = d3.select('#MJXc-Node-58').selectAll('.mjx-char').text('HR');
+				HR_2 = d3.select('#MJXc-Node-106').selectAll('.mjx-char').text('HR');
+				
+				
+				// Remove 'r','e','d' from 'pblack'
+				d3.select('#MJXc-Node-12').selectAll('.mjx-char').remove();
+				d3.select('#MJXc-Node-13').selectAll('.mjx-char').remove();
+				d3.select('#MJXc-Node-14').selectAll('.mjx-char').remove();
+				// Remove 'R' from 'HR'
+				d3.select('#MJXc-Node-59').selectAll('.mjx-char').remove();
+				d3.select('#MJXc-Node-107').selectAll('.mjx-char').remove();
+			}
+			
+			d3.select
+			
+		</script>
+		<script>
+			
+		</script>
+		
+		<!-- <p>  -->
+			<!-- \[ \Huge{ S_{pblack} = \frac{1}{1+e^{ \frac{\color{black} w_{\color{black} 5} }{1+e^{\color{black} T\cdot \color{black} w_{\color{black} 1}+ \color{black} H \color{black} R\cdot \color{black} w_{\color{black} 2}}} +\frac{\color{black} w_{\color{black} 6}}{1+e^{\color{black} T\cdot \color{black} w_{\color{black} 3}+ \color{black} H \color{black} R\cdot \color{black} w_{\color{black} 4}}}  } }  }  \] -->
+		<!-- </p> -->
+	
+	</body>
+	
+</html>
