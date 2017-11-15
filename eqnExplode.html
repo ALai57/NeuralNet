@@ -31,16 +31,17 @@
 		<script>
 		
 			//SVG drawing size
-			var wd = 500;
-			var ht = 400;
+			var wd = 600;
+			var ht = 600;
 			
 		</script>
 		<script src="./setupAxes.js"></script>		
 		
 		<script> 
-							
+			
+			var svg = d3.select('svg');
 			var theEqn = d3.select('svg').append("foreignObject")
-			  .attr("width", 480)
+			  .attr("width", 580)
 			  .attr("height", 500)
     		  .attr('y',y(5))
 			  .append("xhtml:body");
@@ -48,7 +49,7 @@
 			theEqn.append('div')
 				.style('font-size','50%')
 				.attr('id','explodedEqn')
-				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{black} w_{\\color{black} 5} }{1+e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 1}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 2}}} +\\frac{\\color{black} w_{\\color{black} 6}}{1+e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 3}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 4}}}  } }  }  \\] ');
+				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{black} w_{\\color{black} 5} }{1 + e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 1}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 2}}} +\\frac{\\color{black} w_{\\color{black} 6}}{1 + e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 3}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 4}}}  } }  }  \\] ');
 			
 			var eqnG;
 			var eqnX;
@@ -61,14 +62,19 @@
 			var eqn1P;
 			var eqne;
 			
+			var eqn2P;
+			var eqnL;
+			var eqnR;
+			var eqnAy;
+			var eqnAz;
+			
 			MathJax.Hub.Queue(function () {
 				mathInit();
 				d3.select('#explodedEqn').selectAll('svg')
-				.attr('width',480)
-				.attr('height',480);
+				.attr('width',580)
+				.attr('height',580);
 				
-				eqnG = d3.select('#explodedEqn').selectAll('svg').selectAll(function(){
-						return this.childNodes;});
+				eqnG = d3.select('#explodedEqn').selectAll('svg').selectAll(function(){return this.childNodes;});
 				
 				eqnG.attr('transform', "matrix(1, 0, 0, -1, 0, -20000)" );
 				
@@ -83,16 +89,43 @@
 				
 				eqn1P = d3.select('#explodedEqn').selectAll('g[transform="translate(149,-5651)"]').selectAll(function(){
 						return this.childNodes;})
-						.filter(function (d, i) { return i === 1 || i === 0;});;
+						.filter(function (d, i) { return i === 1 || i === 0;});
 						
 				eqne = d3.select('#explodedEqn').selectAll('g[transform="translate(4291,0)"]').selectAll(function(){
 						return this.childNodes;})
-						.filter(function (d, i) { return i === 0;});;
+						.filter(function (d, i) { return i === 0;});
+						
+				eqn2P = d3.selectAll('use[x="8547"]');	
+				eqnL  = d3.selectAll('g[transform="translate(1161,2927)"]');
+				eqnR  =	d3.selectAll('g[transform="translate(22013,0)"]');
+				eqnAy1 = eqnL.selectAll(function(){
+						return this.childNodes;})
+						.filter(function (d, i) { return i === 0})
+						.selectAll(function(){
+						return this.childNodes;}).filter(function (d, i) { return i === 0;});
+				eqnAy2 = eqnL.selectAll(function(){
+						return this.childNodes;})
+						.filter(function (d, i) { return i === 0})
+						.selectAll(function(){
+						return this.childNodes;}).filter(function (d, i) { return i===2;});
+						
+				eqnAz1 = eqnR.selectAll(function(){
+						return this.childNodes;})
+						.filter(function (d, i) { return i === 0})
+						.selectAll(function(){
+						return this.childNodes;}).filter(function (d, i) { return i === 0;});
+				eqnAz2 = eqnR.selectAll(function(){
+						return this.childNodes;})
+						.filter(function (d, i) { return i === 0})
+						.selectAll(function(){
+						return this.childNodes;}).filter(function (d, i) { return i===2;});
+						
+				d3.select('#explodedEqn').selectAll('svg').attr('viewBox',"0 -4000 62078 9602.6");
 			});
 
 			function explodeEqn(){
 				eqnX.transition().duration(1000)
-						.attr('transform', 'translate(1161,-10000)')
+						.attr('transform', 'translate(-4500,-10000)')
 						.on('end',function(){
 						
 				d3.selectAll('svg').selectAll('#xvar').data([0])
@@ -100,10 +133,10 @@
 					.style('opacity',0)
 					.attr('id','xvar')
 					.transition().delay(500)
-					.attr('x', x(0))
-					.attr('y', y(-0.2))
+					.attr('x', x(-1.1))
+					.attr('y', y(0.8))
 					.style('opacity',1)
-					.text('O_x =')
+					.text('x =')
 					.style('font-size','18pt')
 					.style('font-family','Times');
 					
@@ -113,9 +146,9 @@
 					.attr('id','xvar2')
 					.transition().delay(500)
 					.attr('x', x(1.4))
-					.attr('y', y(2.3))
+					.attr('y', y(3.3))
 					.style('opacity',1)
-					.text('O_x')
+					.text('x')
 					.style('font-family','Times');	
 						
 					});
@@ -151,6 +184,136 @@
 			}
 			
 			function explodeEqn2(){
+				eqn2P.transition().duration(1000)
+					.attr('transform','scale(3)');
+				eqnR.transition().duration(1000)
+					.attr('transform','translate(28000,0)');
+				
+				eqnW56.transition().duration(1000)
+					.attr('transform','translate(21000,0)');
+				
+				svg.selectAll('.myones').data([1.8,7])
+					.enter().append('text')
+					.attr('class','myones')
+					.text('1')
+					.style('font-family','Times')
+					.style('opacity',0)
+					.style('font-size',22)
+					.attr('x',function(d){return x(d);})
+					.attr('y',y(1.1))
+					.transition().duration(1000)
+					.style('opacity',1);
+					
+				svg.selectAll('.dots').data([1.75+1.8,7+1.8])
+					.enter().append('text')
+					.attr('class','dots')
+					.text('.')
+					.style('font-family','Times')
+					.style('opacity',0)
+					.style('font-size',62)
+					.attr('x',function(d){return x(d);})
+					.attr('y',y(0.9))
+					.transition().duration(1000)
+					.style('opacity',1);	
+			}
+			
+			function undoExplodeEqn2(){
+				
+				d3.selectAll('svg').selectAll('.myones').remove();	
+				d3.selectAll('svg').selectAll('.dots').remove();
+				
+				eqn2P.transition().duration(1000)
+					.attr('transform','scale(2.361)');
+				eqnR.transition().duration(1000)
+					.attr('transform','translate(22013,0)');
+				
+				eqnW56.transition().duration(1000)
+					.attr('transform','translate(8234,1777)');
+					
+			}
+			
+			function getTransform(tIn){
+				if (tIn===NaN){
+					return [0,0];
+				}
+				return tIn.substring(tIn.indexOf("(")+1, tIn.indexOf(")")).split(",");
+			}
+			
+			function explodeEqn3(){
+				var temp = svg.selectAll('.myones');
+				
+				temp.transition().duration(1000)
+					.attr('y',y(-0.5))
+					.attr('x',function(d,i){return x(1.8)+i*(x(6.15)-x(0));});;
+
+				
+				eqnAy1.transition().duration(1000)
+					.attr('y',-10000);
+				eqnAy2.transition().duration(1000)
+					.attr('transform','translate(149,-13000)')
+					.on('end',function(){
+						
+				d3.selectAll('svg').selectAll('#yvar').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.attr('id','yvar')
+					.transition().delay(500)
+					.attr('x', x(-1.1))
+					.attr('y', y(-0.8))
+					.style('opacity',1)
+					.text('y =')
+					.style('font-size','18pt')
+					.style('font-family','Times');
+					
+				d3.selectAll('svg').selectAll('#yvar2').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.attr('id','xvar2')
+					.style('font-size',22)
+					.transition().delay(500)
+					.attr('x', x(1.4))
+					.attr('y', y(0.8))
+					.style('opacity',1)
+					.text('y')
+					.style('font-family','Times');	
+						
+					});
+					
+				eqnAz1.transition().duration(1000)
+					.attr('y',-10000)
+					.attr('x',4500);
+				eqnAz2.transition().duration(1000)
+					.attr('transform','translate(5000,-13000)')
+					.on('end',function(){
+						
+				d3.selectAll('svg').selectAll('#zvar').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.attr('id','yvar')
+					.transition().delay(500)
+					.attr('x', x(5.1))
+					.attr('y', y(-0.8))
+					.style('opacity',1)
+					.text('z =')
+					.style('font-size','18pt')
+					.style('font-family','Times');
+					
+				d3.selectAll('svg').selectAll('#zvar2').data([0])
+					.enter().append('text')
+					.style('opacity',0)
+					.attr('id','zvar2')
+					.style('font-size',22)
+					.transition().delay(500)
+					.attr('x', x(7))
+					.attr('y', y(0.8))
+					.style('opacity',1)
+					.text('z')
+					.style('font-family','Times');	
+						
+					});
+			}
+			
+			function explodeEqn4(){
 				eqnY.transition().duration(1000)
 						.attr('transform', 'translate(-2500,-7500)')
 						.on('end',function(){
