@@ -58,6 +58,8 @@
 			var eqn1;
 			var eqnBar23;
 			var eqnW56;
+			var eqn1P;
+			var eqne;
 			
 			MathJax.Hub.Queue(function () {
 				mathInit();
@@ -75,8 +77,17 @@
 				eqnZ = d3.selectAll('g[transform = "translate(1101,1067)"]');
 				eqnBar1 = d3.selectAll('rect[width="48190"]');
 				eqn1 = d3.selectAll('use[y="676"]');
-				eqnBar23 = d3.selectAll('g[transform="translate(298,0)"]').selectAll('rect');
-				eqnW56 = d3.selectAll('g[transform="translate(8234,1777)"]');		
+				eqnBar23 = d3.selectAll('g[transform="translate(298,0)"]')
+					.selectAll('rect');
+				eqnW56 = d3.selectAll('g[transform="translate(8234,1777)"]');
+				
+				eqn1P = d3.select('#explodedEqn').selectAll('g[transform="translate(149,-5651)"]').selectAll(function(){
+						return this.childNodes;})
+						.filter(function (d, i) { return i === 1 || i === 0;});;
+						
+				eqne = d3.select('#explodedEqn').selectAll('g[transform="translate(4291,0)"]').selectAll(function(){
+						return this.childNodes;})
+						.filter(function (d, i) { return i === 0;});;
 			});
 
 			function explodeEqn(){
@@ -87,22 +98,24 @@
 				d3.selectAll('svg').selectAll('#xvar').data([0])
 					.enter().append('text')
 					.style('opacity',0)
+					.attr('id','xvar')
 					.transition().delay(500)
 					.attr('x', x(0))
 					.attr('y', y(-0.2))
 					.style('opacity',1)
-					.text('x =')
+					.text('O_x =')
 					.style('font-size','18pt')
 					.style('font-family','Times');
 					
 				d3.selectAll('svg').selectAll('#xvar2').data([0])
 					.enter().append('text')
 					.style('opacity',0)
+					.attr('id','xvar2')
 					.transition().delay(500)
 					.attr('x', x(1.4))
 					.attr('y', y(2.3))
 					.style('opacity',1)
-					.text('x')
+					.text('O_x')
 					.style('font-family','Times');	
 						
 					});
@@ -111,6 +124,30 @@
 					.attr('width',10000);
 				eqn1.transition().duration(1000)
 					.attr('x',1700);
+				eqn1P.transition().duration(1000)
+					.attr('y',1000);
+				eqne.transition().duration(1000)
+					.attr('y',1000);
+			}
+			
+			function undoExplodeEqn(){
+			
+				d3.selectAll('svg').selectAll('#xvar').remove();
+				d3.selectAll('svg').selectAll('#xvar2').remove();	
+			
+				eqnX.transition().duration(1000)
+						.attr('transform', 'translate(1161,2927)');
+						
+				
+				eqnBar1.transition().duration(1000)
+					.attr('width',48190);
+				eqn1.transition().duration(1000)
+					.attr('x',9426);
+				eqn1P.transition().duration(1000)
+					.attr('y',0);
+				eqne.transition().duration(1000)
+					.attr('y',0);
+					
 			}
 			
 			function explodeEqn2(){
