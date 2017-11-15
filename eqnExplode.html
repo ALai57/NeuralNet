@@ -125,7 +125,7 @@
 
 			function explodeEqn(){
 				eqnX.transition().duration(1000)
-						.attr('transform', 'translate(-4500,-10000)')
+						.attr('transform', 'translate(-4500,-6000)')
 						.on('end',function(){
 						
 				d3.selectAll('svg').selectAll('#xvar').data([0])
@@ -134,7 +134,7 @@
 					.attr('id','xvar')
 					.transition().delay(500)
 					.attr('x', x(-1.1))
-					.attr('y', y(0.8))
+					.attr('y', y(1.46))
 					.style('opacity',1)
 					.text('x =')
 					.style('font-size','18pt')
@@ -145,41 +145,60 @@
 					.style('opacity',0)
 					.attr('id','xvar2')
 					.transition().delay(500)
-					.attr('x', x(1.4))
-					.attr('y', y(3.3))
+					.attr('x', x(3.7))
+					.attr('y', y(3.1))
 					.style('opacity',1)
 					.text('x')
-					.style('font-family','Times');	
-						
+					.style('font-family','Times')
+					.style('font-size','18pt');	
+				
+				svg.selectAll('#neuron3').data([0])
+					.enter().append('circle')
+					.style('fill','none')
+					.style('stroke','red')
+					.attr('id','neuron3')
+					.transition().delay(500)
+					.attr('cx', x(3.2))
+					.attr('cy', y(3.3))
+                    .attr('r', 60);
+				
 					});
 				
 				eqnBar1.transition().duration(1000)
-					.attr('width',10000);
+					.attr('width',10000)
+					.attr('x',13000);
 				eqn1.transition().duration(1000)
-					.attr('x',1700);
+					.attr('x',7000)
+					.attr('y',800);
 				eqn1P.transition().duration(1000)
-					.attr('y',1000);
+					.attr('y',1000)
+                    .attr('x',function(d,i){return 5500+i*800;});
 				eqne.transition().duration(1000)
-					.attr('y',1000);
+					.attr('y',1000)
+					.attr('x',5700);
 			}
 			
 			function undoExplodeEqn(){
 			
 				d3.selectAll('svg').selectAll('#xvar').remove();
-				d3.selectAll('svg').selectAll('#xvar2').remove();	
+				d3.selectAll('svg').selectAll('#xvar2').remove();
+				d3.selectAll('svg').selectAll('#neuron3').remove();
 			
 				eqnX.transition().duration(1000)
 						.attr('transform', 'translate(1161,2927)');
 						
 				
 				eqnBar1.transition().duration(1000)
-					.attr('width',48190);
+					.attr('width',48190)
+					.attr('x',0);
 				eqn1.transition().duration(1000)
 					.attr('x',9426);
 				eqn1P.transition().duration(1000)
-					.attr('y',0);
+					.attr('y',0)
+					.attr('x',function(d,i){return i*800;});
 				eqne.transition().duration(1000)
-					.attr('y',0);
+					.attr('y',0)
+					.attr('x',0);
 					
 			}
 			
@@ -200,7 +219,7 @@
 					.style('opacity',0)
 					.style('font-size',22)
 					.attr('x',function(d){return x(d);})
-					.attr('y',y(1.1))
+					.attr('y',y(1.7))
 					.transition().duration(1000)
 					.style('opacity',1);
 					
@@ -212,7 +231,7 @@
 					.style('opacity',0)
 					.style('font-size',62)
 					.attr('x',function(d){return x(d);})
-					.attr('y',y(0.9))
+					.attr('y',y(1.5))
 					.transition().duration(1000)
 					.style('opacity',1);	
 			}
@@ -243,14 +262,16 @@
 				var temp = svg.selectAll('.myones');
 				
 				temp.transition().duration(1000)
-					.attr('y',y(-0.5))
-					.attr('x',function(d,i){return x(1.8)+i*(x(6.15)-x(0));});;
+					.attr('y',y(-0.5));
+					<!-- .attr('x',function(d,i){return x(0.4)+i*(x(6.15)-x(0));}); -->
 
 				
 				eqnAy1.transition().duration(1000)
-					.attr('y',-10000);
+					.attr('y',-14000);
+					
+                    <!-- .attr('x',4500); -->
 				eqnAy2.transition().duration(1000)
-					.attr('transform','translate(149,-13000)')
+					.attr('transform','translate(149,-17500)')
 					.on('end',function(){
 						
 				d3.selectAll('svg').selectAll('#yvar').data([0])
@@ -268,28 +289,28 @@
 				d3.selectAll('svg').selectAll('#yvar2').data([0])
 					.enter().append('text')
 					.style('opacity',0)
-					.attr('id','xvar2')
+					.attr('id','yvar2')
 					.style('font-size',22)
+					.text('y')
 					.transition().delay(500)
 					.attr('x', x(1.4))
-					.attr('y', y(0.8))
+					.attr('y', y(1.46))
 					.style('opacity',1)
-					.text('y')
 					.style('font-family','Times');	
 						
 					});
 					
 				eqnAz1.transition().duration(1000)
-					.attr('y',-10000)
+					.attr('y',-14000)
 					.attr('x',4500);
 				eqnAz2.transition().duration(1000)
-					.attr('transform','translate(5000,-13000)')
+					.attr('transform','translate(5000,-17500)')
 					.on('end',function(){
 						
 				d3.selectAll('svg').selectAll('#zvar').data([0])
 					.enter().append('text')
 					.style('opacity',0)
-					.attr('id','yvar')
+					.attr('id','zvar')
 					.transition().delay(500)
 					.attr('x', x(5.1))
 					.attr('y', y(-0.8))
@@ -303,72 +324,94 @@
 					.style('opacity',0)
 					.attr('id','zvar2')
 					.style('font-size',22)
+					.text('z')
 					.transition().delay(500)
 					.attr('x', x(7))
-					.attr('y', y(0.8))
+					.attr('y', y(1.46))
 					.style('opacity',1)
-					.text('z')
-					.style('font-family','Times');	
-						
+					.style('font-family','Times')
+					.on('end',function(){return consolidateXeqn();});
+					
+				
 					});
 			}
 			
+			function consolidateXeqn(){
+				d3.selectAll('#xvar').transition().duration(1000)
+					.attr('x',x(0)); 
+				<!-- 45 -->
+				d3.selectAll('#yvar2').transition().duration(1000)
+					.attr('x',x(1.75));
+				d3.selectAll('.dots').transition().duration(1000)
+					.attr('x',function(d,i){return x(2.1)+i*125;});
+				eqnW56.transition().duration(1000)
+					.attr('transform',function(d,i){if(i===0){return 'translate(14000,0)';} else {return 'translate(-1000,0)';} });
+				eqn2P.transition().duration(1000)
+					.attr('x',6400);
+				d3.selectAll('#zvar2').transition().duration(1000)
+					.attr('x',x(4.2));
+					
+				svg.selectAll('#input3').data([0])
+					.enter().append('rect')
+					.style('fill','none')
+					.style('stroke','red')
+					.attr('id','input3')
+					.transition().delay(500)
+					.attr('x',170)
+					.attr('y',185)
+					.attr('rx', 20)
+					.attr('ry', 20)
+					.attr('width',230)
+					.attr('height',50);
+			}
+			
 			function explodeEqn4(){
+				svg.selectAll('.myones').transition().duration(1000)
+					.attr('x',function(d,i){return x(0.4)+i*(x(6.15)-x(0));});
+			
 				eqnY.transition().duration(1000)
-						.attr('transform', 'translate(-2500,-7500)')
+						.attr('transform', 'translate(-5000,-8500)')
 						.on('end',function(){
 						
-					d3.selectAll('svg').selectAll('#yvar').data([0])
-						.enter().append('text')
-						.style('opacity',0)
+					d3.selectAll('svg').selectAll('#yvar')
 						.transition().delay(500)
-						.attr('x', x(0))
-						.attr('y', y(-2.1))
-						.style('opacity',1)
-						.text('y =')
-						.style('font-size','18pt')
-						.style('font-family','Times');
+						.attr('x', x(-1.5));
 						
-					d3.selectAll('svg').selectAll('#yvar2').data([0])
-						.enter().append('text')
-						.style('opacity',0)
-						.transition().delay(500)
-						.attr('x', x(2.25))
-						.attr('y', y(-0.2))
-						.style('opacity',1)
-						.text('y')
-						.style('font-family','Times');
+						
 						});
 				
 				eqnBar23.transition().duration(1000)
 					.attr('width',8000);
-				eqnW56.transition().duration(1000)
-					.attr('transform','translate(+2200,+1700)');
+				
 						
 				eqnZ.transition().duration(1000)
-						.attr('transform', 'translate(-24500,-15000)')
+						.attr('transform', 'translate(-5000,-8500)')
 						.on('end',function(){
 						
-				d3.selectAll('svg').selectAll('#zvar').data([0])
-					.enter().append('text')
-					.style('opacity',0)
+				d3.selectAll('svg').selectAll('#zvar')
 					.transition().delay(500)
-					.attr('x', x(0))
-					.attr('y', y(-3.6))
-					.style('opacity',1)
-					.text('z =')
-					.style('font-size','18pt')
-					.style('font-family','Times');
+					.attr('x', x(4.7));
 					
-				d3.selectAll('svg').selectAll('#zvar2').data([0])
-					.enter().append('text')
-					.style('opacity',0)
+
+				svg.selectAll('#neuron2').data([0])
+					.enter().append('circle')
+					.style('fill','none')
+					.style('stroke','red')
+					.attr('id','neuron2')
 					.transition().delay(500)
-					.attr('x', x(6.45))
-					.attr('y', y(-0.2))
-					.style('opacity',1)
-					.text('z')
-					.style('font-family','Times');	
+					.attr('cx', x(6.7))
+					.attr('cy', y(-0.7))
+                    .attr('r', 60);
+					
+				svg.selectAll('#neuron1').data([0])
+					.enter().append('circle')
+					.style('fill','none')
+					.style('stroke','red')
+					.attr('id','neuron1')
+					.transition().delay(500)
+					.attr('cx', x(0.6))
+					.attr('cy', y(-0.7))
+                    .attr('r', 60);		
 					});	
 			}
 			
