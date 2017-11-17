@@ -46,92 +46,216 @@
     		  .attr('y',y(5))
 			  .append("xhtml:body");
 			
+			
 			theEqn.append('div')
-				.style('font-size','50%')
+				.style('font-size','60%')
 				.attr('id','explodedEqn')
-				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{black} w_{\\color{black} 5} }{1 + e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 1}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 2}}} +\\frac{\\color{black} w_{\\color{black} 6}}{1 + e^{\\color{black} T\\cdot \\color{black} w_{\\color{black} 3}+ \\color{black} H \\color{black} R\\cdot \\color{black} w_{\\color{black} 4}}}  } }  }  \\] ');
+				.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ - \\left(\\frac{w_5 }{1 + e^{-\\left(T\\cdot w_1+ {HR}\\cdot w_2 \\right)}} +\\frac{w_6}{1 + e^{-\\left(T\\cdot w_3+ {HR}\\cdot w_4\\right)}} \\right) } }  }  \\] ');
 			
-			var eqnG;
-			var eqnX;
-			var eqnY;
-			var eqnZ;
-			var eqnBar1;
-			var eqn1;
-			var eqnBar23;
-			var eqnW56;
-			var eqn1P;
-			var eqne;
+			var eqnWhole;
+			var eqnRHS;
+			var eqnTop_1,   eqnTop_Bar, eqnTop_Denom;
+			var eqnDenom_1, eqnDenom_P, eqnDenom_e;
+			var eqnExp1_n;
+			var eqnX, eqnY, eqnZ;
 			
-			var eqn2P;
-			var eqnL;
-			var eqnR;
-			var eqnAy;
-			var eqnAz;
+			var eqnTop_Bar_Previous;
+			var eqnDenom_1_Previous, eqnDenom_P_Previous, eqnDenom_e_Previous;
+			var eqnExp1_n_Previous;
+			var eqnX_Previous, eqnY_Previous, eqnZ_Previous;
+			
+			<!-- var eqnBar1; -->
+			<!-- var eqn1; -->
+			<!-- var eqnBar23; -->
+			<!-- var eqnW56; -->
+			<!-- var eqn1P; -->
+			<!-- var eqne; -->
+			
+			<!-- var eqn2P; -->
+			<!-- var eqnL; -->
+			<!-- var eqnR; -->
+			<!-- var eqnAy; -->
+			<!-- var eqnAz; -->
 			
 			MathJax.Hub.Queue(function () {
-				mathInit();
-				d3.select('#explodedEqn').selectAll('svg')
-				.attr('width',580)
-				.attr('height',580);
+				<!-- mathInit(); -->
 				
-				eqnG = d3.select('#explodedEqn').selectAll('svg').selectAll(function(){return this.childNodes;});
+				//Parsing whole equation
+				var theSVG = d3.select('#explodedEqn').selectAll('svg')
+						.attr('width',580)
+						.attr('height',580);
 				
-				eqnG.attr('transform', "matrix(1, 0, 0, -1, 0, -20000)" );
+				eqnWhole = theSVG.selectAll(function(){return this.childNodes;});
+				eqnWhole.attr('transform', "matrix(1, 0, 0, -1, 0, -20000)" )
+						.attr('id','eqn_Whole');
 				
-				eqnX = d3.selectAll('g[transform = "translate(1161,2927)"]');
-				eqnY = d3.selectAll('g[transform = "translate(1101,1017)"]');
-				eqnZ = d3.selectAll('g[transform = "translate(1101,1067)"]');
-				eqnBar1 = d3.selectAll('rect[width="48190"]');
-				eqn1 = d3.selectAll('use[y="676"]');
-				eqnBar23 = d3.selectAll('g[transform="translate(298,0)"]')
-					.selectAll('rect');
-				eqnW56 = d3.selectAll('g[transform="translate(8234,1777)"]');
+				eqnRHS = eqnWhole.selectAll(function(){return this.childNodes})
+							     .filter(function(d,i){return i === 3;});
+				eqnRHS.attr('id','eqn_RHS');
 				
-				eqn1P = d3.select('#explodedEqn').selectAll('g[transform="translate(149,-5651)"]').selectAll(function(){
-						return this.childNodes;})
-						.filter(function (d, i) { return i === 1 || i === 0;});
+				//Parsing the RHS of the equation
+				var temp;
+				temp = eqnRHS.selectAll(function(){return this.childNodes})
+								.selectAll(function(){return this.childNodes});
+				eqnTop_Bar   = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnTop_Bar');
+				eqnTop_1     = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnTop_1');
+				eqnTop_Denom = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnTop_Denom');
+				
+				//Parsing the denominator of the equation
+				temp = eqnTop_Denom.selectAll(function(){return this.childNodes});
+				eqnDenom_1     = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnDenom_1');
+				eqnDenom_P     = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnDenom_P');;
+				
+				temp = temp.filter(function(d,i){return i === 2;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp1_e     = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp1_e');
+				
+				temp = temp.filter(function(d,i){return i === 1;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp1_n = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp1_n');
+				
+				temp = temp.filter(function(d,i){return i === 1;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp1_leftP  = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp1_leftP');
+				eqnX           = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnX');
+				eqnExp1_rightP = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnExp1_rightP');
+				
+				//Parsing equation X
+				temp = eqnX.selectAll(function(){return this.childNodes});
+				eqnX_Left = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnX_Left');
+				eqnX_P     = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnX_P');
+				eqnX_Right = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnX_Right');
+									
+				temp = eqnX_Left.selectAll(function(){return this.childNodes});
+				eqnX_Left_Bar = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnX_Left_Bar');
+				eqnW5 = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnW5');
+				eqnX_Left_Denom = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnX_Left_Denom');
+				
+				temp = eqnX_Right.selectAll(function(){return this.childNodes});
+				eqnX_Right_Bar = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnX_Right_Bar');
+				eqnW6 = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnW6');
+				eqnX_Right_Denom = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnX_Right_Denom');
+				
+				//Parsing left denominator of equation X
+				temp = eqnX_Left_Denom.selectAll(function(){return this.childNodes});
+				eqnX_Left_Denom_1 = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnX_Left_Denom_1');
+				eqnX_Left_Denom_P = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnX_Left_Denom_P');
+				
+				temp = temp.filter(function(d,i){return i === 2;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp2_e     = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp2_e');
+				
+				temp = temp.filter(function(d,i){return i === 1;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp2_n = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp2_n');
+				
+				temp = temp.filter(function(d,i){return i === 1;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp2_leftP  = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp2_leftP');
+				eqnY           = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnY');
+				eqnExp2_rightP = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnExp2_rightP');
+									
+				//Parsing right denominator of equation X					
+				temp = eqnX_Right_Denom.selectAll(function(){return this.childNodes});
+				eqnX_Right_Denom_1 = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnX_Right_Denom_1');
+				eqnX_Right_Denom_P = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnX_Right_Denom_P');
+				
+				temp = temp.filter(function(d,i){return i === 2;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp3_e     = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp3_e');
+				
+				temp = temp.filter(function(d,i){return i === 1;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp3_n = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp3_n');
+				
+				temp = temp.filter(function(d,i){return i === 1;})
+									.selectAll(function(){return this.childNodes});
+				eqnExp3_leftP  = temp.filter(function(d,i){return i === 0;})
+									.attr('id','eqnExp3_leftP');
+				eqnZ           = temp.filter(function(d,i){return i === 1;})
+									.attr('id','eqnZ');
+				eqnExp3_rightP = temp.filter(function(d,i){return i === 2;})
+									.attr('id','eqnExp3_rightP');
 						
-				eqne = d3.select('#explodedEqn').selectAll('g[transform="translate(4291,0)"]').selectAll(function(){
-						return this.childNodes;})
-						.filter(function (d, i) { return i === 0;});
-						
-				eqn2P = d3.selectAll('use[x="8547"]');	
-				eqnL  = d3.selectAll('g[transform="translate(1161,2927)"]');
-				eqnR  =	d3.selectAll('g[transform="translate(22013,0)"]');
-				eqnAy1 = eqnL.selectAll(function(){
-						return this.childNodes;})
-						.filter(function (d, i) { return i === 0})
-						.selectAll(function(){
-						return this.childNodes;}).filter(function (d, i) { return i === 0;});
-				eqnAy2 = eqnL.selectAll(function(){
-						return this.childNodes;})
-						.filter(function (d, i) { return i === 0})
-						.selectAll(function(){
-						return this.childNodes;}).filter(function (d, i) { return i===2;});
-						
-				eqnAz1 = eqnR.selectAll(function(){
-						return this.childNodes;})
-						.filter(function (d, i) { return i === 0})
-						.selectAll(function(){
-						return this.childNodes;}).filter(function (d, i) { return i === 0;});
-				eqnAz2 = eqnR.selectAll(function(){
-						return this.childNodes;})
-						.filter(function (d, i) { return i === 0})
-						.selectAll(function(){
-						return this.childNodes;}).filter(function (d, i) { return i===2;});
-						
-				d3.select('#explodedEqn').selectAll('svg').attr('viewBox',"0 -4000 62078 9602.6");
+				theSVG.attr('viewBox',"0 -4000 62078 9602.6");
+				
+				eqnX_Previous       =  eqnX.attr('transform');
+				eqnTop_Bar_Previous = [eqnTop_Bar.attr('width'),
+										eqnTop_Bar.attr('x')];
+				eqnDenom_1_Previous = [eqnDenom_1.attr('x'),
+										eqnDenom_1.attr('y')];
+				eqnDenom_P_Previous = [eqnDenom_P.attr('x'),
+										eqnDenom_P.attr('y')];
+				eqnExp1_e_Previous = [eqnExp1_e.attr('x'),
+										eqnExp1_e.attr('y')];
+				eqnExp1_n_Previous = [eqnExp1_n.attr('x'),
+										eqnExp1_n.attr('y')];
 			});
 
 			function explodeEqn(){
 				eqnX.transition().duration(1000)
-						.attr('transform', 'translate(-4500,-6000)')
+						.attr('transform', 'translate(-4500,-8000)')
 						.on('end',function(){
 						
-				d3.selectAll('svg').selectAll('#xvar').data([0])
+				eqnTop_Bar.transition().duration(1000)
+					.attr('width',10000)
+					.attr('x',13000);
+				eqnTop_1.transition().duration(1000)
+					.attr('x',7000)
+					.attr('y',800);
+				eqnDenom_1.transition().duration(1000)
+                    .attr('x',5800)
+					.attr('y',1000);
+				eqnDenom_P.transition().duration(1000)
+                    .attr('x',6300)
+					.attr('y',1000);
+				eqnExp1_leftP.transition().duration(100)
+					.style('opacity',0);
+				eqnExp1_rightP.transition().duration(100)
+					.style('opacity',0);
+				eqnExp1_n.transition().duration(1000)
+					.attr('x',7000)
+					.attr('y',1100);
+				
+				eqnExp1_e.transition().duration(1000)
+					.attr('y',1000)
+					.attr('x',5700)
+					.on('end',function(){
+						
+				d3.selectAll('svg').selectAll('#xvar_Neuron3').data([0])
 					.enter().append('text')
 					.style('opacity',0)
-					.attr('id','xvar')
+					.attr('id','xvar_Neuron3')
 					.transition().delay(500)
 					.attr('x', x(-1.1))
 					.attr('y', y(1.46))
@@ -140,10 +264,10 @@
 					.style('font-size','18pt')
 					.style('font-family','Times');
 					
-				d3.selectAll('svg').selectAll('#xvar2').data([0])
+				d3.selectAll('svg').selectAll('#xvar_Eqn').data([0])
 					.enter().append('text')
 					.style('opacity',0)
-					.attr('id','xvar2')
+					.attr('id','xvar_Eqn')
 					.transition().delay(500)
 					.attr('x', x(3.7))
 					.attr('y', y(3.1))
@@ -163,43 +287,42 @@
                     .attr('r', 60);
 				
 					});
-				
-				eqnBar1.transition().duration(1000)
-					.attr('width',10000)
-					.attr('x',13000);
-				eqn1.transition().duration(1000)
-					.attr('x',7000)
-					.attr('y',800);
-				eqn1P.transition().duration(1000)
-					.attr('y',1000)
-                    .attr('x',function(d,i){return 5500+i*800;});
-				eqne.transition().duration(1000)
-					.attr('y',1000)
-					.attr('x',5700);
+					
+				});
+			
 			}
 			
 			function undoExplodeEqn(){
 			
-				d3.selectAll('svg').selectAll('#xvar').remove();
-				d3.selectAll('svg').selectAll('#xvar2').remove();
+				d3.selectAll('svg').selectAll('#xvar_Eqn').remove();
+				d3.selectAll('svg').selectAll('#xvar_Neuron3').remove();
 				d3.selectAll('svg').selectAll('#neuron3').remove();
 			
 				eqnX.transition().duration(1000)
-						.attr('transform', 'translate(1161,2927)');
+						.attr('transform', eqnX_Previous);
 						
+				eqnTop_Bar.transition().duration(1000)
+					.attr('width',eqnTop_Bar_Previous[0])
+					.attr('x',eqnTop_Bar_Previous[1]);
+				eqnDenom_1.transition().duration(1000)
+					.attr('x',eqnDenom_1_Previous[0])
+					.attr('y',eqnDenom_1_Previous[1]);
+				eqnDenom_P.transition().duration(1000)
+					.attr('x',eqnDenom_P_Previous[0])
+					.attr('y',eqnDenom_P_Previous[1]);
+				eqnExp1_e.transition().duration(1000)
+					.attr('x',eqnExp1_e_Previous[0])
+					.attr('y',eqnExp1_e_Previous[1]);
+				eqnExp1_n.transition().duration(1000)
+					.attr('x',eqnExp1_n_Previous[0])
+					.attr('y',eqnExp1_n_Previous[1])
+					.on('end',function(){
+				eqnExp1_leftP.transition().delay(250).duration(100)
+					.style('opacity',1);
+				eqnExp1_rightP.transition().delay(250).duration(100)
+					.style('opacity',1);
+					});
 				
-				eqnBar1.transition().duration(1000)
-					.attr('width',48190)
-					.attr('x',0);
-				eqn1.transition().duration(1000)
-					.attr('x',9426);
-				eqn1P.transition().duration(1000)
-					.attr('y',0)
-					.attr('x',function(d,i){return i*800;});
-				eqne.transition().duration(1000)
-					.attr('y',0)
-					.attr('x',0);
-					
 			}
 			
 			function explodeEqn2(){
@@ -416,61 +539,61 @@
 			}
 			
 			
-			var S_up;
-			var S_down;
-			// W Variables
-			var w1_up;
-			var w1_down;
-			var w2_up;
-			var w2_down;
-			var w3_up;
-			var w3_down;
-			var w4_up;
-			var w4_down;
-			var w5_up;
-			var w5_down;
-			var w6_up;
-			var w6_down;
-			// T and HR variables
-			var T_1;
-			var T_2;
-			var HR_1;
-			var HR_2;
+			<!-- var S_up; -->
+			<!-- var S_down; -->
+			<!-- // W Variables -->
+			<!-- var w1_up; -->
+			<!-- var w1_down; -->
+			<!-- var w2_up; -->
+			<!-- var w2_down; -->
+			<!-- var w3_up; -->
+			<!-- var w3_down; -->
+			<!-- var w4_up; -->
+			<!-- var w4_down; -->
+			<!-- var w5_up; -->
+			<!-- var w5_down; -->
+			<!-- var w6_up; -->
+			<!-- var w6_down; -->
+			<!-- // T and HR variables -->
+			<!-- var T_1; -->
+			<!-- var T_2; -->
+			<!-- var HR_1; -->
+			<!-- var HR_2; -->
 			
-			function mathInit(){
-				// S variable
-				S_up   = d3.select('#MJXc-Node-8').selectAll('.mjx-char');
-				S_down = d3.select('#MJXc-Node-11').selectAll('.mjx-char').text('pblack');
-				// W Variables
-				w1_up   = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
-				w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char');
-				w2_up   = d3.select('#MJXc-Node-66').selectAll('.mjx-char');
-				w2_down = d3.select('#MJXc-Node-71').selectAll('.mjx-char');
-				w3_up   = d3.select('#MJXc-Node-97').selectAll('.mjx-char');
-				w3_down = d3.select('#MJXc-Node-102').selectAll('.mjx-char');
-				w4_up   = d3.select('#MJXc-Node-114').selectAll('.mjx-char');
-				w4_down = d3.select('#MJXc-Node-119').selectAll('.mjx-char');
-				w5_up   = d3.select('#MJXc-Node-29').selectAll('.mjx-char');
-				w5_down = d3.select('#MJXc-Node-34').selectAll('.mjx-char');
-				w6_up   = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
-				w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char');
-				// T and HR variables
-				T_1  = d3.select('#MJXc-Node-44').selectAll('.mjx-char');
-				T_2  = d3.select('#MJXc-Node-92').selectAll('.mjx-char');
-				HR_1 = d3.select('#MJXc-Node-58').selectAll('.mjx-char').text('HR');
-				HR_2 = d3.select('#MJXc-Node-106').selectAll('.mjx-char').text('HR');
+			<!-- function mathInit(){ -->
+				<!-- // S variable -->
+				<!-- S_up   = d3.select('#MJXc-Node-8').selectAll('.mjx-char'); -->
+				<!-- S_down = d3.select('#MJXc-Node-11').selectAll('.mjx-char').text('pblack'); -->
+				<!-- // W Variables -->
+				<!-- w1_up   = d3.select('#MJXc-Node-49').selectAll('.mjx-char'); -->
+				<!-- w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char'); -->
+				<!-- w2_up   = d3.select('#MJXc-Node-66').selectAll('.mjx-char'); -->
+				<!-- w2_down = d3.select('#MJXc-Node-71').selectAll('.mjx-char'); -->
+				<!-- w3_up   = d3.select('#MJXc-Node-97').selectAll('.mjx-char'); -->
+				<!-- w3_down = d3.select('#MJXc-Node-102').selectAll('.mjx-char'); -->
+				<!-- w4_up   = d3.select('#MJXc-Node-114').selectAll('.mjx-char'); -->
+				<!-- w4_down = d3.select('#MJXc-Node-119').selectAll('.mjx-char'); -->
+				<!-- w5_up   = d3.select('#MJXc-Node-29').selectAll('.mjx-char'); -->
+				<!-- w5_down = d3.select('#MJXc-Node-34').selectAll('.mjx-char'); -->
+				<!-- w6_up   = d3.select('#MJXc-Node-77').selectAll('.mjx-char'); -->
+				<!-- w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char'); -->
+				<!-- // T and HR variables -->
+				<!-- T_1  = d3.select('#MJXc-Node-44').selectAll('.mjx-char'); -->
+				<!-- T_2  = d3.select('#MJXc-Node-92').selectAll('.mjx-char'); -->
+				<!-- HR_1 = d3.select('#MJXc-Node-58').selectAll('.mjx-char').text('HR'); -->
+				<!-- HR_2 = d3.select('#MJXc-Node-106').selectAll('.mjx-char').text('HR'); -->
 				
 				
-				// Remove 'r','e','d' from 'pblack'
-				d3.select('#MJXc-Node-12').selectAll('.mjx-char').remove();
-				d3.select('#MJXc-Node-13').selectAll('.mjx-char').remove();
-				d3.select('#MJXc-Node-14').selectAll('.mjx-char').remove();
-				// Remove 'R' from 'HR'
-				d3.select('#MJXc-Node-59').selectAll('.mjx-char').remove();
-				d3.select('#MJXc-Node-107').selectAll('.mjx-char').remove();
-			}
+				<!-- // Remove 'r','e','d' from 'pblack' -->
+				<!-- d3.select('#MJXc-Node-12').selectAll('.mjx-char').remove(); -->
+				<!-- d3.select('#MJXc-Node-13').selectAll('.mjx-char').remove(); -->
+				<!-- d3.select('#MJXc-Node-14').selectAll('.mjx-char').remove(); -->
+				<!-- // Remove 'R' from 'HR' -->
+				<!-- d3.select('#MJXc-Node-59').selectAll('.mjx-char').remove(); -->
+				<!-- d3.select('#MJXc-Node-107').selectAll('.mjx-char').remove(); -->
+			<!-- } -->
 			
-			d3.select
+			<!-- d3.select -->
 			
 		</script>
 		<script>
