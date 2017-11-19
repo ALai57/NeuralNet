@@ -242,8 +242,8 @@ function robotScanPatient () {
 		.attr('x1',x(6))
 		.attr('x2',x(0))
 		.on('end', function(){
-			d3.select('#data'+trainNumber%10).style('background','lightgray');
-			d3.select('#data'+(trainNumber-1)%10).style('background','none');
+			d3.select('#RobotDoctorDiv').select('#robotdata'+trainNumber%10).style('background','lightgray');
+			d3.select('#RobotDoctorDiv').select('#robotdata'+(trainNumber-1)%10).style('background','none');
 			moveNumbers();
 			trainNumber++;
 		  return scanR.remove();} 
@@ -306,7 +306,7 @@ function moveNumbers(){
 					.attr('y',y(4.15-0.51*(tN%10)))
 					.on('end',function(){
 					
-					d3.select('#RobotDoctorDiv').select("#data"+tN%10).selectAll("td")
+					d3.select('#RobotDoctorDiv').select("#robotdata"+tN%10).selectAll("td")
 						.data([myData[tN%10].T,
 						myData[tN%10].HR,
 						myData[tN%10].S_true,
