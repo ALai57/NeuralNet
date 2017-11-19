@@ -310,7 +310,7 @@ function moveNumbers(){
 				theOutput.transition().delay(1000)
 					.attr('x',x(-2))
 					.attr('y',y(-2))
-					.text(myData[tN%10].y_pred)
+					.text(myData[tN%10].y_pred.toFixed(2))
 					.on('end',function(){
 					
 				theOutput.transition().delay(1000).duration(1000)
