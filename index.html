@@ -9,6 +9,11 @@
 		</script>
 		<script src="./d3.min.js"> </script>
 		<script src="./d3-tip.js"> </script>
+		<style>
+		h1 { font-weight: bold; }
+		h3 { font-weight: bold; }
+		h4 { font-weight: bold; font-style: italic; }
+		</style>
 	</head>
 	
 	<body>	
@@ -87,7 +92,7 @@
 			<p>What makes neural networks so special is in the way the calculations are performed. All that needs to be done is combine these operations in the right order.</p>
 			<br>
 
-			<h3>A SIMPLE EXAMPLE NEURAL NETWORK</h3>
+			<h3>AN EXAMPLE NEURAL NETWORK</h3>
 			<p>To better illustrate what an artificial neural network is, and how it works, let's walk through a simple example.</p> 
 			<p>Imagine that we are creating a medical robot (href = Big Hero 6!). The robot is supposed to measure a patient's heart rate and core temperature, and use that information to recognize when people are sick.  And just like other cutting-edge technologies, this robot will use a neural network to recognize sick patients.</p>
 			<p>Let's start by looking directly at the artificial neural network. Click any of the terms to get an explanation.</p>
@@ -96,13 +101,13 @@
 				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{w_5 }{1 + e^{-\left(T\cdot w_1+ {HR}\cdot w_2 \right)}} +\frac{w_6}{1 + e^{-\left(T\cdot w_3+ {HR}\cdot w_4\right)}} \right) } }  }  \] </p>
 			</div>
 			
-			<p>The artificial neural network looks complicated because it has so many terms. But take a closer look. The mathematical operations are simple – addition, subtraction, multiplication and exponentiation. Sure, there are a lot of steps, but each step is only a simple operation. So really, our artificial neural network is a lot of simple mathematical steps.</p>
+			<p>The artificial neural network looks complicated because it has so many terms. But take a closer look. The mathematical operations are simple - addition, subtraction, multiplication and exponentiation. Sure, there are a lot of steps, but each step is only a simple operation. So really, our artificial neural network is a lot of simple mathematical steps.</p>
 			<p>This is the foundation for the more advanced networks used in Alexa and other cutting edge- technologies. Pretty incredible that you could do most of Alexa's calculations on your calculator, right?</p>
 			<br>
 			
 			<h3>MAKING PREDICTIONS WITH A NEURAL NETWORK</h3>
 			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. However, there's a catch. For the network to be useful, we need the predictions to be accurate. </p>
-			<p>The key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings – when we change the settings, we change the network equation. And when the network equation changes, our predictions also change, which can make them better or worse.</p>
+			<p>The key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings - when we change the settings, we change the network equation. And when the network equation changes, our predictions also change, which can make them better or worse.</p>
 			<div id='ANN_Equation_ws'>
 				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{\color{red} w_{\color{red} 5} }{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 1}+ {HR}\cdot  \color{red} w_{\color{red} 2} \right)}} +\frac{\color{red} w_{\color{red} 6}}{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 3}+ {HR}\cdot \color{red} w_{\color{red} 4} \right)}} \right) } }  }  \] </p>
 			</div>
@@ -111,21 +116,26 @@
 			
 			<h3>TRAINING A NEURAL NETWORK TO MAKE BETTER PREDICTIONS</h3>
 			<p>The real challenge of a neural network is to learn the w settings that make the predictions as good as possible. Unfortunately, when we are just starting out, we have no idea what the settings should be. Our best option is to initialize the network by guessing values for the settings. In this example, we will start by guessing that every setting is equal to 1 (w1 = w2 = w3 = w4 = w5 = w6 = 1).</p>
-			<p>The next step is to train the neural network to make better predictions. This training process requires some data – which we need to collect or find in a database.</p>
+			<p>The next step is to train the neural network to make better predictions. This training process requires some data - which we need to collect or find in a database.</p>
+			<h4>Collecting data to train the network</h4>
 			<p>In our robot example, we will hire a doctor to get our training data. The doctor will examine 10 example patients and, for each patient, the doctor will measure the patient's heart rate (HR), temperature (T), and whether they were sick or not (S).</p>
 			<div id='DoctorDiv'>
 				<p>[Click the doctor to get data from each patient!]</p>
-				<div class='ANN_Table'></div>
+				<!-- <div class='ANN_Table'></div> -->
 				<script src="./doctor.js"></script>
 			</div>
-			<p>With our data and w values in hand, next, we go subject-by-subject and use the equation to predict whether they were sick or not. To do this, we plug in their temperature, their heart rate, and our w values into the equation, and calculate the S value.</p> 
+			
+			<h4>The network's first predictions</h4>
+			<p>With our data and w values in hand, next, we go subject-by-subject and make predictions using the equation. For each subject, we plug in temperature, heart rate, and our w values into the equation, then we calculate the S value.</p> 
+			<p>Afterwards, we have to check the predictions. These first predictions will be awful, because we started off by off guessing the w values.</p>
 			<div id='RobotDoctorDiv'>
 			
-				<p>[Click the robot to watch it read in patient data and predict if the patient is sick or not.]</p>
+				<p>[Click the gears to read in patient data and predict if the patient is sick or not.]</p>
 				<script src="./robotdoctor.js"></script>
 			</div>
-			<p>Finally, we check the prediction. Since we started off by off guessing the w values, network's first predictions are awful. When we see that the network predictions are erroneous, we change the settings to make the prediction a little bit better. If the network predicts the right answers then we are done - the network is well-trained.</p>
-			<p>To train an artificial neural network well, we repeat this process: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
+			<h4>Making better predictions</h4>
+			<p>When the network's predictions are erroneous, we change the settings to make the prediction a little bit better. We keep changing the settings until the network predicts the right answers - when this happens, the network is well-trained.</p>
+			<p>To truly train an artificial neural network well, we change the settings many times: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
 			<div id='Error'>
 				<p>[Error decreasing over time]</p>
 			</div>

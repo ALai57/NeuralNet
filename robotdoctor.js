@@ -6,8 +6,7 @@
 var svg = d3.select('#RobotDoctorDiv')
 	.append("svg")
 	.style("width",500)
-	.style("height",400)
-	.style("float","left");	
+	.style("height",400);	
 
 	
 ////////////////////////////////////////////////////////
@@ -114,7 +113,7 @@ var theEqn = d3.select('#RobotDoctorDiv')
 
 theEqn.append('div')
 	.style('font-size','50%')
-	.text(' \\[ \\Huge{ S_{pred} = \\frac{1}{1+e^{ \\frac{\\color{red} w_{\\color{red} 5} }{1+e^{\\color{blue} T\\cdot \\color{red} w_{\\color{red} 1}+ \\color{green} H \\color{green} R\\cdot \\color{red} w_{\\color{red} 2}}} +\\frac{\\color{red} w_{\\color{red} 6}}{1+e^{\\color{blue} T\\cdot \\color{red} w_{\\color{red} 3}+ \\color{green} H \\color{green} R\\cdot \\color{red} w_{\\color{red} 4}}}  } }  }  \\] ');
+	.text('\\[ \\LARGE{ S_{pred} = \\frac{1}{1+e^{ - \\left(\\frac{w_5 }{1 + e^{-\\left(T\\cdot w_1+ {HR}\\cdot w_2 \\right)}} +\\frac{w_6}{1 + e^{-\\left(T\\cdot w_3+ {HR}\\cdot w_4\\right)}} \\right) } }  }  \\] ');
 
 var S_up;
 var S_down;
@@ -137,10 +136,12 @@ var T_2;
 var HR_1;
 var HR_2;
 
-function mathInit(){
+function mathInit_Robot(){
+	
+	
 	// S variable
-	S_up   = d3.select('#MJXc-Node-8').selectAll('.mjx-char');
-	S_down = d3.select('#MJXc-Node-11').selectAll('.mjx-char').text('pred');
+	S_up   = d3.select('#MJXc-Node-224').selectAll('.mjx-char');
+	S_down = d3.select('#MJXc-Node-225').selectAll('.mjx-char').text('pred');
 	// W Variables
 	w1_up   = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
 	w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char');
@@ -155,20 +156,31 @@ function mathInit(){
 	w6_up   = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
 	w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char');
 	// T and HR variables
-	T_1  = d3.select('#MJXc-Node-44').selectAll('.mjx-char');
-	T_2  = d3.select('#MJXc-Node-92').selectAll('.mjx-char');
-	HR_1 = d3.select('#MJXc-Node-58').selectAll('.mjx-char').text('HR');
-	HR_2 = d3.select('#MJXc-Node-106').selectAll('.mjx-char').text('HR');
+	T_1  = d3.select('#MJXc-Node-260').selectAll('.mjx-char');
+	T_2  = d3.select('#MJXc-Node-291').selectAll('.mjx-char');
+	HR_1 = d3.select('#MJXc-Node-266').selectAll('.mjx-char').text('HR');
+	HR_2 = d3.select('#MJXc-Node-297').selectAll('.mjx-char').text('HR');
 	
 	
 	// Remove 'r','e','d' from 'pred'
-	d3.select('#MJXc-Node-12').selectAll('.mjx-char').remove();
-	d3.select('#MJXc-Node-13').selectAll('.mjx-char').remove();
-	d3.select('#MJXc-Node-14').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-228').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-229').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-230').selectAll('.mjx-char').remove();
+	
 	// Remove 'R' from 'HR'
-	d3.select('#MJXc-Node-59').selectAll('.mjx-char').remove();
-	d3.select('#MJXc-Node-107').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-269').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-300').selectAll('.mjx-char').remove();
+	
+	d3.select('#MJXc-Node-223').style('width','3em');
+	d3.select('#MJXc-Node-245').selectAll(function(){return this.childNodes})
+		.filter(function(d,i){return i === 0;})
+		.style('width','11.0em');  // 245 - left eqn
+	d3.select('#MJXc-Node-276').selectAll(function(){return this.childNodes})
+		.filter(function(d,i){return i === 0;})
+		.style('width','11.0em');  // 276 - right eqn
 }
+
+MathJax.Hub.Queue(function () {mathInit_Robot();})
 
 // Settings for scanning the patient 
 var scanDuration = 1200;
@@ -272,7 +284,7 @@ function moveNumbers(){
 		.attr('x', function (d,i) {return x(T_x[i]);})
 		.attr('y', function (d,i) {return y(T_y[i]);})
 		.on('end', function (d,i) {
-				mathInit();
+				mathInit_Robot();
 				T_1.text(theTemp);
 				T_2.text(theTemp);
 				return flyT.remove();
@@ -404,3 +416,9 @@ var gears = d3.select('#RobotDoctorDiv')
 	.on('click', function(d) {return spinGears();} );
 
 positionGears(gears);
+
+d3.select('#RobotDoctorDiv')
+	.selectAll("svg")
+	.style('width','600px')
+	.style('height','350px');
+	

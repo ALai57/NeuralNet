@@ -3,7 +3,7 @@ function tabulate(divID, data, columns) {
 	var table = d3.select(divID)
 				  .selectAll(".ANN_Table")
 				  .append("table")
-				  .attr("style", "margin-left: 250px"),
+				  .style('width','150px'),
 		thead =   table.append("thead"),
 		tbody =   table.append("tbody");
 
@@ -13,6 +13,7 @@ function tabulate(divID, data, columns) {
 		.data(columns)
 		.enter()
 		.append("th")
+			.style('text-align','center')
 			.text(function(column) { return column; });
 
 	// create a row for each object in the data
@@ -20,8 +21,9 @@ function tabulate(divID, data, columns) {
 		.data(data)
 		.enter()
 		.append("tr")
+		.style('text-align','center')
 		.attr('id',function (d,i) {return 'data' + i;});
-
+		
 	// create a cell in each row for each column
 	var cells = rows.selectAll("td")
 		.data(function(row) {
@@ -31,7 +33,8 @@ function tabulate(divID, data, columns) {
 		})
 		.enter()
 		.append("td")
-		.attr("style", "font-family: Courier;width:50px;");
+		.style('text-align','center')
+		.attr("style", "font-family: Courier;width:120px;");
 	
 	return table;
 }

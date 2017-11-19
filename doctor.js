@@ -3,9 +3,20 @@
 var svg = d3.select('#DoctorDiv')
 	.append("svg")
 	.style("width",wd)
-	.style("height",ht)
-	.style("float","left");	
+	.style("height",ht);	
 
+
+var tableDr = d3.select('#DoctorDiv').select('svg')
+  .append("foreignObject")
+  .attr("width", 480)
+  .attr("height", 500)
+  .append("xhtml:body");
+
+tableDr.append("div")
+	 .attr('class','ANN_Table')
+     .attr("style", "margin-left: 400px");	
+	
+	
 var dataTable = tabulate('#DoctorDiv', myData, ["T", "HR", "S_true"]);
 			
 var patient = d3.select('#DoctorDiv').select('svg').selectAll('.patientImg')
@@ -120,3 +131,9 @@ function scanPatient () {
 		);
 							
 }
+
+
+d3.select('#DoctorDiv')
+	.selectAll("svg")
+	.style('width','600px')
+	.style('height','240px');
