@@ -2,7 +2,13 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="./bootstrap.min.css"/>
-		<link rel="stylesheet" href="d3.slider.css" />
+		
+		<meta name="generator" content="BBEdit">
+		 <script type="text/javascript"
+		   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">
+		</script>
+		<script src="./d3.min.js"> </script>
+		<script src="./d3-tip.js"> </script>
 	</head>
 	
 	<body>	
@@ -11,240 +17,127 @@
 		<script src="./d3.min.js"> </script>
 		<script src="./d3.slider.js"></script>
 		<script src="./d3.rebind.js"></script>
+		<script src="./tableFunctions.js"></script>
 		
+		<script>
+			//Inputs and configuration
+													
+			
+			
+			
+			//Data for Neural network
+			var myData = [
+			{"id": 0, "T": 2.781083600, "HR":  2.550537003, "S_true":  0, "y_pred":  0},
+			{"id": 1, "T": 1.465489372, "HR":  2.362125076, "S_true":  0, "y_pred":  0},
+			{"id": 2, "T": 3.396561688, "HR":  4.400293529, "S_true":  0, "y_pred":  0},
+			{"id": 3, "T": 1.388070190, "HR":  1.850220317, "S_true":  0, "y_pred":  0},
+			{"id": 4, "T": 3.064072320, "HR":  3.005305973, "S_true":  0, "y_pred":  0},
+			{"id": 5, "T": 7.627531214, "HR":  2.759262235, "S_true":  1, "y_pred":  0},
+			{"id": 6, "T": 5.332441248, "HR":  2.088626775, "S_true":  1, "y_pred":  0},
+			{"id": 7, "T": 6.922596716, "HR":  1.771063670, "S_true":  1, "y_pred":  0},
+			{"id": 8, "T": 8.675418651, "HR": -0.242068655, "S_true":  1, "y_pred":  0},
+			{"id": 9, "T": 7.673756466, "HR":  3.508563011, "S_true":  1, "y_pred":  0},			
+			];
+			
+			
+			//SVG drawing size
+			var wd = 500;
+			var ht = 400;
+			
+			var x = d3.scaleLinear().domain([-2, 10])
+									.range([0, wd]);
+			var y = d3.scaleLinear().domain([5,-5])
+									.range([0, ht]);
+									
+			function translate(xIn,yIn){
+				return "translate(" + xIn + "," + yIn + ")";
+			}
+			function translateRotate(xIn,yIn,rIn,wdth,hgt){
+				return "translate(" + xIn + "," + yIn + ")" + "rotate(" + rIn + "," + wdth + "," + hgt + ")";;
+			}
+			
+			
+			function calcWidth(w){
+				return Math.abs(x(w)-x(0));
+			}
+			function calcHeight(h){
+				return Math.abs(y(h)-y(0));
+			}
+			
+		</script>
 		
 		
 		
 		<div class="container"> 
 		<div class = "row"> <div class="col-md-6 col-md-offset-3">
-			<h2>Hello! This is an neural network test</h2>
+			<h1>Artificial Neural Networks</h1>
+			<br>
 			
-			<!-- <p>Need to add axes properly</p> -->
-			<!-- <p>Need to add circles to axes</p> -->
-			<!-- <p>Need to add lines to connect neurons</p> -->
-			<!-- <p>Sliders need to change connection thicknesses</p> -->
-			<!-- <p>Update weight matrix on slide</p> -->
-			<!-- <p>Choose a dataset</p> -->
-			<!-- <p>Forward propagate a data set</p> -->
-			<p>Separate explanations for: </p>
-			<p>How the network calculates outputs - simple video</p>
-			<p>Minimizing error</p>
-			<p>How each neuron works and activation fcns</p>
+			<h3>INTRODUCTION</h3>
+			<p>Computers are getting eerily smart.</p>
+			<p>Today, they are recognizing words in our speech. They are recognizing faces in photos and videos. And they're recognizing objects, places, and hazards on the road.</p>
+			<p>But what is powering the ability to recognize voices, streets and people?</p> 
+			<p>How can Amazon Alexa understand our voices? How can self driving cars see and understand the road? And how can iPhones recognize our faces?</p>
+			<p>The answer: all of these technologies are made possible by artificial neural networks.</p>
+			<br>
+			
+			<h3>WHAT IS AN ARTIFICIAL NEURAL NETWORK? </h3>
+			<p>So what exactly is an artificial neural network? At its most basic level, an artificial neural network is a mathematical equation. For example, an artificial neural network could take a picture as an input, process the picture, and recognize faces in it.</p>
+			<p>Surprisingly, artificial neural networks rely on simple mathematics. Despite their cutting-edge applications, artificial neural networks typically only perform elementary calculations: addition, subtraction, multiplication, and exponentiation. In fact, you can easily replicate the same calculations with a simple calculator and these four buttons:   +   -   x   exp()</p>  
+			<p>What makes neural networks so special is in the way the calculations are performed. All that needs to be done is combine these operations in the right order.</p>
+			<br>
+
+			<h3>A SIMPLE EXAMPLE NEURAL NETWORK</h3>
+			<p>To better illustrate what an artificial neural network is, and how it works, let's walk through a simple example.</p> 
+			<p>Imagine that we are creating a medical robot (href = Big Hero 6!). The robot is supposed to measure a patient's heart rate and core temperature, and use that information to recognize when people are sick.  And just like other cutting-edge technologies, this robot will use a neural network to recognize sick patients.</p>
+			<p>Let's start by looking directly at the artificial neural network. Click any of the terms to get an explanation.</p>
+			<div id='ANN_Equation'>
+				<p>[THIS SHOULD HAVE INTERACTIVE HOVER-OVER AND CLICKABLE BEHAVIOR IN THE FINAL ARTICLE]</p> 
+				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{w_5 }{1 + e^{-\left(T\cdot w_1+ {HR}\cdot w_2 \right)}} +\frac{w_6}{1 + e^{-\left(T\cdot w_3+ {HR}\cdot w_4\right)}} \right) } }  }  \] </p>
+			</div>
+			
+			<p>The artificial neural network looks complicated because it has so many terms. But take a closer look. The mathematical operations are simple – addition, subtraction, multiplication and exponentiation. Sure, there are a lot of steps, but each step is only a simple operation. So really, our artificial neural network is a lot of simple mathematical steps.</p>
+			<p>This is the foundation for the more advanced networks used in Alexa and other cutting edge- technologies. Pretty incredible that you could do most of Alexa's calculations on your calculator, right?</p>
+			<br>
+			
+			<h3>MAKING PREDICTIONS WITH A NEURAL NETWORK</h3>
+			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. However, there's a catch. For the network to be useful, we need the predictions to be accurate. </p>
+			<p>The key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings – when we change the settings, we change the network equation. And when the network equation changes, our predictions also change, which can make them better or worse.</p>
+			<div id='ANN_Equation_ws'>
+				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{\color{red} w_{\color{red} 5} }{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 1}+ {HR}\cdot  \color{red} w_{\color{red} 2} \right)}} +\frac{\color{red} w_{\color{red} 6}}{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 3}+ {HR}\cdot \color{red} w_{\color{red} 4} \right)}} \right) } }  }  \] </p>
+			</div>
+			<p>Ultimately, if we get the settings right, we can get great predictions from our neural network! That's how Alexa can recognize your voice – in her neural network she has found the right settings to make her predictions really good. But unlike our example, Alexa most likely has hundreds or thousands of w settings in total, rather than the 6 in our example (w1, w2, w3, w4, w5, w6).</p>
+			<br>
+			
+			<h3>TRAINING A NEURAL NETWORK TO MAKE BETTER PREDICTIONS</h3>
+			<p>The real challenge of a neural network is to learn the w settings that make the predictions as good as possible. Unfortunately, when we are just starting out, we have no idea what the settings should be. Our best option is to initialize the network by guessing values for the settings. In this example, we will start by guessing that every setting is equal to 1 (w1 = w2 = w3 = w4 = w5 = w6 = 1).</p>
+			<p>The next step is to train the neural network to make better predictions. This training process requires some data – which we need to collect or find in a database.</p>
+			<p>In our robot example, we will hire a doctor to get our training data. The doctor will examine 10 example patients and, for each patient, the doctor will measure the patient's heart rate (HR), temperature (T), and whether they were sick or not (S).</p>
+			<div id='DoctorDiv'>
+				<p>[Click the doctor to get data from each patient!]</p>
+				<div class='ANN_Table'></div>
+				<script src="./doctor.js"></script>
+			</div>
+			<p>With our data and w values in hand, next, we go subject-by-subject and use the equation to predict whether they were sick or not. To do this, we plug in their temperature, their heart rate, and our w values into the equation, and calculate the S value.</p> 
+			<div id='RobotDoctorDiv'>
+			
+				<p>[Click the robot to watch it read in patient data and predict if the patient is sick or not.]</p>
+				<script src="./robotdoctor.js"></script>
+			</div>
+			<p>Finally, we check the prediction. Since we started off by off guessing the w values, network's first predictions are awful. When we see that the network predictions are erroneous, we change the settings to make the prediction a little bit better. If the network predicts the right answers then we are done - the network is well-trained.</p>
+			<p>To train an artificial neural network well, we repeat this process: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
+			<div id='Error'>
+				<p>[Error decreasing over time]</p>
+			</div>
+
+			
+			
+			
 			
 			
 		
 		</div></div>
 		<div id="NetworkGraph"></div>
-		<div id="ErrorLines"></div>
-		<script>
-			
-			var myData = [
-			{"x1": 2.781083600, "x2":  2.550537003, "y":  0},
-			{"x1": 1.465489372, "x2":  2.362125076, "y":  0},
-			{"x1": 3.396561688, "x2":  4.400293529, "y":  0},
-			{"x1": 1.388070190, "x2":  1.850220317, "y":  0},
-			{"x1": 3.064072320, "x2":  3.005305973, "y":  0},
-			{"x1": 7.627531214, "x2":  2.759262235, "y":  1},
-			{"x1": 5.332441248, "x2":  2.088626775, "y":  1},
-			{"x1": 6.922596716, "x2":  1.771063670, "y":  1},
-			{"x1": 8.675418651, "x2": -0.242068655, "y":  1},
-			{"x1": 7.673756466, "x2":  3.508563011, "y":  1},			
-			];
-			
-			var myNeurons = [
-			  { "x":  0, "y": +0.5, "r": 20, "b":    0, "c" : "black"},
-			  { "x":  0, "y": -0.5, "r": 20, "b":    0, "c" : "black"},
-			  { "x":  1, "y": +0.5, "r": 20, "b": 1.56, "c" : "black"},
-			  { "x":  1, "y": -0.5, "r": 20, "b": 0.76, "c" : "black"},
-			  { "x":  2, "y":    0, "r": 20, "b": 3.66, "c" : "black"},
-			  ];
-			  
-			var myWeights = [
-			  { "fromNeuron":  0, "toNeuron": 2, "t": -2.1, "c" : "black"},
-			  { "fromNeuron":  0, "toNeuron": 3, "t": -1.8, "c" : "black"},
-			  { "fromNeuron":  1, "toNeuron": 2, "t": +2.7, "c" : "black"},
-			  { "fromNeuron":  1, "toNeuron": 3, "t": +2.6, "c" : "black"},
-			  { "fromNeuron":  2, "toNeuron": 4, "t": -6.8, "c" : "black"},
-			  { "fromNeuron":  3, "toNeuron": 4, "t": -1.0, "c" : "black"},
-			  ];
-			
-			function forwardPropagate(d,wts){
-				var networkOutput = [];
-				//
-				for (n=0;n<d.length;n++) {
-				
-					//Hidden Layer
-					var in3 = d[n].x1*wts[0].t + d[n].x2*wts[2].t + myNeurons[2].b;
-					var in4 = d[n].x1*wts[1].t + d[n].x2*wts[3].t + myNeurons[3].b;
-					var out3 = activate(in3);
-					var out4 = activate(in4);
-					
-					//Output Layer
-					var in5 = out3*wts[4].t+out4*wts[5].t + myNeurons[4].b;
-					var out5 = activate(in5);
-					
-					<!-- console.log(in5); -->
-					<!-- console.log(out5); -->
-					
-					obj = {"predicted" : out5, "target": d[n].y};
-					networkOutput.push(obj);
-					
-				}
-				
-				return networkOutput;
-			}
-			
-			function activate(x){
-				return 1/(1+Math.exp(-x));
-			}
-			
-			var wd = 600;
-			var ht = 400;
-			
-			var svg = d3.select('#NetworkGraph').append("svg")
-												.style("width",wd)
-												.style("height",ht);
-															
-															
-															
-			var x = d3.scaleLinear().domain([-0.5, 2.5])
-									.range([0, wd]);
-			var y = d3.scaleLinear().domain([1,-1])
-									.range([0, ht]);
-			var z = d3.scaleLinear().domain([-7,7])
-									.range([0, 100]);
-			var z_inv = d3.scaleLinear().domain([0, 100])
-									.range([-5,5]);
-			
-			// Make test line
-			<!-- svg.append("line") -->
-			<!-- .attr("x1",x(0)) -->
-			<!-- .attr("y1",y(0)) -->
-			<!-- .attr("x2",x(1)) -->
-			<!-- .attr("y2",y(1)) -->
-			<!-- .attr("stroke", "blue") -->
-            <!-- .attr("stroke-width", 2); -->
-			
-			// Make Axis if wanted
-			<!-- var xAxis = d3.axisBottom(x); -->
-			<!-- var yAxis = d3.axisLeft(y); -->
-			<!-- svg.append("g")		 -->
-				<!-- .attr("class","axis") -->
-				<!-- .attr("transform","translate(0, " + y(0) + ")") -->
-				<!-- .call(xAxis); -->
-			<!-- svg.append("g") -->
-				<!-- .attr("class","axis") -->
-				<!-- .attr("transform","translate(" + x(0) + ",0)") -->
-				<!-- .call(yAxis); -->
-									
-			var weightLine = d3.select("#NetworkGraph").select("svg")
-							.selectAll("line").data(myWeights);
-								
-			weightLine.enter().append("line")
-				.attr(      	"id", function(d,i) {return   'weight' + i  			 ;})
-				.attr(          "x1", function(d)   {return x(myNeurons[d.fromNeuron].x) ;})
-				.attr(          "y1", function(d)   {return y(myNeurons[d.fromNeuron].y) ;})
-				.attr(          "x2", function(d)   {return x(myNeurons[d.toNeuron].x) 	 ;})
-				.attr(          "y2", function(d)   {return y(myNeurons[d.toNeuron].y) 	 ;})
-				.attr(      "stroke", function(d)   {return   d.c           		 	 ;})
-				.attr("stroke-width", function(d)   {return   d.t           			 ;});
-				
-				
-			var circ = d3.select("#NetworkGraph").select("svg")
-							.selectAll("circle").data(myNeurons);
-		
-			circ.enter().append("circle")
-				.attr(    "r", function(d) {return   d.r  ;})
-				.attr(   "cx", function(d) {return x(d.x) ;})
-				.attr(   "cy", function(d) {return y(d.y) ;})
-				.style("fill", function(d) {return   d.c  ;});
-				
-				
-				
-			// Error plots	
-			var wdE = 600;
-			var htE = 100;
-			var xE = d3.scaleLinear().domain([-5, 5])
-									.range([0, wdE]);
-			var yE = d3.scaleLinear().domain([11,-1])
-									.range([0, htE]);
-			
-			var svg = d3.select('#ErrorLines').append("svg")
-												.style("width",wdE)
-												.style("height",htE);
-								
-			var eInitial = forwardPropagate(myData,myWeights);
-			
-			var errorLine = d3.select("#ErrorLines").select("svg")
-							.selectAll("line").data(eInitial);
-								
-			errorLine.enter().append("line")
-				.attr(      	"id", function(d,i) {return   'error' + i  	 ;})
-				.attr(          "x1", function(d,i) {return  xE(0) 			 ;})
-				.attr(          "y1", function(d,i) {return  yE(i) 			 ;})
-				.attr(          "x2", function(d,i) {return  xE(d.predicted) ;})
-				.attr(          "y2", function(d,i) {return  yE(i)			 ;})
-				.attr(      "stroke", function(d)   {return   "black"	 	 ;})
-				.attr("stroke-width", function(d)   {return   3    			 ;});
-			
-			
-			function updateError(){
-				var eUpdate = forwardPropagate(myData,myWeights);
-				
-				var errorLine = d3.select("#ErrorLines").select("svg")
-							.selectAll("line").data(eUpdate);
-				
-				errorLine.transition(0,500)
-				.attr(          "x2", function(d,i) {return  xE(d.predicted) ;});
-				
-			}
-			
-			
-		</script>
-		
-		
-		
-		<div id="slider1" style="float:left;margin-left:10px;margin-right:10px;"></div>
-		<div id="slider2" style="float:left;margin-left:10px;margin-right:10px;"></div>
-		<div id="slider3" style="float:left;margin-left:10px;margin-right:10px;"></div>
-		<div id="slider4" style="float:left;margin-left:10px;margin-right:10px;"></div>
-		<div id="slider5" style="float:left;margin-left:10px;margin-right:10px;"></div>
-		<div id="slider6" style="float:left;margin-left:10px;margin-right:10px;"></div>
-		<script>
-						
-			function setupSlider(n) {
-				var newSlider = d3.slider().value(z(myWeights[n].t)).orientation("vertical").on("slide",
-					function (val){
-						myWeights[n].t = z_inv(val);
-						if (z_inv(val) > 0){var c = "black";} 
-						else {var c = "red";} 
-						
-						d3.select('#weight'+n)
-							.attr("stroke-width", Math.abs(z_inv(val)*5) )
-							.attr("stroke", c);	
-						
-						updateError();
-					}
-					);
-					
-				if (myWeights[n].t > 0){var c = "black";} 
-				else {var c = "red";} 
-				
-				d3.select('#weight'+n)
-					.attr("stroke-width", Math.abs(myWeights[n].t*3) )
-					.attr("stroke", c);			
-				return newSlider;
-			}
-			
-			d3.select('#slider1').call( setupSlider(0) );
-			d3.select('#slider2').call( setupSlider(1) );
-			d3.select('#slider3').call( setupSlider(2) );
-			d3.select('#slider4').call( setupSlider(3) );
-			d3.select('#slider5').call( setupSlider(4) );
-			d3.select('#slider6').call( setupSlider(5) );
-			
-			
-		</script>
 		</div>
 		
 
