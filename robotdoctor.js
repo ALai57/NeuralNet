@@ -104,6 +104,7 @@ var robotEyeR = d3.select('#RobotDoctorDiv')
 ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 // MATH SETUP		
+
 var theEqn = d3.select('#RobotDoctorDiv')
   .selectAll('svg').append("foreignObject")
   .attr("width", 480)
@@ -113,6 +114,7 @@ var theEqn = d3.select('#RobotDoctorDiv')
 
 theEqn.append('div')
 	.style('font-size','50%')
+	.attr('id','drEqn')
 	.text('\\[ \\LARGE{ S_{pred} = \\frac{1}{1+e^{ - \\left(\\frac{w_5 }{1 + e^{-\\left(T\\cdot w_1+ {HR}\\cdot w_2 \\right)}} +\\frac{w_6}{1 + e^{-\\left(T\\cdot w_3+ {HR}\\cdot w_4\\right)}} \\right) } }  }  \\] ');
 
 var S_up;
@@ -180,7 +182,8 @@ function mathInit_Robot(){
 		.style('width','11.0em');  // 276 - right eqn
 }
 
-MathJax.Hub.Queue(function () {mathInit_Robot();})
+
+MathJax.Hub.Queue(function () {mathInit_Robot();});
 
 // Settings for scanning the patient 
 var scanDuration = 1200;

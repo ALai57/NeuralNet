@@ -7,6 +7,29 @@ var yEq = d3.scaleLinear().domain([5,-5])
 
 var explodeSVG;
 var theEqnSVG;
+
+var eqnWhole;
+var eqnRHS;
+var eqnTop_1,   eqnTop_Bar, eqnTop_Denom;
+var eqnDenom_1, eqnDenom_P, eqnDenom_e;
+var eqnExp1_n;
+var eqnX, eqnY, eqnZ;
+var eqnX_Right, eqnX_Left, eqnX_P;
+var eqnX_Left_Bar, eqnX_Left_Denom
+var eqnX_Right_Bar, eqnX_Right_Denom;
+var eqnW5, eqnW6;
+var eqnExp2_leftP, eqnExp2_rightP;
+var eqnExp3_leftP, eqnExp3_rightP;
+
+var eqnTop_Bar_Previous;
+var eqnDenom_1_Previous, eqnDenom_P_Previous, eqnDenom_e_Previous;
+var eqnExp1_n_Previous;
+var eqnX_Previous, eqnY_Previous, eqnZ_Previous;
+var eqnX_Right_Previous, eqnX_Left_Previous, eqnX_P_Previous;
+var eqnW5_Previous, eqnW6_Previous;
+var eqnX_Left_Bar_Previous, eqnX_Right_Bar_Previous;
+var eqnX_Left_Denom_Previous, eqnX_Right_Denom_Previous;
+var eqnX_Left_Bar_w_Previous, eqnX_Right_Bar_w_Previous;
 						
 MathJax.Hub.Config({
   jax: ["input/TeX","output/SVG", "output/PreviewHTML"],
@@ -38,29 +61,6 @@ theEqn.append('div')
 });
 
 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
-var eqnWhole;
-var eqnRHS;
-var eqnTop_1,   eqnTop_Bar, eqnTop_Denom;
-var eqnDenom_1, eqnDenom_P, eqnDenom_e;
-var eqnExp1_n;
-var eqnX, eqnY, eqnZ;
-var eqnX_Right, eqnX_Left, eqnX_P;
-var eqnX_Left_Bar, eqnX_Left_Denom
-var eqnX_Right_Bar, eqnX_Right_Denom;
-var eqnW5, eqnW6;
-var eqnExp2_leftP, eqnExp2_rightP;
-var eqnExp3_leftP, eqnExp3_rightP;
-
-var eqnTop_Bar_Previous;
-var eqnDenom_1_Previous, eqnDenom_P_Previous, eqnDenom_e_Previous;
-var eqnExp1_n_Previous;
-var eqnX_Previous, eqnY_Previous, eqnZ_Previous;
-var eqnX_Right_Previous, eqnX_Left_Previous, eqnX_P_Previous;
-var eqnW5_Previous, eqnW6_Previous;
-var eqnX_Left_Bar_Previous, eqnX_Right_Bar_Previous;
-var eqnX_Left_Denom_Previous, eqnX_Right_Denom_Previous;
-var eqnX_Left_Bar_w_Previous, eqnX_Right_Bar_w_Previous;
 
 
 MathJax.Hub.Queue(function () {

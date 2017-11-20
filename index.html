@@ -23,21 +23,13 @@
 		<script src="./jquery-3.2.1.min.js"> </script>
 		<script src="./bootstrap.min.js"> </script>
 		<script src="./d3.min.js"> </script>
-		<script src="./d3.slider.js"></script>
+		<!-- <script src="./d3.slider.js"></script> -->
 		<script src="./d3.rebind.js"></script>
 		<script src="./tableFunctions.js"></script>
 		<script src="./neuralNetworkFunctions.js"></script>
 		
 		<script>
 			//Inputs and configuration
-			
-			MathJax.Hub.Config({
-			  jax: ["input/TeX","output/CommonHTML"],
-			  extensions: ["tex2jax.js","MathMenu.js","MathZoom.js", "AssistiveMML.js", "a11y/accessibility-menu.js"],
-			  TeX: {
-				extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
-			  }
-			});
 			
 			//SVG drawing size
 			var wd = 500;
@@ -63,6 +55,21 @@
 				return Math.abs(y(h)-y(0));
 			}
 			
+			MathJax.Hub.Config({
+			  skipStartupTypeset:true
+			});
+
+			MathJax.Hub.Queue(
+
+			  ["setRenderer",MathJax.Hub,"CommonHTML"],
+			  ["Typeset",MathJax.Hub,"ANN_Equation"],
+			  ["Typeset",MathJax.Hub,"ANN_Equation_ws"],
+			  ["Typeset",MathJax.Hub,"drEqn"],
+			  
+			  ["setRenderer",MathJax.Hub,"SVG"],
+			  ["Typeset",MathJax.Hub,"explodedEqn"]
+			);
+			
 		</script>
 		
 
@@ -73,7 +80,7 @@
 			
 			<h3>INTRODUCTION</h3>
 			<p>Computers are getting eerily smart.</p>
-			<p>Today, they are recognizing words in our speech. They are recognizing faces in photos and videos. And they're recognizing objects, places, and hazards on the road.</p>
+			<p>Today, Amazon Alexa is recognizing words in our speech. iPhones are recognizing faces in photos and videos. And self-driving cars are recognizing objects, places, and hazards on the road.</p>
 			<p>But what is powering the ability to recognize voices, streets and people?</p> 
 			<p>How can Amazon Alexa understand our voices? How can self driving cars see and understand the road? And how can iPhones recognize our faces?</p>
 			<p>The answer: all of these technologies are made possible by artificial neural networks.</p>
@@ -81,7 +88,7 @@
 			
 			<h3>WHAT IS AN ARTIFICIAL NEURAL NETWORK? </h3>
 			<p>So what exactly is an artificial neural network? At its most basic level, an artificial neural network is a mathematical equation. And, surprisingly, artificial neural networks rely on simple mathematics; despite their cutting-edge applications, artificial neural networks typically only perform addition, subtraction, multiplication, and exponentiation. In fact, you can easily replicate the same calculations with a simple calculator and these four buttons:   +   -   x   exp()</p>  
-			<p>What makes neural networks so special is in the way the calculations are performed. When these operations are combined in the right order, we can get computer to recognize your voice.</p>
+			<p>What makes neural networks so special is in the way the calculations are performed. When these operations are combined in the right order, we can get computer to recognize your voice - we just need a fast computer and a data set (preferably, a large one).</p>
 			<br>
 
 			<h3>AN EXAMPLE NEURAL NETWORK</h3>
@@ -98,7 +105,7 @@
 			<br>
 			
 			<h3>MAKING PREDICTIONS WITH A NEURAL NETWORK</h3>
-			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. However, there's a catch. For the network to be useful, we need the predictions to be accurate. </p>
+			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature, heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. However, there's a catch. For the network to be useful, we need the predictions to be accurate. </p>
 			<p>The key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings - when we change the settings, we change the network equation. And when the network equation changes, our predictions can get better or worse.</p>
 			<div id='ANN_Equation_ws'>
 				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{\color{red} w_{\color{red} 5} }{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 1}+ {HR}\cdot  \color{red} w_{\color{red} 2} \right)}} +\frac{\color{red} w_{\color{red} 6}}{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 3}+ {HR}\cdot \color{red} w_{\color{red} 4} \right)}} \right) } }  }  \] </p>
@@ -107,7 +114,7 @@
 			<br>
 			
 			<h3>TRAINING A NEURAL NETWORK TO MAKE BETTER PREDICTIONS</h3>
-			<p>The real challenge of a neural network is to learn the w settings that make the predictions as good as possible. Unfortunately, when we are just starting out, we have no idea what the settings should be. Our best option is to start by guessing values for the ws. </p>
+			<p>The real challenge of a neural network is to learn the w settings that make the predictions as good as possible. This process of learning the best settings is called "training". Unfortunately, when we are just starting out, we have no idea what the settings should be. Our best option is to start by guessing values for the ws. </p>
 			<p>In this example, we will start by guessing that every setting is equal to 1 (w1 = w2 = w3 = w4 = w5 = w6 = 1).</p>
 			
 			<h4>Collecting data to train the network</h4>
@@ -127,7 +134,7 @@
 			</div>
 			<h4>Making better predictions</h4>
 			<p>The first predictions are awful, because we started off by guessing that all ws = 1. In fact, the network predictions were almost identical for all of the patients.</p>
-			<p>Since the predictions were inaccurate, it is time for the "error" part of the trial-and-error. Our goal is to correct any errors the network made. At this stage, we update the w settings to make the errors a little bit smaller. And we repeat this process over and over.</p>
+			<p>Since the predictions were inaccurate, it is time for the "error" part of the trial-and-error. Our goal is to correct any errors the network made. At this stage, we update the w settings to make the errors a little bit smaller (In reality, we can use many different rules to update our w values, but this is beyond the scope of this article.). And we repeat this process over and over.</p>
 			<p>To truly train an artificial neural network well, we change the settings many times: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
 			<div id='Error'>
 				<p>[Error decreasing over time]</p>
@@ -136,7 +143,7 @@
 			
 			<h3>THE CONNECTION BETWEEN ARTIFICIAL NEURAL NETWORKS AND BRAINS.</h3> 
 			<p>So, why is an artificial neural network so powerful? And why can it do things that other computer programs cannot?</p>
-			<p>The answer: The neural network equation is not just an arbitrary collection of mathematical operations. Each operation has a purpose. And when these operations are combined, the entire equation imitates the way a brain works.</p> 
+			<p>The answer: The neural network equation is not just an arbitrary collection of mathematical operations. Each operation has a purpose. In fact, the operations in the neural network were inspired by the way brain cells work - when these operations are combined, the entire equation works like a very simple brain.</p> 
 			<p>In particular, artificial neural networks imitate two features of biological brain cells:</p>
 			<p><strong>1) ANNs imitate the way brain cells communicate with other brain cells.</strong> In biological brains, brain cells receive and send electrical signals. The electrical signals are the language that brain cells use to communicate. But there's a special feature of these signals - the signals coming in are <strong>inputs</strong> to the cell and the signals being sent are <strong>outputs</strong> from the cell. </p>
 			<p>If a brain cell doesn't receive enough electrical signals coming in, it will not send any signals out. Essentially, there's a threshold effect - once the cell crosses the threshold, it will start sending electrical signals out.</p>
