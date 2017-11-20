@@ -59,7 +59,8 @@
 			var eqnExp1_n;
 			var eqnX, eqnY, eqnZ;
 			var eqnX_Right, eqnX_Left, eqnX_P;
-			var eqnX_Left_Denom;
+			var eqnX_Left_Bar, eqnX_Left_Denom
+			var eqnX_Right_Bar, eqnX_Right_Denom;
 			var eqnW5, eqnW6;
 			var eqnExp2_leftP, eqnExp2_rightP;
 			var eqnExp3_leftP, eqnExp3_rightP;
@@ -70,7 +71,8 @@
 			var eqnX_Previous, eqnY_Previous, eqnZ_Previous;
 			var eqnX_Right_Previous, eqnX_Left_Previous, eqnX_P_Previous;
 			var eqnW5_Previous, eqnW6_Previous;
-			
+			var eqnX_Left_Bar_Previous, eqnX_Right_Bar_Previous;
+			var eqnX_Left_Denom_Previous, eqnX_Right_Denom_Previous;
 			<!-- var eqnBar1; -->
 			<!-- var eqn1; -->
 			<!-- var eqnBar23; -->
@@ -232,6 +234,12 @@
 				eqnX_Right_Previous  =  eqnX_Right.attr('transform');
 				eqnW5_Previous       =  eqnW5.attr('transform');
 				eqnW6_Previous       =  eqnW6.attr('transform');
+				eqnX_P_Previous      =	eqnX_P.attr('x');
+				eqnX_Left_Bar_Previous    = eqnX_Left_Bar.attr('y'); 
+				eqnX_Left_Denom_Previous  = eqnX_Left_Denom.attr('transform');
+				eqnX_Right_Bar_Previous   = eqnX_Right_Bar.attr('y'); 
+				eqnX_Right_Denom_Previous = eqnX_Right_Denom.attr('transform');
+				
 			});
 
 			function explodeEqn(){
@@ -260,8 +268,8 @@
 					.attr('y',1100);
 				
 				eqnExp1_e.transition().duration(1000)
-					.attr('y',1000)
 					.attr('x',5700)
+					.attr('y',1000)
 					.on('end',function(){
 						
 				d3.selectAll('svg').selectAll('#In3_Eqn').data([0])
@@ -396,7 +404,6 @@
 				
 				temp.transition().duration(1000)
 					.attr('y',y(-0.5));
-					<!-- .attr('x',function(d,i){return x(0.4)+i*(x(6.15)-x(0));}); -->
 				
 				eqnX_Left_Bar.transition().duration(1000)
 					.attr('y',-14500);
@@ -441,7 +448,7 @@
 					.style('opacity',0)
 					.attr('id','zvar_Eqn')
 					.transition().delay(500)
-					.attr('x', x(5.1))
+					.attr('x', x(4.6))
 					.attr('y', y(-0.8))
 					.style('opacity',1)
 					.text('z =')
@@ -495,6 +502,57 @@
 					.attr('ry', 20)
 					.attr('width',230)
 					.attr('height',50);
+			}
+			
+			function undoExplodeEqn3(){
+				
+				d3.selectAll('svg').selectAll('#yvar_Eqn').remove();
+				d3.selectAll('svg').selectAll('#yvar_Neuron').remove();	
+
+				d3.selectAll('svg').selectAll('#zvar_Eqn').remove();
+				d3.selectAll('svg').selectAll('#zvar_Neuron').remove();
+				
+				d3.selectAll('svg').selectAll('#input3').remove();
+				
+				svg.selectAll('.myones')
+					.transition().duration(1000)
+					.attr('y',y(1.7));
+					
+				svg.selectAll('.dots')
+					.transition().duration(1000)
+					.attr('x',function(d){return x(d);})
+					.attr('y',y(1.5));	
+				
+				eqnX_P.transition().duration(1000)
+					.attr('x',eqnX_P_Previous);
+				
+				eqnW5.transition().duration(1000)
+					.attr('transform','translate(21000,0)');
+					
+				eqnW6.transition().duration(1000)
+					.attr('transform','translate(21000,0)');	
+				
+				console.log(eqnX_Left_Denom_Previous);
+				console.log(eqnX_Left_Denom);
+				
+				eqnX_Left_Bar.transition().duration(1000)
+					.attr('y',eqnX_Left_Bar_Previous);
+				eqnX_Left_Denom.transition().duration(1000)
+					.attr('transform',eqnX_Left_Denom_Previous);
+				
+
+				eqnX_Right_Bar.transition().duration(1000)
+					.attr('y',eqnX_Right_Bar_Previous);
+				eqnX_Right_Denom.transition().duration(1000)
+					.attr('transform',eqnX_Right_Denom_Previous);
+					
+				d3.selectAll('svg').selectAll('#In3_Eqn')
+					.transition().duration(1000)
+					.attr('x', x(-1.1))
+					.attr('y', y(1.46))
+					
+				
+					
 			}
 			
 			function explodeEqn4(){
@@ -640,7 +698,26 @@
 					.attr('height',50);
 			}
 			
-			
+			function undoExplodeEqn4(){
+				
+				d3.selectAll('svg').selectAll('#In1_Eqn').remove();
+				d3.selectAll('svg').selectAll('#In1_Neuron').remove();	
+
+				d3.selectAll('svg').selectAll('#In2_Eqn').remove();
+				d3.selectAll('svg').selectAll('#In2_Neuron').remove();					
+				d3.selectAll('svg').selectAll('.dots').remove();
+				
+				eqnX_P.transition().duration(1000)
+					.attr('transform',eqnX_P_Previous);
+				eqnX_Right.transition().duration(1000)
+					.attr('transform',eqnX_Right_Previous);
+				
+				eqnW5.transition().duration(1000)
+					.attr('transform',eqnW5_Previous);
+				eqnW6.transition().duration(1000)
+					.attr('transform',eqnW6_Previous);
+					
+			}
 			
 		</script>
 		<script>
