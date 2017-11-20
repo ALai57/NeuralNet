@@ -4,8 +4,11 @@
 		<link rel="stylesheet" href="./bootstrap.min.css"/>
 		
 		<meta name="generator" content="BBEdit">
-		 <script type="text/javascript"
-		   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">
+		 <!-- <script type="text/javascript" -->
+		   <!-- src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">    -->
+		<!-- </script> -->
+		<script type="text/javascript"
+		   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js">   
 		</script>
 		<script src="./d3.min.js"> </script>
 		<script src="./d3-tip.js"> </script>
@@ -28,6 +31,13 @@
 		<script>
 			//Inputs and configuration
 			
+			MathJax.Hub.Config({
+			  jax: ["input/TeX","output/CommonHTML"],
+			  extensions: ["tex2jax.js","MathMenu.js","MathZoom.js", "AssistiveMML.js", "a11y/accessibility-menu.js"],
+			  TeX: {
+				extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+			  }
+			});
 			
 			//SVG drawing size
 			var wd = 500;
@@ -55,8 +65,7 @@
 			
 		</script>
 		
-		
-		
+
 		<div class="container"> 
 		<div class = "row"> <div class="col-md-6 col-md-offset-3">
 			<h1>Artificial Neural Networks</h1>
@@ -138,6 +147,7 @@
 			<p><strong>2) ANNs imitate the way brain cells preferentially listen to certain other brain cells.</strong> Normally, brain cells receive electrical signal inputs from many other cells. However, not all inputs are equal; a brain cell will listen more to some cells than others. Just like people choose who to listen to, neurons listen more to some neurons than others.  For example, some input signals could be worth 3x more than others. And some input signals could be worth nothing.
 			Click the example below to see how the neural network equation imitates biological brains.</p>
 			<div id='EquationExplode'>
+				<script src="./equationExplodeFunctions.js"></script>
 				<p>[EquationExplode JS]</p>
 			</div>
 			<br>

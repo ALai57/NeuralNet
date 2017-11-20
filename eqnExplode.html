@@ -73,18 +73,7 @@
 			var eqnW5_Previous, eqnW6_Previous;
 			var eqnX_Left_Bar_Previous, eqnX_Right_Bar_Previous;
 			var eqnX_Left_Denom_Previous, eqnX_Right_Denom_Previous;
-			<!-- var eqnBar1; -->
-			<!-- var eqn1; -->
-			<!-- var eqnBar23; -->
-			<!-- var eqnW56; -->
-			<!-- var eqn1P; -->
-			<!-- var eqne; -->
-			
-			<!-- var eqn2P; -->
-			<!-- var eqnL; -->
-			<!-- var eqnR; -->
-			<!-- var eqnAy; -->
-			<!-- var eqnAz; -->
+			var eqnX_Left_Bar_w_Previous, eqnX_Right_Bar_w_Previous;
 			
 			MathJax.Hub.Queue(function () {
 				<!-- mathInit(); -->
@@ -220,6 +209,9 @@
 				
 				//Get initial settings
 				eqnX_Previous        =  eqnX.attr('transform');
+				eqnY_Previous        =  eqnY.attr('transform');
+				eqnZ_Previous        =  eqnZ.attr('transform');
+				
 				eqnTop_Bar_Previous  = [eqnTop_Bar.attr('width'),
 										eqnTop_Bar.attr('x')];
 				eqnDenom_1_Previous  = [eqnDenom_1.attr('x'),
@@ -230,15 +222,20 @@
 										eqnExp1_e.attr('y')];
 				eqnExp1_n_Previous   = [eqnExp1_n.attr('x'),
 										eqnExp1_n.attr('y')];
-				eqnX_P_Previous      =  eqnX_P.attr('transform');
+				eqnX_P_Previous_t    =  eqnX_P.attr('transform');
 				eqnX_Right_Previous  =  eqnX_Right.attr('transform');
 				eqnW5_Previous       =  eqnW5.attr('transform');
 				eqnW6_Previous       =  eqnW6.attr('transform');
 				eqnX_P_Previous      =	eqnX_P.attr('x');
-				eqnX_Left_Bar_Previous    = eqnX_Left_Bar.attr('y'); 
+				eqnX_Left_Bar_Previous    = [eqnX_Left_Bar.attr('x'),
+											 eqnX_Left_Bar.attr('y')]; 
 				eqnX_Left_Denom_Previous  = eqnX_Left_Denom.attr('transform');
-				eqnX_Right_Bar_Previous   = eqnX_Right_Bar.attr('y'); 
+				eqnX_Right_Bar_Previous   = [eqnX_Right_Bar.attr('x'),
+											 eqnX_Right_Bar.attr('y')]; 
 				eqnX_Right_Denom_Previous = eqnX_Right_Denom.attr('transform');
+				
+				eqnX_Left_Bar_w_Previous =  eqnX_Left_Bar.attr('width');
+				eqnX_Right_Bar_w_Previous =  eqnX_Right_Bar.attr('width');
 				
 			});
 
@@ -388,7 +385,7 @@
 				d3.selectAll('svg').selectAll('.dots').remove();
 				
 				eqnX_P.transition().duration(1000)
-					.attr('transform',eqnX_P_Previous);
+					.attr('transform',eqnX_P_Previous_t);
 				eqnX_Right.transition().duration(1000)
 					.attr('transform',eqnX_Right_Previous);
 				
@@ -532,17 +529,14 @@
 				eqnW6.transition().duration(1000)
 					.attr('transform','translate(21000,0)');	
 				
-				console.log(eqnX_Left_Denom_Previous);
-				console.log(eqnX_Left_Denom);
-				
 				eqnX_Left_Bar.transition().duration(1000)
-					.attr('y',eqnX_Left_Bar_Previous);
+					.attr('y',eqnX_Left_Bar_Previous[1]);
 				eqnX_Left_Denom.transition().duration(1000)
 					.attr('transform',eqnX_Left_Denom_Previous);
 				
 
 				eqnX_Right_Bar.transition().duration(1000)
-					.attr('y',eqnX_Right_Bar_Previous);
+					.attr('y',eqnX_Right_Bar_Previous[1]);
 				eqnX_Right_Denom.transition().duration(1000)
 					.attr('transform',eqnX_Right_Denom_Previous);
 					
@@ -577,6 +571,10 @@
 				eqnExp3_rightP.transition().duration(100)
 					.style('opacity',0);	
 			
+				d3.selectAll('svg').selectAll('#yvar_Eqn')
+						.transition().delay(500)
+						.attr('x', x(-1.5));
+			
 				eqnY.transition().duration(1000)
 						.attr('transform', 'translate(-5000,-8500)')
 						.on('end',function(){
@@ -593,13 +591,13 @@
 				eqnX_Right_Bar.transition().duration(1000)
 					.attr('width',8000);
 						
-				eqnZ.transition().duration(1000)
-						.attr('transform', 'translate(-5000,-8500)')
-						.on('end',function(){
-						
 				d3.selectAll('svg').selectAll('#zvar_Eqn')
 					.transition().delay(500)
 					.attr('x', x(3.7));
+					
+				eqnZ.transition().duration(1000)
+						.attr('transform', 'translate(-5000,-8500)')
+						.on('end',function(){
 					
 
 				svg.selectAll('#neuron2').data([0])
@@ -704,20 +702,54 @@
 				d3.selectAll('svg').selectAll('#In1_Neuron').remove();	
 
 				d3.selectAll('svg').selectAll('#In2_Eqn').remove();
-				d3.selectAll('svg').selectAll('#In2_Neuron').remove();					
+				d3.selectAll('svg').selectAll('#In2_Neuron').remove();
+
+				d3.selectAll('#input1').remove();
+				d3.selectAll('#input2').remove();
+				
+				d3.selectAll('#neuron1').remove();
+				d3.selectAll('#neuron2').remove();
+				
 				d3.selectAll('svg').selectAll('.dots').remove();
 				
-				eqnX_P.transition().duration(1000)
-					.attr('transform',eqnX_P_Previous);
-				eqnX_Right.transition().duration(1000)
-					.attr('transform',eqnX_Right_Previous);
+				eqnExp2_leftP.transition().duration(100)
+					.style('opacity',1);
+				eqnExp2_rightP.transition().duration(100)
+					.style('opacity',1);
+				eqnExp3_leftP.transition().duration(100)
+					.style('opacity',1);
+				eqnExp3_rightP.transition().duration(100)
+					.style('opacity',1);
 				
-				eqnW5.transition().duration(1000)
-					.attr('transform',eqnW5_Previous);
-				eqnW6.transition().duration(1000)
-					.attr('transform',eqnW6_Previous);
+				eqnX_Left_Bar.transition().duration(1000)
+					.attr('width',eqnX_Left_Bar_w_Previous);
+				eqnX_Right_Bar.transition().duration(1000)
+					.attr('width',eqnX_Right_Bar_w_Previous);
+			
+				eqnX_Right.transition().duration(1000)
+					.attr('transform','translate(28000,0)');	
+				eqnX_Right_Denom.transition().duration(1000)
+					.attr('transform','translate(149,-18000)');	
+				eqnX_Left_Denom.transition().duration(1000)
+					.attr('transform','translate(149,-18000)');
+			
+				eqnY.transition().duration(1000)
+					.attr('transform',eqnY_Previous);
+				eqnZ.transition().duration(1000)
+					.attr('transform',eqnZ_Previous);
+					
+				d3.selectAll('svg').selectAll('#zvar_Eqn')
+					.transition().delay(500)
+					.attr('x', x(4.6));	
+				d3.selectAll('svg').selectAll('#yvar_Eqn')
+					.transition().delay(500)
+					.attr('x', x(-1.1));	
+				d3.selectAll('.myones')
+					.transition().duration(500)
+					.attr('x',function(d){return x(d);});
 					
 			}
+
 			
 		</script>
 		<script>
