@@ -145,18 +145,18 @@ function mathInit_Robot(){
 	S_up   = d3.select('#MJXc-Node-224').selectAll('.mjx-char');
 	S_down = d3.select('#MJXc-Node-225').selectAll('.mjx-char').text('pred');
 	// W Variables
-	w1_up   = d3.select('#MJXc-Node-49').selectAll('.mjx-char');
-	w1_down = d3.select('#MJXc-Node-54').selectAll('.mjx-char');
-	w2_up   = d3.select('#MJXc-Node-66').selectAll('.mjx-char');
-	w2_down = d3.select('#MJXc-Node-71').selectAll('.mjx-char');
-	w3_up   = d3.select('#MJXc-Node-97').selectAll('.mjx-char');
-	w3_down = d3.select('#MJXc-Node-102').selectAll('.mjx-char');
-	w4_up   = d3.select('#MJXc-Node-114').selectAll('.mjx-char');
-	w4_down = d3.select('#MJXc-Node-119').selectAll('.mjx-char');
-	w5_up   = d3.select('#MJXc-Node-29').selectAll('.mjx-char');
-	w5_down = d3.select('#MJXc-Node-34').selectAll('.mjx-char');
-	w6_up   = d3.select('#MJXc-Node-77').selectAll('.mjx-char');
-	w6_down = d3.select('#MJXc-Node-82').selectAll('.mjx-char');
+	w1_up   = d3.select('#MJXc-Node-263').selectAll('.mjx-char');
+	w1_down = d3.select('#MJXc-Node-264').selectAll('.mjx-char');
+	w2_up   = d3.select('#MJXc-Node-272').selectAll('.mjx-char');
+	w2_down = d3.select('#MJXc-Node-273').selectAll('.mjx-char');
+	w3_up   = d3.select('#MJXc-Node-294').selectAll('.mjx-char');
+	w3_down = d3.select('#MJXc-Node-295').selectAll('.mjx-char');
+	w4_up   = d3.select('#MJXc-Node-303').selectAll('.mjx-char');
+	w4_down = d3.select('#MJXc-Node-304').selectAll('.mjx-char');
+	w5_up   = d3.select('#MJXc-Node-247').selectAll('.mjx-char');  
+	w5_down = d3.select('#MJXc-Node-248').selectAll('.mjx-char');	
+	w6_up   = d3.select('#MJXc-Node-278').selectAll('.mjx-char');
+	w6_down = d3.select('#MJXc-Node-279').selectAll('.mjx-char');
 	// T and HR variables
 	T_1  = d3.select('#MJXc-Node-260').selectAll('.mjx-char');
 	T_2  = d3.select('#MJXc-Node-291').selectAll('.mjx-char');
@@ -190,7 +190,7 @@ var scanDuration = 1200;
 var resetDuration = 500;	
 var advanceTime = 500;
 var flyToEquationDuration = 1000;
-var trainNumber = 0;
+var trainNumber = -1;
 var T_x = [2,6.8];
 var T_y = [-3,-3];
 var HR_x = [4,8.8];
@@ -333,6 +333,44 @@ function moveNumbers(){
 			});
 }
 
+var w_Initial_EQN = [{"x": 3.0, "y": -2.9},
+					 {"x": 4.2, "y": -2.9},
+					 {"x": 7.0, "y": -2.9},
+					 {"x": 8.2, "y": -2.9},
+					 {"x": 3.1, "y": -2.2},
+					 {"x": 7.1, "y": -2.2} ];
+				 
+function robotLoadWs(){
+
+	var flyWs = d3.select('#RobotDoctorDiv').select('svg').selectAll('.theOnes')
+		.data(w_Initial_EQN)
+		.enter().append('text')
+		.attr('x',function (d,i) {return x(9);})
+		.attr('y',function (d,i) {return y(4);})
+		.text('1');
+	
+	flyWs.transition().duration(flyToEquationDuration)
+		.attr('x',function (d,i) {return x(d.x);})
+		.attr('y',function (d,i) {return y(d.y);})
+		.on('end', function (d,i) {
+				w1_up.text('1');
+				w2_up.text('1');
+				w3_up.text('1');
+				w4_up.text('1');
+				w5_up.text('1');
+				w6_up.text('1');
+				
+				w1_down.text('');
+				w2_down.text('');
+				w3_down.text('');
+				w4_down.text('');
+				w5_down.text('');
+				w6_down.text('');
+				return flyWs.remove();
+			});
+	
+	
+}
 
 
 
@@ -387,10 +425,12 @@ function revolveGears(ang) {
 }	
 
 function spinGears (){
-	revolveGears(0);
-	if (trainNumber===0){
-		robotScanPatient();
+	
+	if (trainNumber===-1){
+		robotLoadWs();
+		trainNumber++;
 	} else {
+		revolveGears(0);
 		robotScanPatient();
 	}
 }
