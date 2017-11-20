@@ -30,7 +30,26 @@ var eqnW5_Previous, eqnW6_Previous;
 var eqnX_Left_Bar_Previous, eqnX_Right_Bar_Previous;
 var eqnX_Left_Denom_Previous, eqnX_Right_Denom_Previous;
 var eqnX_Left_Bar_w_Previous, eqnX_Right_Bar_w_Previous;
-						
+			
+var EXPLODE_STATE=1;
+
+function nextExplode(){
+	if (EXPLODE_STATE === 1){
+		explodeEqn();
+		EXPLODE_STATE=EXPLODE_STATE+1;
+	}else if (EXPLODE_STATE === 2){
+		explodeEqn2();
+		EXPLODE_STATE=EXPLODE_STATE+1;
+	}else if (EXPLODE_STATE === 3){
+		explodeEqn3();
+		EXPLODE_STATE=EXPLODE_STATE+1;
+	}else if (EXPLODE_STATE === 4){
+		explodeEqn4();
+		EXPLODE_STATE=EXPLODE_STATE+1;
+	}
+	
+}
+			
 MathJax.Hub.Config({
   jax: ["input/TeX","output/SVG", "output/PreviewHTML"],
   extensions: ["tex2jax.js","MathMenu.js","MathZoom.js", "fast-preview.js", "AssistiveMML.js", "a11y/accessibility-menu.js"],
@@ -45,7 +64,8 @@ MathJax.Hub.Queue(function () {
 explodeSVG = d3.select('#EquationExplode')
 	.append("svg")
 	.style("width",600)
-	.style("height",600);	
+	.style("height",600)
+	.on('click',function(){nextExplode()});	
 	
 var theEqn = explodeSVG.append("foreignObject")
   .attr("width", 580)

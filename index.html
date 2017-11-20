@@ -4,9 +4,6 @@
 		<link rel="stylesheet" href="./bootstrap.min.css"/>
 		
 		<meta name="generator" content="BBEdit">
-		 <!-- <script type="text/javascript" -->
-		   <!-- src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">    -->
-		<!-- </script> -->
 		<script type="text/javascript"
 		   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js">   
 		</script>
@@ -96,7 +93,7 @@
 			<p>Imagine that we are creating a medical robot (href = Big Hero 6!). The robot is supposed to measure a patient's heart rate and core temperature, and use that information to recognize when people are sick.  And just like Alexa, this robot will use a neural network to recognize sick patients.</p>
 			<p>Our example neural network is below. Click any of the terms to get an explanation.</p>
 			<div id='ANN_Equation'>
-				<p>[THIS SHOULD HAVE INTERACTIVE HOVER-OVER AND CLICKABLE BEHAVIOR IN THE FINAL ARTICLE]</p> 
+				<!-- <p>[THIS SHOULD HAVE INTERACTIVE HOVER-OVER AND CLICKABLE BEHAVIOR IN THE FINAL ARTICLE]</p>  -->
 				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{w_5 }{1 + e^{-\left(T\cdot w_1+ {HR}\cdot w_2 \right)}} +\frac{w_6}{1 + e^{-\left(T\cdot w_3+ {HR}\cdot w_4\right)}} \right) } }  }  \] </p>
 			</div>
 			
@@ -137,7 +134,7 @@
 			<p>Since the predictions were inaccurate, it is time for the "error" part of the trial-and-error. Our goal is to correct any errors the network made. At this stage, we update the w settings to make the errors a little bit smaller (In reality, we can use many different rules to update our w values, but this is beyond the scope of this article.). And we repeat this process over and over.</p>
 			<p>To truly train an artificial neural network well, we change the settings many times: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
 			<div id='Error'>
-				<p>[Error decreasing over time]</p>
+				<!-- <p>[Error decreasing over time]</p> -->
 			</div>
 
 			
@@ -147,19 +144,20 @@
 			<p>In particular, artificial neural networks imitate two features of biological brain cells:</p>
 			<p><strong>1) ANNs imitate the way brain cells communicate with other brain cells.</strong> In biological brains, brain cells receive and send electrical signals. The electrical signals are the language that brain cells use to communicate. But there's a special feature of these signals - the signals coming in are <strong>inputs</strong> to the cell and the signals being sent are <strong>outputs</strong> from the cell. </p>
 			<p>If a brain cell doesn't receive enough electrical signals coming in, it will not send any signals out. Essentially, there's a threshold effect - once the cell crosses the threshold, it will start sending electrical signals out.</p>
-			<p>The figure below shows data from real neurons - it shows that once neurons get enough signals coming in, they start sending signals of their own.</p>
+			<!-- <p>The figure below shows data from real neurons - it shows that once neurons get enough signals coming in, they start sending signals of their own.</p> -->
 			
-			<p>Beer RD (1990) Intelligence as Adaptive Behavior: An Experiment in Computational Neuroethology. San Diego: Acadmic Press, Inc.</p>
+			<!-- <p>Beer RD (1990) Intelligence as Adaptive Behavior: An Experiment in Computational Neuroethology. San Diego: Acadmic Press, Inc.</p> -->
 
-			<p><strong>2) ANNs imitate the way brain cells preferentially listen to certain other brain cells.</strong> Normally, brain cells receive electrical signal inputs from many other cells. However, not all inputs are equal; a brain cell will listen more to some cells than others. Just like people choose who to listen to, neurons listen more to some neurons than others.  For example, some input signals could be worth 3x more than others. And some input signals could be worth nothing.
-			Click the example below to see how the neural network equation imitates biological brains.</p>
+			<p><strong>2) ANNs imitate the way brain cells preferentially listen to certain other brain cells.</strong> Normally, brain cells receive electrical signal inputs from many other cells. However, not all inputs are equal; a brain cell will listen more to some cells than others. Just like people choose who to listen to, neurons listen more to some neurons than others.  For example, some input signals could be worth 3x more than others. And some input signals could be worth nothing.</p>
+			<p>Click the example below to see how the neural network equation imitates biological brains.</p>
 			<div id='EquationExplode'>
 				<script src="./equationExplodeFunctions.js"></script>
-				<p>[EquationExplode JS]</p>
 			</div>
 			<br>
-			<h3>ANNs</h3> 
-			<p>Artificial neural networks are powerful tools.</p>
+			<h3>Artificial Neural Networks are Imitation Brains</h3> 
+			<p>So, why imitate biological brains?</p>
+			<p>Biological brains can learn, and get better and better at different tasks. This is a really desirable feature for a computer program - even a simplified version of a brain can be taught to recognize faces or voices. So next time you talk to Siri, just remember, she's working with some similar hardware - but right now, you just have the more advanced version.</p>
+</p>
 			
 		</div></div>
 		<div id="NetworkGraph"></div>
