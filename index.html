@@ -82,12 +82,12 @@
 			<br>
 			
 			<h3>WHAT IS AN ARTIFICIAL NEURAL NETWORK? </h3>
-			<p>So what exactly is an artificial neural network? At its most basic level, an artificial neural network is a mathematical equation. And, surprisingly, artificial neural networks rely on simple mathematics; despite their cutting-edge applications, artificial neural networks typically only perform addition, subtraction, multiplication, and exponentiation. In fact, you can easily replicate the same calculations with a simple calculator and these four buttons:   +   -   x   exp()</p>  
+			<p>At its most basic level, an artificial neural network is a mathematical equation. And, surprisingly, artificial neural networks rely on simple mathematics; typically, artificial neural networks only perform addition, subtraction, multiplication, and exponentiation. In fact, you can easily replicate the same calculations with a simple calculator and these four buttons:   +   -   x   exp()</p>  
 			<p>What makes neural networks so special is in the way the calculations are performed. When these operations are combined in the right order, we can get computer to recognize your voice - we just need a fast computer and a data set (preferably, a large one).</p>
 			<br>
 
 			<h3>AN EXAMPLE NEURAL NETWORK</h3>
-			<p>To better illustrate what an artificial neural network is, and how it works, let's walk through a simple example.</p> 
+			<p>To better illustrate what an artificial neural network is and how it works, let's walk through a simple example.</p> 
 			<p>Imagine that we are creating a medical robot (href = Big Hero 6!). The robot is supposed to measure a patient's heart rate and core temperature, and use that information to recognize when people are sick.  And just like Alexa, this robot will use a neural network to recognize sick patients.</p>
 			<p>Our example neural network is below. Click any of the terms to get an explanation.</p>
 			<div id='ANN_Equation'>
@@ -100,12 +100,12 @@
 			<br>
 			
 			<h3>MAKING PREDICTIONS WITH A NEURAL NETWORK</h3>
-			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature, heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. However, there's a catch. For the network to be useful, we need the predictions to be accurate. </p>
-			<p>The key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings - when we change the settings, we change the network equation. And when the network equation changes, our predictions can get better or worse.</p>
+			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature, heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. </p>
+			<p>However, there's a catch. For the network to be useful, we need the predictions to be accurate, and the key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings - when we change the settings, we change the network equation. And when the network equation changes, our predictions can get better or worse.</p>
 			<div id='ANN_Equation_ws'>
 				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{\color{red} w_{\color{red} 5} }{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 1}+ {HR}\cdot  \color{red} w_{\color{red} 2} \right)}} +\frac{\color{red} w_{\color{red} 6}}{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 3}+ {HR}\cdot \color{red} w_{\color{red} 4} \right)}} \right) } }  }  \] </p>
 			</div>
-			<p>Ultimately, if we get the settings right, we can get great predictions from our neural network! That's how Alexa can recognize your voice – in her neural network she has found the right settings to make her predictions really good. But unlike our example, Alexa most likely has hundreds or thousands of w settings in total, rather than just 6 (w1, w2, w3, w4, w5, and w6 in our robot example).</p>
+			<p>Ultimately, if we get the settings right, we can get our neural network to recognize sick patients! That's exactly the same way that Alexa can recognize your voice – in her neural network she has found the right settings to make her predictions really good. But unlike our example, Alexa most likely has hundreds or thousands of w settings in total, compared to our robot's six (w1, w2, w3, w4, w5, and w6).</p>
 			<br>
 			
 			<h3>TRAINING A NEURAL NETWORK TO MAKE BETTER PREDICTIONS</h3>
@@ -122,14 +122,14 @@
 			</div>
 			
 			<h4>The network's first predictions</h4>
-			<p>Training a network is a trial-and-error process. So now it's time to try and make predictions. For each subject, we will make predictions by plugging in temperature, heart rate, and our w values into the equation (at first, we guessed that all ws = 1). Then we can calculate our predictions.</p> 
+			<p>Training a network is a trial-and-error process. Now that we have our data, we need to try out our equation and see if the w values work well. First, we will plug our w values into the equation (remember, to start we guessed that all ws = 1). Then, for each subject, we will plug in the subject's temperature, heart rate. Once this is done, we can calculate our predictions of whether the patient was sick or not.</p> 
 			<div id='RobotDoctorDiv'>
 				<p><strong>[Click the gears to read in patient data and predict if the patient is sick or not.]</strong></p>
 				<script src="./robotdoctor.js"></script>
 			</div>
 			<h4>Making better predictions</h4>
-			<p>The first predictions are awful, because we started off by guessing that all ws = 1. In fact, the network predictions were almost identical for all of the patients.</p>
-			<p>Since the predictions were inaccurate, it is time for the "error" part of the trial-and-error. Our goal is to correct any errors the network made. At this stage, we update the w settings to make the errors a little bit smaller (In reality, we can use many different rules to update our w values, but this is beyond the scope of this article.). And we repeat this process over and over.</p>
+			<p>The first predictions are awful, because we started off by guessing that all ws = 1. In fact, the network predictions were almost identical for all of the patients. This was the "trial" part of "trial and error".</p>
+			<p>After trying our equation, we correct for any errors the network made. This is the "error" part of the trial-and-error. At this stage, we update the w settings to make the errors a little bit smaller. And we repeat this process over and over. We can use many different rules to update our w values, but this is beyond the scope of this article. </p>
 			<p>To truly train an artificial neural network well, we change the settings many times: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
 			<div id='Error'>
 				<!-- <p>[Error decreasing over time]</p> -->
@@ -137,16 +137,20 @@
 
 			
 			<h3>THE CONNECTION BETWEEN ARTIFICIAL NEURAL NETWORKS AND BRAINS.</h3> 
-			<p>So, why is an artificial neural network so powerful? And why can it do things that other computer programs cannot?</p>
-			<p>The answer: The neural network equation is not just an arbitrary collection of mathematical operations. Each operation has a purpose. In fact, the operations in the neural network were inspired by the way brain cells work - when these operations are combined, the entire equation works like a very simple brain.</p> 
-			<p>In particular, artificial neural networks imitate two features of biological brain cells:</p>
-			<p><strong>1) ANNs imitate the way brain cells communicate with other brain cells.</strong> In biological brains, brain cells receive and send electrical signals. The electrical signals are the language that brain cells use to communicate. But there's a special feature of these signals - the signals coming in are <strong>inputs</strong> to the cell and the signals being sent are <strong>outputs</strong> from the cell. </p>
-			<p>If a brain cell doesn't receive enough electrical signals coming in, it will not send any signals out. Essentially, there's a threshold effect - once the cell crosses the threshold, it will start sending electrical signals out.</p>
+			<p>In real brains, brain cells communicate using electrical pulses. Real brain cells are great listeners because, first, they listen to signals other brain cells are sending them. Only after they listen do they decide to how to respond.</p> 
+			<p>Communication between real brain cells can lead to works of art, engineering marvels, and the full spectrum of human behaviors. Noticing how incredible abilities all arise from cells communicating with one another, Artificial neural networks try to imitate the way real brain cells communicate. 
+			<p>In particular, there are two behaviors that are explicitly programmed into an artificial neural network.</p>
+
+			<p><strong>1) Threshold.</strong> 
+			In a real brain, each cell receives electrical signals from other brain cells. The total of all signals coming in to a cell is like an<strong>input</strong>.
+			<p>If a brain cell doesn't receive enough input, it will not send any electrical signals of its own. Essentially, there's a threshold effect - once the cell gets enough electrical input, it will respond. Below the threshold, nothing happens. Above the threshold value, more input leads to more output.</p>
+			
 			<!-- <p>The figure below shows data from real neurons - it shows that once neurons get enough signals coming in, they start sending signals of their own.</p> -->
 			
 			<!-- <p>Beer RD (1990) Intelligence as Adaptive Behavior: An Experiment in Computational Neuroethology. San Diego: Acadmic Press, Inc.</p> -->
 
-			<p><strong>2) ANNs imitate the way brain cells preferentially listen to certain other brain cells.</strong> Normally, brain cells receive electrical signal inputs from many other cells. However, not all inputs are equal; a brain cell will listen more to some cells than others. Just like people choose who to listen to, neurons listen more to some neurons than others.  For example, some input signals could be worth 3x more than others. And some input signals could be worth nothing.</p>
+			<p><strong>2) Selective listening.</strong> Normally, brain cells receive electrical signals from many other cells. However, not all signals are equal; each brain cell listens more to some cells than others. 
+			<p>Just like advice from a trusted friend may count more than advice from a reckless friend, signals from some neurons count more than signals from other neurons. For example, some signals could be worth 3x more than others. And some signals could be worth nothing at all.</p>
 			<p>Click the example below to see how the neural network equation imitates biological brains.</p>
 			<div id='EquationExplode'>
 				<script src="./equationExplodeFunctions.js"></script>
