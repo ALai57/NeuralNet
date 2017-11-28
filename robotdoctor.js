@@ -13,7 +13,7 @@ var svg = d3.select('#RobotDoctorDiv')
 ////////////////////////////////////////////////////////
 // TABLE SETUP	
 	
-var columns = ["T", "HR", "S_true","y_pred"];
+var columns = ["T", "HR", "S_true","S_pred"];
 
 var tableRobot = d3.select('#RobotDoctorDiv').select('svg')
   .append("foreignObject")
@@ -32,6 +32,7 @@ thead.append("tr")
 	.data(columns)
 	.enter()
 	.append("th")
+		.style('text-align','center')
 		.text(function(column) { return column; });
 
 // create a row for each object in the data
@@ -39,6 +40,7 @@ var rows = tbody.selectAll("tr")
 	.data(myData)
 	.enter()
 	.append("tr")
+	.style('text-align','center')
 	.attr('id',function (d,i) {return 'robotdata' + i;});
 
 // create a cell in each row for each column
@@ -50,6 +52,7 @@ var cells = rows.selectAll("td")
 	})
 	.enter()
 	.append("td")
+	.style('text-align','center')
 	.attr("style", "font-family: Courier;width:50px;");
 
 //Loop over and add table contents
@@ -115,7 +118,7 @@ var theEqn = d3.select('#RobotDoctorDiv')
 theEqn.append('div')
 	.style('font-size','50%')
 	.attr('id','drEqn')
-	.text('\\[ \\LARGE{ S_{pred} = \\frac{1}{1+e^{ - \\left(\\frac{w_5 }{1 + e^{-\\left(T\\cdot w_1+ {HR}\\cdot w_2 \\right)}} +\\frac{w_6}{1 + e^{-\\left(T\\cdot w_3+ {HR}\\cdot w_4\\right)}} \\right) } }  }  \\] ');
+	.text('\\[ \\LARGE{ S_{pred} = \\frac{1}{1+e^{ - \\left(\\frac{w_7 }{1 + e^{-\\left(T\\cdot w_1+ {HR}\\cdot w_2 + w_3\\right)}} +\\frac{w_8}{1 + e^{-\\left(T\\cdot w_4+ {HR}\\cdot w_5 + w_6 \\right)}} + w_9 \\right) } }  }  \\] ');
 
 var S_up;
 var S_down;
@@ -132,6 +135,12 @@ var w5_up;
 var w5_down;
 var w6_up;
 var w6_down;
+var w7_up;
+var w7_down;
+var w8_up;
+var w8_down;
+var w9_up;
+var w9_down;
 // T and HR variables
 var T_1;
 var T_2;
@@ -142,44 +151,50 @@ function mathInit_Robot(){
 	
 	
 	// S variable
-	S_up   = d3.select('#MJXc-Node-224').selectAll('.mjx-char');
-	S_down = d3.select('#MJXc-Node-225').selectAll('.mjx-char').text('pred');
+	S_up   = d3.select('#MJXc-Node-266').selectAll('.mjx-char');
+	S_down = d3.select('#MJXc-Node-267').selectAll('.mjx-char').text('pred');
 	// W Variables
-	w1_up   = d3.select('#MJXc-Node-263').selectAll('.mjx-char');
-	w1_down = d3.select('#MJXc-Node-264').selectAll('.mjx-char');
-	w2_up   = d3.select('#MJXc-Node-272').selectAll('.mjx-char');
-	w2_down = d3.select('#MJXc-Node-273').selectAll('.mjx-char');
-	w3_up   = d3.select('#MJXc-Node-294').selectAll('.mjx-char');
-	w3_down = d3.select('#MJXc-Node-295').selectAll('.mjx-char');
-	w4_up   = d3.select('#MJXc-Node-303').selectAll('.mjx-char');
-	w4_down = d3.select('#MJXc-Node-304').selectAll('.mjx-char');
-	w5_up   = d3.select('#MJXc-Node-247').selectAll('.mjx-char');  
-	w5_down = d3.select('#MJXc-Node-248').selectAll('.mjx-char');	
-	w6_up   = d3.select('#MJXc-Node-278').selectAll('.mjx-char');
-	w6_down = d3.select('#MJXc-Node-279').selectAll('.mjx-char');
+	w1_up   = d3.select('#MJXc-Node-305').selectAll('.mjx-char');
+	w1_down = d3.select('#MJXc-Node-306').selectAll('.mjx-char');
+	w2_up   = d3.select('#MJXc-Node-314').selectAll('.mjx-char');
+	w2_down = d3.select('#MJXc-Node-315').selectAll('.mjx-char');
+	w3_up   = d3.select('#MJXc-Node-318').selectAll('.mjx-char');
+	w3_down = d3.select('#MJXc-Node-319').selectAll('.mjx-char');
+	w4_up   = d3.select('#MJXc-Node-340').selectAll('.mjx-char');
+	w4_down = d3.select('#MJXc-Node-341').selectAll('.mjx-char');
+	w5_up   = d3.select('#MJXc-Node-349').selectAll('.mjx-char');
+	w5_down = d3.select('#MJXc-Node-350').selectAll('.mjx-char');
+	w6_up   = d3.select('#MJXc-Node-353').selectAll('.mjx-char');
+	w6_down = d3.select('#MJXc-Node-354').selectAll('.mjx-char');
+	w7_up   = d3.select('#MJXc-Node-289').selectAll('.mjx-char');  
+	w7_down = d3.select('#MJXc-Node-290').selectAll('.mjx-char');	
+	w8_up   = d3.select('#MJXc-Node-324').selectAll('.mjx-char');
+	w8_down = d3.select('#MJXc-Node-325').selectAll('.mjx-char');
+	w9_up   = d3.select('#MJXc-Node-358').selectAll('.mjx-char');
+	w9_down = d3.select('#MJXc-Node-359').selectAll('.mjx-char');
 	// T and HR variables
-	T_1  = d3.select('#MJXc-Node-260').selectAll('.mjx-char');
-	T_2  = d3.select('#MJXc-Node-291').selectAll('.mjx-char');
-	HR_1 = d3.select('#MJXc-Node-266').selectAll('.mjx-char').text('HR');
-	HR_2 = d3.select('#MJXc-Node-297').selectAll('.mjx-char').text('HR');
+	T_1  = d3.select('#MJXc-Node-302').selectAll('.mjx-char');
+	T_2  = d3.select('#MJXc-Node-337').selectAll('.mjx-char');
+	HR_1 = d3.select('#MJXc-Node-308').selectAll('.mjx-char').text('HR');
+	HR_2 = d3.select('#MJXc-Node-343').selectAll('.mjx-char').text('HR');
 	
 	
-	// Remove 'r','e','d' from 'pred'
-	d3.select('#MJXc-Node-228').selectAll('.mjx-char').remove();
-	d3.select('#MJXc-Node-229').selectAll('.mjx-char').remove();
-	d3.select('#MJXc-Node-230').selectAll('.mjx-char').remove();
+	// Remove 'r','e','d' from 'pred' 69-72, +42
+	d3.select('#MJXc-Node-270').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-271').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-272').selectAll('.mjx-char').remove();
 	
 	// Remove 'R' from 'HR'
-	d3.select('#MJXc-Node-269').selectAll('.mjx-char').remove();
-	d3.select('#MJXc-Node-300').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-311').selectAll('.mjx-char').remove();
+	d3.select('#MJXc-Node-346').selectAll('.mjx-char').remove();
 	
-	d3.select('#MJXc-Node-223').style('width','3em');
-	d3.select('#MJXc-Node-245').selectAll(function(){return this.childNodes})
+	d3.select('#MJXc-Node-265').style('width','3em');
+	d3.select('#MJXc-Node-287').selectAll(function(){return this.childNodes})
 		.filter(function(d,i){return i === 0;})
-		.style('width','11.0em');  // 245 - left eqn
-	d3.select('#MJXc-Node-276').selectAll(function(){return this.childNodes})
+		.style('width','12.0em');  // +4
+	d3.select('#MJXc-Node-322').selectAll(function(){return this.childNodes})
 		.filter(function(d,i){return i === 0;})
-		.style('width','11.0em');  // 276 - right eqn
+		.style('width','12.0em');  // 276 - right eqn
 }
 
 
@@ -313,7 +328,7 @@ function moveNumbers(){
 				theOutput.transition().delay(1000)
 					.attr('x',x(-2))
 					.attr('y',y(-2))
-					.text(myData[tN%10].y_pred.toFixed(2))
+					.text(myData[tN%10].S_pred.toFixed(2))
 					.on('end',function(){
 					
 				theOutput.transition().delay(1000).duration(1000)
@@ -325,7 +340,7 @@ function moveNumbers(){
 						.data([myData[tN%10].T,
 						myData[tN%10].HR,
 						myData[tN%10].S_true,
-						myData[tN%10].y_pred] )
+						myData[tN%10].S_pred] )
 					.html(function(d) { return d.toFixed(2); });
 					return theOutput.remove();});
 					});
@@ -333,11 +348,14 @@ function moveNumbers(){
 			});
 }
 
-var w_Initial_EQN = [{"x": 3.0, "y": -2.9},
+var w_Initial_EQN = [{"x": 3.5, "y": -2.9},
 					 {"x": 4.2, "y": -2.9},
-					 {"x": 7.0, "y": -2.9},
-					 {"x": 8.2, "y": -2.9},
-					 {"x": 3.1, "y": -2.2},
+					 {"x": 2.2, "y": -2.9},
+					 {"x": 8.0, "y": -2.9},
+					 {"x": 6.7, "y": -2.9},
+					 {"x": 8.8, "y": -2.9},
+					 {"x": 9.4, "y": -2.5},
+					 {"x": 2.8, "y": -2.2},
 					 {"x": 7.1, "y": -2.2} ];
 				 
 function robotLoadWs(){
@@ -359,6 +377,9 @@ function robotLoadWs(){
 				w4_up.text('1');
 				w5_up.text('1');
 				w6_up.text('1');
+				w7_up.text('1');
+				w8_up.text('1');
+				w9_up.text('1');
 				
 				w1_down.text('');
 				w2_down.text('');
@@ -366,6 +387,9 @@ function robotLoadWs(){
 				w4_down.text('');
 				w5_down.text('');
 				w6_down.text('');
+				w7_down.text('');
+				w8_down.text('');
+				w9_down.text('');
 				return flyWs.remove();
 			});
 	
@@ -385,15 +409,18 @@ function robotLoadWs(){
 
 //Size of black box
 var rGears = 3;
-
+var x_offset = 0.25;
 //Position of gears within box & Gear size
 var myGears = [
-{"x": -rGears/4+5.75,  "y":  +2*rGears/3,  "r":  +0.6},
-{"x": -rGears/4+5.75,  "y":  +1*rGears/3,  "r":  +0.6},
-{"x": -rGears/4+5.75,  "y":  +0*rGears/3,  "r":  +0.6},
-{"x": +rGears/4+5.75,  "y":  +2*rGears/3,  "r":  +0.6},
-{"x": +rGears/4+5.75,  "y":  +1*rGears/3,  "r":  +0.6},
-{"x": +rGears/4+5.75,  "y":  +0*rGears/3,  "r":  +0.6},
+{"x": 4.5+x_offset,  "y":  +2*rGears/3,  "r":  +0.6},
+{"x": 4.5+x_offset,  "y":  +1*rGears/3,  "r":  +0.6},
+{"x": 4.5+x_offset,  "y":  +0*rGears/3,  "r":  +0.6},
+{"x": 5.5+x_offset,  "y":  +2*rGears/3,  "r":  +0.6},
+{"x": 5.5+x_offset,  "y":  +1*rGears/3,  "r":  +0.6},
+{"x": 5.5+x_offset,  "y":  +0*rGears/3,  "r":  +0.6},
+{"x": 6.5+x_offset,  "y":  +2*rGears/3,  "r":  +0.6},
+{"x": 6.5+x_offset,  "y":  +1*rGears/3,  "r":  +0.6},
+{"x": 6.5+x_offset,  "y":  +0*rGears/3,  "r":  +0.6},
 ];
 			
 var g = d3.scaleLinear().domain([0,rGears/3])

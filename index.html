@@ -92,7 +92,7 @@
 			<p>Our example neural network is below. Click any of the terms to get an explanation.</p>
 			<div id='ANN_Equation'>
 				<!-- <p>[THIS SHOULD HAVE INTERACTIVE HOVER-OVER AND CLICKABLE BEHAVIOR IN THE FINAL ARTICLE]</p>  -->
-				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{w_5 }{1 + e^{-\left(T\cdot w_1+ {HR}\cdot w_2 \right)}} +\frac{w_6}{1 + e^{-\left(T\cdot w_3+ {HR}\cdot w_4\right)}} \right) } }  }  \] </p>
+				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{w_7 }{1 + e^{-\left(T\cdot w_1+ {HR}\cdot w_2 + w_3 \right)}} +\frac{w_8}{1 + e^{-\left(T\cdot w_4+ {HR}\cdot w_5 + w_6 \right)}}  + w_9 \right)} }  }  \] </p>
 			</div>
 			
 			<p>The artificial neural network looks complicated because it has so many terms. But take a closer look. The mathematical operations are simple - addition, subtraction, multiplication and exponentiation. In reality, our artificial neural network is a combination of many simple mathematical steps.</p>
@@ -103,14 +103,14 @@
 			<p>Right now, we could take out a calculator and start making predictions using the example neural network. All we need is our patient's temperature, heart rate, and the w values. Then, we would plug those values into the equation above. And, voila! Out comes our prediction of whether our patient is sick or not. </p>
 			<p>However, there's a catch. For the network to be useful, we need the predictions to be accurate, and the key to making accurate predictions is finding the best values for the w terms in the equation. You can think of these w's like settings - when we change the settings, we change the network equation, which makes our predictions better or worse.</p>
 			<div id='ANN_Equation_ws'>
-				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{\color{red} w_{\color{red} 5} }{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 1}+ {HR}\cdot  \color{red} w_{\color{red} 2} \right)}} +\frac{\color{red} w_{\color{red} 6}}{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 3}+ {HR}\cdot \color{red} w_{\color{red} 4} \right)}} \right) } }  }  \] </p>
+				<p>\[ \Large{ S_{pred} = \frac{1}{1+e^{ - \left(\frac{\color{red} w_{\color{red} 7} }{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 1}+ {HR}\cdot  \color{red} w_{\color{red} 2} + \color{red} w_{\color{red} 3}\right)}} +\frac{\color{red} w_{\color{red} 8}}{1 + e^{-\left(T\cdot \color{red} w_{\color{red} 4}+ {HR}\cdot \color{red} w_{\color{red} 5} + \color{red} w_{\color{red} 6} \right)}} + \color{red} w_{\color{red} 9} \right) } }  }  \] </p>
 			</div>
-			<p>If we get the settings right, we can get our neural network to recognize sick patients! That's exactly the same way that Alexa can recognize your voice – in her neural network she has found the right settings to make her predictions really good. But unlike our example, Alexa most likely has hundreds or thousands of w settings in total, compared to our robot, which has only six (w1, w2, w3, w4, w5, and w6).</p>
+			<p>If we get the settings right, we can get our neural network to recognize sick patients! That's exactly the same way that Alexa can recognize your voice – in her neural network she has found the right settings to make her predictions really good. But unlike our example, Alexa most likely has hundreds or thousands of w settings in total, compared to our robot, which has only nine (w1, w2, w3, w4, w5, w6, w7, w8 and w9).</p>
 			<br>
 			
 			<h3>TRAINING A NEURAL NETWORK TO MAKE BETTER PREDICTIONS</h3>
 			<p>The real challenge of a neural network is to learn the best w settings that make the predictions as good as possible. This process is called "training". Unfortunately, when we are just starting out, we have no idea what the settings should be. Our best option is to start by guessing values for the ws. </p>
-			<p>In this example, we will start by guessing that every w setting is equal to 1 (w1 = w2 = w3 = w4 = w5 = w6 = 1).</p>
+			<p>In this example, we will start by guessing that every w setting is equal to 1 (w1 = w2 = w3 = w4 = w5 = w6 = w7 = w8 = w9 = 1).</p>
 			
 			<h4>Collecting data to train the network</h4>
 			<p>To train the robot, we need some data - which we need to collect or find in a database.</p>
@@ -123,14 +123,16 @@
 			
 			<h4>The network's first predictions</h4>
 			<p>Training a network is a trial-and-error process. Now that we have our data, we need to do the "trial" part, using our equation to see if the w values work well.</p> 
-			<p>First, we will plug our w values into the equation (remember, to start we guessed that all ws = 1). Then, for each subject, we will plug in the subject's temperature, heart rate. Once this is done, we can calculate our predictions of whether the patient was sick or not.</p> 
+			<p>First, we will plug our w values into the equation (remember, to start we guessed that all ws = 1). Then, for each subject, we will plug in the subject's temperature, heart rate. Once this is done, we can calculate our predictions of whether the patient was sick or not (0 = not sick, 1 = sick).</p> 
 			<div id='RobotDoctorDiv'>
 				<p><strong>[Click the gears to read in patient data and predict if the patient is sick or not.]</strong></p>
 				<script src="./robotdoctor.js"></script>
 			</div>
 			<h4>Making better predictions</h4>
-			<p>The first predictions are awful, because we started off by guessing that all ws = 1. In fact, the network predictions were almost identical for all of the patients.</p>
-			<p>After trying our equation (the "trial" part), we correct for any errors the network made. This is the "error" part of the trial-and-error. At this stage, we update the w settings to make the errors a little bit smaller. And we repeat this process over and over. We can use many different rules to update our w values, but this is beyond the scope of this article. </p>
+			<p>After trying our equation (the "trial" part), we correct for any errors the network made (the "error" part). And the first predictions are awfully full of errors because we started off by guessing that all ws = 1. </p>
+			<p>But before we start changing any w settings to correct our errors, we have to define what we mean by error. In general, error refers to how far off our predictions are from the truth. In this example, we will use a specific type of error - the sum of squared errors. </p>
+			<p>To calculate the sum of square errors, we go patient by patient and calculate the difference between our prediction and the actual value. Then, we square that number. After we do this for all our patients, we add up all the results. The total is the sum of squared errors.</p>
+			<p>At this stage, we update the w settings to make the sum of squared error a little bit smaller. And we repeat this process over and over. We can use many different rules to update our w values, but this is beyond the scope of this article. </p>
 			<p>To truly train an artificial neural network well, we change the settings many times: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
 			<div id='Error'>
 				<!-- <p>[Error decreasing over time]</p> -->
