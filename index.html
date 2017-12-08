@@ -83,7 +83,7 @@
 			
 			<h3>WHAT IS AN ARTIFICIAL NEURAL NETWORK? </h3>
 			<p>At its most basic level, an artificial neural network is a mathematical equation. And, surprisingly, many artificial neural networks rely on simple mathematics: addition, subtraction, multiplication, and exponentiation. In fact, you can easily perform the same calculations with a calculator and these four buttons:   +   -   x   exp()</p>  
-			<p>What makes neural networks so special is in the way the calculations are performed. When these operations are combined in the right order, we can get computer to recognize your voice - we just need a fast computer and a data set (preferably, a large one).</p>
+			<p>What makes neural networks so special is combining these operations in the right order. When we put them together the right way, we can get the computer to recognize your voice - we just need a fast computer and a data set (preferably, a large one).</p>
 			<br>
 
 			<h3>AN EXAMPLE NEURAL NETWORK</h3>
@@ -135,7 +135,13 @@
 			<p>At this stage, we update the w settings to make the sum of squared error a little bit smaller. And we repeat this process over and over. We can use many different rules to update our w values, but this is beyond the scope of this article. </p>
 			<p>To truly train an artificial neural network well, we change the settings many times: sometimes thousands of times, sometimes millions of times, and sometimes even more! And eventually, our network makes smaller and smaller errors as we update the settings.</p>
 			<div id='Error'>
-				<!-- <p>[Error decreasing over time]</p> -->
+			
+				<p>[Error decreasing over time on left] [Ws changing over time on right]</p>
+				<script>
+					var newNet = new NeuralNet([2,2,1]);
+					trainNet(10000,0.3);
+					visualizeNet();
+				</script>
 			</div>
 			<br>
 			<br>
